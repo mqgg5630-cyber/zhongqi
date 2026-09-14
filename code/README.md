@@ -40,9 +40,13 @@ results/figures/*.png                        ← 由 make_figures2.py 生成（�
 python code/build_ops.py                 # 草稿 md -> ops json
 python code/fill_docx.py --ops build/ops_中期.json      # 填表
 python code/verify_docx.py --base sources/中期.docx --filled deliverable/中期.docx \
-       --cells 22:0:3 22:2:0 22:3:0 22:4:0 22:5:0 \
-       --tc-skip 22:0:1 22:2:0 22:3:0 22:4:0 22:5:0 \
-       --sdt-cells 13:0:0 13:1:0 13:2:0 13:3:0 13:4:0 13:5:0 13:6:0   # 格式校验（含封面）
+       --cells 22:0:3 22:2:0 22:3:0 22:4:0 22:5:0 22:7:0 \
+       --blank-cells 22:11:2 22:11:4 ... 22:16:6 \
+       --insert-cells 22:8:0@22:7:0:1:0 \
+       --tc-skip 22:0:1 22:2:0 22:3:0 22:4:0 22:5:0 22:7:0 22:8:0 22:11:2 ... \
+       --tc-cells 22:11:1 22:12:1 22:13:1 22:14:1 22:15:1 22:16:1 \
+       --sdt-cells 13:0:0 13:1:0 13:2:0 13:3:0 13:4:0 13:5:0 13:6:0 \
+       --row-insert 22:15:1                                        # 格式校验（含封面 / Ⅱ / Ⅲ）
 python code/make_figures2.py             # 画图（含框内文字溢出检查 + 投影字号核算）
 python code/make_ppt.py                  # 出旧版（细节版）PPT（含字号/越界/图文重叠检查）
 python code/make_ppt2.py                 # 出 A 版 PPT -> deliverable/中期答辩_A_学术蓝.pptx
@@ -63,13 +67,13 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 | 脚本 | 作用 |
 |---|---|
 | `inspect_docx.py` | 解析 docx 结构：段落样式、字体（含东亚字体）、字号、缩进、表格逐格内容、Word 表单域，输出 txt + json |
-| `fill_docx.py` | 就地填 docx：`replace_text` / `set_cell` / `fill_cell` / `fill_tc`（按原始行/格定位）/ `fill_sdt`（Word 内容控件，封面用）/ `insert_in_cell` / `set_paragraph` / `insert_after` / `insert_after_text` / `delete_paragraph`，全部基于模板原有段落格式 |
-| `verify_docx.py` | 校验成品是否保持模板格式（页面设置、页眉页脚、表格属性、非目标单元格逐字节一致、目标单元格段落/字体格式一致）；新增 `--sdt-cells` / `--tc-cells` / `--tc-skip` 三个参数，覆盖封面内容控件与"整格重建"的正文格 |
-| `build_ops.py` | 把 `deliverable/中期检查表_填写内容.md` 编译成 `fill_docx.py` 的 ops；`# 封面信息` 段 → 封面表（body 序号 13）7 栏，`## n.` 段 → 正文单元格 |
+| `fill_docx.py` | 就地填 docx：`replace_text` / `set_cell` / `fill_cell` / `fill_tc`（按原始行/格定位）/ `fill_sdt`（Word 内容控件，封面用）/ `insert_in_cell` / `set_paragraph` / `insert_after` / `insert_after_text` / `delete_paragraph`，全部基于模板原有段落格式；另有 **`clone_row`**（表行不够时原样复制一行，行高/框线/列宽全继承）与 **`insert_cell_paras`**（在单元格中间插入正文段落，格式取自指定模板段落——用于"导师综合评语"这类要求"正文在标题之后、签字行之前"的格子）|
+| `verify_docx.py` | 校验成品是否保持模板格式（页面设置、页眉页脚、表格属性、非目标单元格逐字节一致、目标单元格段落/字体格式一致）；参数覆盖四种填法：`--sdt-cells`（封面内容控件）、`--tc-cells` / `--tc-skip`（"整格重建"的正文格）、`--blank-cells`（模板里本来是空格子，只允许加段落、段落格式必须与原空格子一致）、`--insert-cells`（单元格中间插段：原段落逐字节保留 + 插入段落格式等于指定模板段落）、`--row-insert`（声明插了哪几行，只校验该行的行高与 tcPr 与源行一致）；`--cells` 还支持 `表:行:列@模板表:模板行:模板列:模板段` 形式 |
+| `build_ops.py` | 把 `deliverable/中期检查表_填写内容.md` 编译成 `fill_docx.py` 的 ops；`# 封面信息` 段 → 封面表（body 序号 13）7 栏，`## n.` 段 → 正文单元格（1—4），`# 导师指导情况`（键值对）→ 表 22 第 7/8 行，`# 检查小组成员`（`｜` 分隔行）→ 表 22 第 11 行起，人数超过模板行数时自动插入 `clone_row` |
 | `make_figures.py` | 生成 fig1—fig8（**细节版**，供学位论文用）；含折行与溢出测量工具函数；自检：文本是否超出方框、缩放到幻灯片后最小有效字号是否 ≥15 pt |
 | `make_figures2.py` | 生成 figA—figG（**思路版**，中期答辩用：研究思路、三模型预测、分阶段差异、宏蛋白组去重、机制关联、抑菌实验验证、进度） |
 | `make_ppt.py` | 生成第一版 16 页答辩 PPT（细节版）；自检：每个 run ≥15 pt、形状不越界、文字不压图 |
-| `make_ppt2.py` | 生成 **A 版**答辩 PPT（按导师意见：只讲思路与完成度，三模型预测与宏蛋白组去重按已完成呈现） |
+| `make_ppt2.py` | 生成 **A 版**答辩 PPT（只讲思路与完成度，三模型预测与宏蛋白组去重按已完成呈现） |
 | `make_ppt_variants.py` | 由 `docs/ppt_outline.json` 生成 **B 白底细线 / C 卡片色块 / D 双栏杂志风 / E 深色标题区** 四版 PPT，可选 `--style D`；版式差异集中在文件顶部 `STYLES` 风格表（`header_style` / `takeaway_style` / `body_style`）与 `header()` / `takeaway()` / `bullets_two_col()` / `cards_row()` |
 | `outline_to_md.py` | 把 `docs/ppt_outline.json` 转成 `docs/PPT大纲.md`（人读版 + 提示词模板），供 ppt-master / presenton 等工具使用 |
 | `make_ppt_svg.py` | 把 `docs/ppt_outline.json` 渲染成 16 页 SVG（遵守 ppt-master 的 SVG 规范：绝对坐标、`fill="none"`、字号 ≥ 20 px），再调 ppt-master 的 `svg_to_pptx.py` 导出 **F 深色科技风 / G 学术期刊风** 两版原生 DrawingML pptx；风格表 `STYLES` 与版式函数（`cover()` / `figure_page()` / `toc_page()`…）都在文件里 |

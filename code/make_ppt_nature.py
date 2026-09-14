@@ -228,7 +228,7 @@ def cover(prs, s, total, meta):
          align=PP_ALIGN.RIGHT, spacing=1.2)
     footer(slide, 1, total, "研究生论文中期检查")
     notes(slide, "各位老师好，我汇报的题目是《基于深度学习的阿尔茨海默症患者与健康人群肠道微生物组中抗菌肽的差异性研究》。"
-                 "本次中期检查按导师意见，重点说明研究思路，以及每一项工作完成到哪一步。")
+                 "本次中期检查重点说明研究思路，以及每一项工作完成到哪一步。")
     return slide
 
 

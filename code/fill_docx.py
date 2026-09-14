@@ -26,6 +26,8 @@ ops.json format
     {"op": "insert_in_cell", "table": 0, "row": 2, "col": 1,
      "anchor": "（1）", "texts": ["第一段", "第二段"]},
 
+    {"op": "clone_row", "table": 0, "row": 5},          // 表格行不够时先复制一行
+
     {"op": "set_paragraph", "index": 12, "text": "内容"},
 
     {"op": "insert_after", "index": 12, "texts": ["新段落1", "新段落2"]},
@@ -215,6 +217,65 @@ def op_insert_in_cell(doc, op):
     insert_paragraphs_after(base._p, texts, base, cell)
     print(f"OK    insert_in_cell table {op['table']} r{op['row']}c{op['col']} "
           f"+{len(texts)} paragraphs")
+
+
+def op_clone_row(doc, op):
+    """按原样复制一行（字体 / 框线 / 列宽 / 合并方式全部继承），插在该行之后。
+
+    用于表格行数不够时扩展行（例如"检查小组成员"只有 5 行、实际有 6 位成员）：
+    复制出来的一行与源行逐字节相同，只把文字换掉，所以格式不变。
+    """
+    els = body_elements(doc)
+    t_idx, r = int(op["table"]), int(op["row"])
+    if t_idx >= len(els) or els[t_idx][0] != "tbl":
+        warn(f"clone_row: body element {t_idx} is not a table")
+        return
+    trs = els[t_idx][1]._tbl.findall(qn("w:tr"))
+    if r >= len(trs):
+        warn(f"clone_row: table {t_idx} has no row {r}")
+        return
+    src = trs[r]
+    new_tr = copy.deepcopy(src)
+    src.addnext(new_tr)
+    print(f"OK    clone_row     table {t_idx} row {r} duplicated (now {len(trs)} rows)")
+
+
+def op_insert_cell_paras(doc, op):
+    """在单元格内某个段落之后插入若干段落，格式取自指定的模板段落。
+
+    用于"导师综合评语"这类单元格：前面是标题、后面是留给签字的空行，
+    正文要插在标题之后、空行之前，且字体字号要与表格正文一致。
+    op = {"op": "insert_cell_paras", "table": 22, "row": 8, "col": 0, "after": 0,
+          "template": {"table": 22, "row": 7, "col": 0, "para": 1}, "texts": [...]}
+    """
+    cell = get_cell(doc, op["table"], op["row"], op["col"])
+    if cell is None:
+        warn(f"insert_cell_paras: table {op['table']} r{op['row']}c{op['col']} does not exist")
+        return
+    paras = cell.paragraphs
+    after = int(op.get("after", 0))
+    if after >= len(paras):
+        warn(f"insert_cell_paras: paragraph index {after} out of range")
+        return
+    tspec = op.get("template") or {}
+    tmpl_p = paras[after]._p
+    if tspec:
+        tcell = get_cell(doc, tspec.get("table", op["table"]), tspec.get("row"), tspec.get("col"))
+        if tcell is not None and len(tcell.paragraphs) > int(tspec.get("para", 0)):
+            tmpl_p = tcell.paragraphs[int(tspec.get("para", 0))]._p
+    rpr = _rpr_of_text_run(tmpl_p)
+    cur = paras[after]._p
+    for text in op["texts"]:
+        new_p = copy.deepcopy(tmpl_p)
+        for el in list(new_p):
+            if el.tag in (qn("w:r"), qn("w:hyperlink"), qn("w:bookmarkStart"),
+                          qn("w:bookmarkEnd"), qn("w:fldSimple")):
+                new_p.remove(el)
+        new_p.append(_clean_run(rpr, text))
+        cur.addnext(new_p)
+        cur = new_p
+    print(f"OK    insert_cell_paras table {op['table']} r{op['row']}c{op['col']} "
+          f"+{len(op['texts'])} paragraphs")
 
 
 def op_set_paragraph(doc, op):
@@ -445,6 +506,8 @@ def _apply_fill(cell, label: str, op):
 
 
 HANDLERS = {
+    "clone_row": op_clone_row,
+    "insert_cell_paras": op_insert_cell_paras,
     "replace_text": op_replace_text,
     "set_cell": op_set_cell,
     "fill_cell": op_fill_cell,

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""make_ppt2.py - 中期答辩 PPT（第二版：按导师意见重写）
+"""make_ppt2.py - 中期答辩 PPT（A 版：学术蓝，讲思路与完成度）
 
-导师意见的落实点
+本版的内容口径
 ----------------
 * 只讲"研究思路 + 工作完成到哪一步"，不展开技术细节（页面上不出现参数、版本、命令、指标数字）
 * 三模型（Attention / LSTM / BERT）共识预测按"已完成"呈现
 * 分析完抗菌肽差异后，用宏蛋白组做二次去重，筛选健康人与各阶段特有的抗菌肽
 * 最后与 AD 发病机制建立关联（Aβ 聚集 / AChE–PAS / 免疫与炎症），并补一个抑菌实验验证
-* 例外：工作进度一页保留百分比，因为导师要求"讲清完成到哪一步"
+* 例外：工作进度一页保留百分比，用于说明"完成到哪一步"
 
 输出：deliverable/中期答辩_A_学术蓝.pptx（16 页，16:9，全篇最小字号 15 pt）
 """
@@ -97,7 +97,7 @@ def build() -> Presentation:
     for k, (num, text) in enumerate(items):
         add_rich(tf, [(num + "　", True, TEAL), (text, False, INK)], size=20,
                  first=(k == 0), space_before=(0 if k == 0 else 20), space_after=0)
-    add_takeaway(s, "按导师意见，本次汇报重点说明研究思路与各项工作的完成程度")
+    add_takeaway(s, "本次汇报重点说明研究思路与各项工作的完成程度")
     slides.append(s)
 
     # 3 ─ 研究思路总览 -----------------------------------------------------

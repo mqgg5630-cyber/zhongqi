@@ -141,7 +141,7 @@ python code/make_ppt_nature.py --audit # 出 H 版并跑 skill 自带质量审�
 |---|---|
 | `docs/ppt_outline.json` | **机器可读**：16 页的标题/正文/卡片/步骤/结论条/演讲备注/配图文件名，可直接给程序或 AI 读 |
 | `docs/PPT大纲.md` | **人读版大纲**（由上一个文件自动生成，含配色字号规范与一段现成的提示词模板） |
-| `docs/中期答辩PPT大纲.md` | 导师意见落实对照表 + 逐页清单 + 7 个答辩预判问答（给"讲什么"用的） |
+| `docs/中期答辩PPT大纲.md` | 汇报重点与落实方式对照表 + 逐页清单 + 7 个答辩预判问答（给"讲什么"用的） |
 | `results/figures/figA_*.png … figG_*.png` | 大纲里点名要用的 7 张示意图，文件名与大纲一一对应 |
 | `deliverable/中期答辩_*.pptx`（A—H 八版） | 已经做好的八版可编辑成果；F / G **就是用 ppt-master 的原生导出通路做的**（`code/make_ppt_svg.py`），H **是用 nature-skills 的 nature-paper2ppt 做的**（`code/make_ppt_nature.py`），都是"本仓库已跑通"的参考实现 |
 

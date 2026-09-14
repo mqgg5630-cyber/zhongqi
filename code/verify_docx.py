@@ -80,6 +80,11 @@ def first_text_rpr(p_el):
 from lxml import etree as _etree
 
 
+def etree_of(el):
+    from lxml import etree
+    return etree.tostring(el, encoding="unicode")
+
+
 def xml_of(el) -> str:
     return _etree.tostring(el, encoding="unicode")
 
@@ -92,6 +97,17 @@ def mask_text(xml: str) -> str:
     removed - used to prove that a fill target changed text and nothing else."""
     xml = xml.replace("<w:showingPlcHdr/>", "")
     return T_RE.sub(r"\1@\2", xml)
+
+
+def get_cell(doc, t_idx: int, r: int, c: int):
+    """Cell by body-element table index / merged-grid row, column."""
+    els = body(doc)
+    if t_idx >= len(els) or els[t_idx][0] != "tbl":
+        return None
+    tbl = els[t_idx][1]
+    if r >= len(tbl.rows) or c >= len(tbl.columns):
+        return None
+    return tbl.cell(r, c)
 
 
 def section_signature(doc):
@@ -112,20 +128,49 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="verify a filled docx kept its template format")
     ap.add_argument("--base", required=True)
     ap.add_argument("--filled", required=True)
-    ap.add_argument("--cells", nargs="*", default=[], help="fill targets as table:row:col")
+    ap.add_argument("--cells", nargs="*", default=[],
+                    help="fill targets as table:row:col, optionally "
+                         "table:row:col@t:r:c:para to also require that every paragraph "
+                         "whose pPr the base cell does not contain matches that template "
+                         "paragraph's pPr/rPr (used for inserted body paragraphs)")
+    ap.add_argument("--blank-cells", nargs="*", default=[],
+                    help="cells that were empty in the template and got filled: "
+                         "table:row:col - paragraph format must stay identical")
+    ap.add_argument("--insert-cells", nargs="*", default=[],
+                    help="cells where paragraphs were inserted after a given index: "
+                         "table:row:col@t:r:c:para:after")
     ap.add_argument("--tc-cells", nargs="*", default=[],
                     help="raw fill targets as table:row:tc_index (text-only change, e.g. cover)")
     ap.add_argument("--tc-skip", nargs="*", default=[],
                     help="raw cells rebuilt by fill_cell: skip here, their paragraph "
                          "format is checked by --cells")
+    ap.add_argument("--row-insert", nargs="*", default=[],
+                    help="declared inserted rows as table:after:count (row cloned in place, "
+                         "format must equal the source row)")
     ap.add_argument("--sdt-cells", nargs="*", default=[],
                     help="content-control fill targets as table:row:sdt_index (fills done with fill_sdt)")
     args = ap.parse_args(argv)
 
     targets = set()
+    fmt_templates = {}
     for spec in args.cells:
-        t, r, c = (int(x) for x in spec.split(":"))
+        cell_spec, _, tmpl_spec = spec.partition("@")
+        t, r, c = (int(x) for x in cell_spec.split(":"))
         targets.add((t, r, c))
+        if tmpl_spec:
+            tt, tr, tc, tp = (int(x) for x in tmpl_spec.split(":"))
+            fmt_templates[(t, r, c)] = (tt, tr, tc, tp)
+
+    blank_targets = set()
+    for spec in args.blank_cells:
+        t, r, c = (int(x) for x in spec.split(":"))
+        blank_targets.add((t, r, c))
+    insert_specs = {}
+    for spec in args.insert_cells:
+        cell_spec, _, tmpl_spec = spec.partition("@")
+        t, r, c = (int(x) for x in cell_spec.split(":"))
+        tt, tr, tc, tp, after = (int(x) for x in tmpl_spec.split(":"))
+        insert_specs[(t, r, c)] = (tt, tr, tc, tp, after)
 
     tc_targets = set()
     for spec in args.tc_cells:
@@ -139,6 +184,19 @@ def main(argv=None) -> int:
     for spec in args.tc_skip:
         t, r, c = (int(x) for x in spec.split(":"))
         tc_skips.add((t, r, c))
+
+    row_inserts = {}
+    for spec in args.row_insert:
+        t, after, n = (int(x) for x in spec.split(":"))
+        row_inserts[(t, after)] = n
+
+    def mapped(table_idx, base_row):
+        """base row index -> filled row index (accounting for declared row clones)"""
+        off = 0
+        for (t, after), n in row_inserts.items():
+            if t == table_idx and base_row > after:
+                off += n
+        return base_row + off
 
     b = Document(args.base)
     f = Document(args.filled)
@@ -173,13 +231,17 @@ def main(argv=None) -> int:
     # 4 ---------------------------------------------------------------------
     tb = [x[1] for x in bb if x[0] == "tbl"]
     tf = [x[1] for x in fb if x[0] == "tbl"]
+    tbl_body_idx = [i for i, x in enumerate(bb) if x[0] == "tbl"]
     for i, (t1, t2) in enumerate(zip(tb, tf)):
         grid1 = t1._tbl.find(qn("w:tblGrid"))
         grid2 = t2._tbl.find(qn("w:tblGrid"))
         same_grid = strip_ns(grid1.xml) == strip_ns(grid2.xml) if grid1 is not None and grid2 is not None else False
         pr1, pr2 = t1._tbl.find(qn("w:tblPr")), t2._tbl.find(qn("w:tblPr"))
         same_pr = (strip_ns(pr1.xml) == strip_ns(pr2.xml)) if pr1 is not None and pr2 is not None else False
-        dims = (len(t1.rows), len(t1.columns)) == (len(t2.rows), len(t2.columns))
+        body_idx = tbl_body_idx[i]
+        extra = sum(n for (tt, _a), n in row_inserts.items() if tt == body_idx)
+        dims = (len(t2.rows) == len(t1.rows) + extra and
+                len(t1.columns) == len(t2.columns))
         if same_grid and same_pr and dims:
             print(f"{OK} table {i}: dimensions {len(t1.rows)}x{len(t1.columns)}, "
                   f"tblPr and tblGrid identical")
@@ -198,7 +260,10 @@ def main(argv=None) -> int:
         for r in range(len(t1.rows)):
             if r >= len(t2.rows):
                 break
-            row1, row2 = t1.rows[r], t2.rows[r]
+            fr = mapped(i, r)
+            if fr >= len(t2.rows):
+                continue
+            row1, row2 = t1.rows[r], t2.rows[fr]
             seen = set()
             for c, cell1 in enumerate(row1.cells):
                 if c >= len(row2.cells):
@@ -210,6 +275,57 @@ def main(argv=None) -> int:
                 seen.add(key)
                 is_target = (i, r, c) in targets or any(
                     x in target_sdt_els for x in cell1._tc.iter(qn("w:sdt")))
+
+                if (i, r, c) in blank_targets:
+                    # 模板里本来是空格子：填进去的段落，段落格式要与原空格子一致
+                    p1, p2 = cell1.paragraphs, cell2.paragraphs
+                    ref_pPr = pPr_xml(p1[0]._p) if p1 else None
+                    ref_rPr = rpr_normalized(first_text_rpr(p1[0]._p)) if p1 else None
+                    if ref_rPr is None and p1:            # 空格子没有 run：取段落标记的 rPr
+                        mark = p1[0]._p.find(qn("w:pPr"))
+                        mark = mark.find(qn("w:rPr")) if mark is not None else None
+                        ref_rPr = rpr_normalized(xml_of(mark)) if mark is not None else None
+                    same_pPr = all(pPr_xml(p._p) == ref_pPr for p in p2)
+                    same_rPr = all((rpr_normalized(first_text_rpr(p._p)) or ref_rPr) == ref_rPr
+                                   for p in p2)
+                    ok = bool(p2) and same_pPr and same_rPr
+                    checked += 1
+                    if ok:
+                        print(f"{OK} filled blank cell tbl{i} r{r}c{c}: {len(p2)} "
+                              f"paragraph(s), pPr/rPr identical to the empty template cell")
+                    else:
+                        problems.append(f"format drift in blank cell tbl{i} r{r}c{c}")
+                        print(f"{BAD} blank cell tbl{i} r{r}c{c}: pPr={same_pPr} rPr={same_rPr}")
+                    continue
+
+                if (i, r, c) in insert_specs:
+                    # 在原单元格中间插入段落：前后的原段落必须逐字节保留，
+                    # 插入的段落格式必须等于指定模板段落
+                    tt, tr, tc, tp, after = insert_specs[(i, r, c)]
+                    p1, p2 = cell1.paragraphs, cell2.paragraphs
+                    tcell = get_cell(b, tt, tr, tc)
+                    tmpl_ref = tcell.paragraphs[tp]._p if tcell and len(tcell.paragraphs) > tp else None
+                    n_tail = len(p1) - after - 1
+                    prefix_ok = all(strip_ns(p1[k]._p.xml) == strip_ns(p2[k]._p.xml)
+                                    for k in range(after + 1))
+                    tail_ok = all(strip_ns(p1[-(k + 1)]._p.xml) == strip_ns(p2[-(k + 1)]._p.xml)
+                                  for k in range(n_tail))
+                    inserted = p2[after + 1:len(p2) - n_tail] if n_tail else p2[after + 1:]
+                    fmt_ok = bool(inserted) and tmpl_ref is not None and all(
+                        pPr_xml(p._p) == pPr_xml(tmpl_ref) and
+                        rpr_normalized(first_text_rpr(p._p)) ==
+                        rpr_normalized(first_text_rpr(tmpl_ref)) for p in inserted)
+                    checked += 1
+                    if prefix_ok and tail_ok and fmt_ok:
+                        print(f"{OK} inserted paras tbl{i} r{r}c{c}: {len(inserted)} new, "
+                              f"surrounding paragraphs untouched, format = "
+                              f"tbl{tt} r{tr}c{tc} para{tp}")
+                    else:
+                        problems.append(f"inserted paragraphs wrong in tbl{i} r{r}c{c}")
+                        print(f"{BAD} insert tbl{i} r{r}c{c}: prefix={prefix_ok} "
+                              f"tail={tail_ok} format={fmt_ok}")
+                    continue
+
                 if is_target:
                     p1, p2 = cell1.paragraphs, cell2.paragraphs
                     same_prompt = True
@@ -231,7 +347,29 @@ def main(argv=None) -> int:
                         n_bold = sum(1 for p in new_ps if is_bold(first_text_rpr(p._p)))
                     else:
                         same_pPr = same_rPr = None
-                    ok = same_prompt and (same_pPr is not False) and (same_rPr is not False)
+                    fmt_ok = None
+                    if (i, r, c) in fmt_templates:
+                        tt, tr, tc, tp = fmt_templates[(i, r, c)]
+                        tcell = get_cell(b, tt, tr, tc)
+                        base_pprs = {strip_ns(pPr_xml(p._p)) for p in tcell.paragraphs}
+                        if len(tcell.paragraphs) > tp:
+                            tmpl_ref = tcell.paragraphs[tp]._p
+                            ref_pPr = strip_ns(pPr_xml(tmpl_ref))
+                            ref_rPr = rpr_normalized(first_text_rpr(tmpl_ref))
+                            new_ps = [p for p in p2
+                                      if strip_ns(pPr_xml(p._p)) not in base_pprs]
+                            fmt_ok = bool(new_ps) and all(
+                                pPr_xml(p._p) == pPr_xml(tmpl_ref) and
+                                rpr_normalized(first_text_rpr(p._p)) == ref_rPr
+                                for p in new_ps)
+                            if fmt_ok:
+                                print(f"{OK} format template tbl{i} r{r}c{c}: "
+                                      f"{len(new_ps)} inserted paragraph(s) match "
+                                      f"tbl{tt} r{tr}c{tc} para{tp}")
+                            else:
+                                problems.append(f"format template mismatch in tbl{i} r{r}c{c}")
+                    ok = same_prompt and (same_pPr is not False) and \
+                        (same_rPr is not False) and (fmt_ok is not False)
                     checked += 1
                     if ok:
                         print(f"{OK} fill target tbl{i} r{r}c{c}: prompt kept, "
@@ -255,11 +393,16 @@ def main(argv=None) -> int:
             continue
         trs1 = e1[1]._tbl.findall(qn("w:tr"))
         trs2 = e2[1]._tbl.findall(qn("w:tr"))
-        if len(trs1) != len(trs2):
+        extra_rows = sum(n for (tt, _a), n in row_inserts.items() if tt == i)
+        if len(trs1) + extra_rows != len(trs2):
             problems.append(f"table {i} row count changed")
             print(f"{BAD} table {i}: row count changed")
             continue
-        for r, (tr1, tr2) in enumerate(zip(trs1, trs2)):
+        for r, tr1 in enumerate(trs1):
+            fr = mapped(i, r)
+            if fr >= len(trs2):
+                continue
+            tr2 = trs2[fr]
             sdts1 = list(tr1.iter(qn("w:sdt")))
             target_sdts = {k for k in range(len(sdts1)) if (i, r, k) in sdt_targets}
             for tag, label in (("w:tc", "tc"), ("w:sdt", "sdt")):
@@ -299,6 +442,40 @@ def main(argv=None) -> int:
                     else:
                         problems.append(f"format drift in {label} tbl{i} r{r}#{k}")
                         print(f"{BAD} fill target {label} tbl{i} r{r}#{k}: formatting changed")
+
+    # 8 declared inserted rows: same XML as the source row, text aside --------
+    clones = 0
+    for (ti, after), n in row_inserts.items():
+        if ti not in tbl_body_idx:
+            continue
+        idx = tbl_body_idx.index(ti)
+        src = tb[idx]._tbl.findall(qn("w:tr"))
+        dst = tf[idx]._tbl.findall(qn("w:tr"))
+        if after >= len(src):
+            continue
+        for k in range(1, n + 1):
+            fi = after + k
+            if fi >= len(dst):
+                problems.append(f"inserted row {fi} missing in table {ti}")
+                continue
+            def row_shape(tr):
+                """行/单元格的结构属性：trPr + 每个 tc 的 tcPr（不含文字与 run）"""
+                trPr = tr.find(qn("w:trPr"))
+                shape = [strip_ns(xml_of(trPr)) if trPr is not None else ""]
+                for tc in tr.findall(qn("w:tc")):
+                    tcPr = tc.find(qn("w:tcPr"))
+                    shape.append(strip_ns(xml_of(tcPr)) if tcPr is not None else "")
+                return shape
+            same = row_shape(src[after]) == row_shape(dst[fi])
+            if same:
+                clones += 1
+                print(f"{OK} cloned row tbl{ti} r{fi}: row height / cell borders / "
+                      f"column spans identical to the source row")
+            else:
+                problems.append(f"cloned row tbl{ti} r{fi} formatting differs")
+                print(f"{BAD} cloned row tbl{ti} r{fi} formatting differs")
+    if row_inserts:
+        print(f"cloned rows verified: {clones}")
 
     print(f"\nnon-target cells verified identical: {kept}")
     print(f"fill targets verified: {checked}")
