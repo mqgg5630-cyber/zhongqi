@@ -18,8 +18,8 @@ description: 用一份 JSON 大纲批量生成「原生可编辑」的 PowerPoin
 |---|---|
 | `docs/ppt_outline.json` | **唯一内容源**：meta + 逐页要素（含演讲备注） |
 | `docs/PPT大纲.md` | 由 JSON 生成的人读版大纲（含配色规范和现成提示词） |
-| `code/make_ppt2.py` | 生成 **A 版**（学术蓝）→ `deliverable/中期答辩.pptx` |
-| `code/make_ppt_variants.py` | 生成 **B / C 版**（极简线框 / 卡片色块）→ `deliverable/versions/` |
+| `code/make_ppt2.py` | 生成 **A 版**（学术蓝）→ `deliverable/中期答辩_A_学术蓝.pptx` |
+| `code/make_ppt_variants.py` | 生成 **B / C / D / E 四版**（极简线框 · 卡片色块 · 双栏杂志风 · 深色标题区）→ `deliverable/中期答辩_{B..E}_*.pptx` |
 | `code/outline_to_md.py` | JSON → 人读版大纲 |
 | `code/add_notes.py` | 把大纲里的 `note` 写进任意 pptx 的备注区（按页序） |
 | `code/check_ppt.py` | 独立校验：最小字号 / 越界 / 图文重叠 |
@@ -74,24 +74,28 @@ description: 用一份 JSON 大纲批量生成「原生可编辑」的 PowerPoin
 # 1) 改内容：只改 docs/ppt_outline.json
 # 2) 生成人读版大纲（给别的工具/人看）
 python code/outline_to_md.py
-# 3) 出 PPT：A 版 + B/C 版
+# 3) 出 PPT：A 版 + B/C/D/E 四版
 python code/make_ppt2.py
-python code/make_ppt_variants.py            # 或 --style B / --style C
+python code/make_ppt_variants.py            # 或 --style D 只出一版；--style all 出四版
 # 4) 补/更新演讲备注（A 版由 make_ppt2 出图后执行一次即可）
-python code/add_notes.py deliverable/中期答辩.pptx
+python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"
 # 5) 质量门：必须全绿
-python code/check_ppt.py deliverable/中期答辩.pptx
-python code/check_ppt.py "deliverable/versions/中期答辩_B_极简线框.pptx"
+python code/check_ppt.py "deliverable/中期答辩_A_学术蓝.pptx"
+python code/check_ppt.py "deliverable/中期答辩_B_极简线框.pptx"
 # 6) 目视核对（无需 Office）：4 页一张联系图
-python code/preview_ppt.py deliverable/中期答辩.pptx -o build/prevA
+python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/prevA
 ```
 
 `make_ppt2.py` / `make_ppt_variants.py` 自己也会打印 `slides / runs / smallest font` 并做一遍自检；`check_ppt.py` 是**独立**复查（用真实中文字体估算换行高度），两者都要过。
 
 ## 换风格、换配色
 
-- B / C 两版共用 `code/make_ppt_variants.py` 顶部的 `STYLES` 字典：`accent` 主色、`accent2` 强调色、`card_fill` 卡片底色、`card_line` 描边、`header_band` 标题色带、`side_bar` 左侧竖条、`takeaway_style`（`rule` = 左侧竖条结论 / `band` = 底色结论条）；
-- 想再加一版：在 `STYLES` 里加一个键（如 `"D"`），运行 `python code/make_ppt_variants.py --style D`；
+- B / C / D / E 四版共用 `code/make_ppt_variants.py` 顶部的 `STYLES` 字典：
+  `accent` 主色、`accent2` 强调色、`card_fill` 卡片底色、`card_line` 描边、`card_bar` 卡片左侧色条、
+  `header_style`（`rule` 短下划线 / `band` 浅色标题带 / `plain` 细分隔线 + 右上角页码 / `darkband` 深色标题带）、
+  `takeaway_style`（`rule` 左侧竖线 / `band` 浅底结论条 / `line` 方形点 + 细线 / `dark` 深色结论条）、
+  `body_style`（`auto` 单栏 / `twocol` 双栏，见 `bullets_two_col()` 与 `cards_row()`）；
+- 想再加一版：在 `STYLES` 里加一个键（如 `"F"`），运行 `python code/make_ppt_variants.py --style F`；
 - 字体、页边距、标题位置等常量集中在 `code/make_ppt.py` 顶部（`MARGIN`、`CONTENT_W`、`TITLE_TOP`、`CONTENT_TOP`、`TAKEAWAY_TOP`、`FOOTER_TOP`）。
 
 ## 质量门（出稿前逐条确认）
@@ -109,5 +113,5 @@ python code/preview_ppt.py deliverable/中期答辩.pptx -o build/prevA
 | 文字压到图片 | `place_figure()` 传 `max_h`/`left`，或把整页改成 `figure` 版式（图居中 + 下方 2 行说明） |
 | 卡片/结论条文字溢出 | 缩短文案；`make_ppt_variants.py` 的卡片高度按行数固定，超过 2 行需改 `card_h` |
 | 中文字体在别人电脑上变了 | 脚本已把 `a:ea`/`a:cs` 显式写进 XML（微软雅黑 + Arial）；换字体请同时改 `FONT_CN`/`FONT_EN` |
-| 换 JSON 后 B/C 版没变 | 两版都是从 JSON 现读现画，重跑 `make_ppt_variants.py` 即可；A 版内容写死在 `make_ppt2.py`，改文字要同步改脚本 |
+| 换 JSON 后 B—E 版没变 | 四版都是从 JSON 现读现画，重跑 `make_ppt_variants.py` 即可；**A 版内容写死在 `make_ppt2.py`，改文字要同步改脚本** |
 | 想用别的工具重做 | 把 `docs/PPT大纲.md`（或 `ppt_outline.json`）连同 `results/figures/` 给 ppt-master / presenton，提示词模板见 `docs/PPT生成Skill选择.md` |

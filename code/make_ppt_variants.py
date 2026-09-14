@@ -4,16 +4,18 @@
 
 三版并列供选择（都是原生可编辑 pptx，真实文本框/形状，非图片化）：
 
-  A  学术蓝（现有）      deliverable/中期答辩.pptx
-  B  极简线框（本脚本）  deliverable/versions/中期答辩_B_极简线框.pptx
-  C  卡片色块（本脚本）  deliverable/versions/中期答辩_C_卡片色块.pptx
+  A  学术蓝（现有）      deliverable/中期答辩_A_学术蓝.pptx
+  B  极简线框（本脚本）  deliverable/中期答辩_B_极简线框.pptx
+  C  卡片色块（本脚本）  deliverable/中期答辩_C_卡片色块.pptx
+  D  双栏杂志风（本脚本）deliverable/中期答辩_D_双栏杂志风.pptx
+  E  深色标题区（本脚本）deliverable/中期答辩_E_深色标题区.pptx
 
 三版内容完全一致（同一份 JSON），差别只在版式与配色；每页都写入大纲里的
 「演讲备注」，可直接用 ppt-master 之类工具生成配音。
 
 用法：
-    python code/make_ppt_variants.py            # 生成 B、C 两版
-    python code/make_ppt_variants.py --style B
+    python code/make_ppt_variants.py            # 生成 B / C / D / E 四版
+    python code/make_ppt_variants.py --style D
 """
 
 from __future__ import annotations
@@ -33,7 +35,7 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Emu, Inches, Pt
 
 OUTLINE = Path("docs/ppt_outline.json")
-OUT_DIR = Path("deliverable/versions")
+OUT_DIR = Path("deliverable")
 
 SLIDE_W, SLIDE_H = mp.SLIDE_W, mp.SLIDE_H
 MARGIN = mp.MARGIN
@@ -57,7 +59,7 @@ STYLES = {
         "rule": RGBColor(0xD5, 0xDE, 0xE5),
         "ink": RGBColor(0x1A, 0x1F, 0x24),
         "muted": RGBColor(0x70, 0x7A, 0x85),
-        "card_fill": None,                          # 极简：卡片不填充
+        "card_fill": None,                          # 线框风格：卡片不填充
         "card_line": RGBColor(0xC3, 0xCF, 0xD8),
         "header_band": None,                        # 无标题色带
         "side_bar": None,
@@ -81,6 +83,43 @@ STYLES = {
         "toc_number_size": 24,
         "title_size": 27,
         "body_size": 17,
+    },
+    "D": {
+        "name": "双栏杂志风",
+        "accent": RGBColor(0x1B, 0x3A, 0x5C),
+        "accent2": RGBColor(0xC2, 0x5E, 0x2E),      # 砖红，用于编号与标记
+        "rule": RGBColor(0xE1, 0xE6, 0xEA),
+        "ink": RGBColor(0x1A, 0x1F, 0x24),
+        "muted": RGBColor(0x6E, 0x78, 0x82),
+        "card_fill": RGBColor(0xF7, 0xF8, 0xFA),
+        "card_line": RGBColor(0xDD, 0xE3, 0xE8),
+        "header_band": None,
+        "side_bar": None,
+        "takeaway_style": "line",
+        "header_style": "plain",
+        "body_style": "twocol",
+        "toc_number_size": 22,
+        "title_size": 27,
+        "body_size": 16.5,
+    },
+    "E": {
+        "name": "深色标题区",
+        "accent": RGBColor(0x10, 0x2A, 0x43),      # 深海军蓝
+        "accent2": RGBColor(0xE1, 0x8A, 0x2E),      # 橙
+        "rule": RGBColor(0xD8, 0xDF, 0xE6),
+        "ink": RGBColor(0x14, 0x1B, 0x22),
+        "muted": RGBColor(0x66, 0x72, 0x7D),
+        "card_fill": RGBColor(0xFF, 0xFF, 0xFF),
+        "card_line": RGBColor(0xCF, 0xD8, 0xE0),
+        "header_band": RGBColor(0x10, 0x2A, 0x43),  # 深色标题区
+        "side_bar": None,
+        "takeaway_style": "dark",
+        "header_style": "darkband",
+        "body_style": "auto",
+        "card_bar": RGBColor(0xE1, 0x8A, 0x2E),
+        "toc_number_size": 22,
+        "title_size": 26,
+        "body_size": 16.5,
     },
 }
 
@@ -135,7 +174,38 @@ def card(slide, left, top, width, height, style, fill=None, line=None, radius=0.
 
 
 def header(slide, s, style, idx, total, wide=CONTENT_W):
-    """标题区：两版风格不同（B 用短下划线，C 用整条色带）。"""
+    """标题区：B 用短下划线，C 用浅色带，D 用细线 + 右上角页码，E 用深色整条。"""
+    hs = style.get("header_style", "band" if style["header_band"] is not None else "rule")
+
+    if hs == "darkband":
+        band = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Emu(0), Emu(0), SLIDE_W, Inches(1.42))
+        band.fill.solid(); band.fill.fore_color.rgb = style["header_band"]
+        band.line.fill.background(); band.shadow.inherit = False
+        _, tf = tb(slide, MARGIN, Inches(0.30), wide, Inches(0.8))
+        para(tf, s.get("title", ""), size=style["title_size"], bold=True,
+             color=RGBColor(0xFF, 0xFF, 0xFF), first=True, before=0, spacing=1.05)
+        if s.get("subtitle"):
+            _, tf2 = tb(slide, MARGIN, Inches(1.00), wide, Inches(0.40))
+            para(tf2, s["subtitle"], size=16, color=RGBColor(0xBF, 0xD2, 0xE0),
+                 first=True, before=0)
+        _, num = tb(slide, SLIDE_W - Inches(1.75), Inches(0.42), Inches(1.15), Inches(0.4))
+        para(num, f"{idx:02d}", size=18, bold=True, color=style["accent2"], first=True,
+             align=PP_ALIGN.RIGHT, before=0, after=0)
+        return BODY_TOP
+
+    if hs == "plain":
+        _, tf = tb(slide, MARGIN, Inches(0.42), wide - Inches(1.2), Inches(0.8))
+        para(tf, s.get("title", ""), size=style["title_size"], bold=True, color=style["ink"],
+             first=True, before=0, spacing=1.05)
+        _, num = tb(slide, SLIDE_W - Inches(1.75), Inches(0.44), Inches(1.15), Inches(0.4))
+        para(num, f"{idx:02d} / {total}", size=15, bold=False, color=style["accent2"],
+             first=True, align=PP_ALIGN.RIGHT, before=0, after=0)
+        if s.get("subtitle"):
+            _, tf2 = tb(slide, MARGIN, Inches(1.12), wide, Inches(0.40))
+            para(tf2, s["subtitle"], size=15.5, color=style["muted"], first=True, before=0)
+        hline(slide, MARGIN, Inches(1.52), CONTENT_W, style["rule"], Pt(1.0))
+        return BODY_TOP
+
     if style["header_band"] is not None:
         band = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Emu(0), Inches(0.16),
                                       SLIDE_W, Inches(1.12))
@@ -158,6 +228,24 @@ def header(slide, s, style, idx, total, wide=CONTENT_W):
 
 
 def takeaway(slide, text, style, top=TAKE_TOP, height=TAKE_H):
+    if style["takeaway_style"] == "dark":
+        box = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Emu(0), top, SLIDE_W, height)
+        box.fill.solid(); box.fill.fore_color.rgb = style["accent"]
+        box.line.fill.background(); box.shadow.inherit = False
+        _, tf = tb(slide, MARGIN, top, CONTENT_W, height, anchor=MSO_ANCHOR.MIDDLE)
+        para(tf, text, size=17, bold=True, color=RGBColor(0xFF, 0xFF, 0xFF), first=True,
+             before=0, after=0, spacing=1.05)
+        return
+    if style["takeaway_style"] == "line":
+        sq = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN, top + Inches(0.12),
+                                    Inches(0.14), Inches(0.14))
+        sq.fill.solid(); sq.fill.fore_color.rgb = style["accent2"]
+        sq.line.fill.background(); sq.shadow.inherit = False
+        _, tf = tb(slide, MARGIN + Inches(0.26), top, CONTENT_W - Inches(0.26), height,
+                   anchor=MSO_ANCHOR.MIDDLE)
+        para(tf, text, size=17, bold=True, color=style["ink"], first=True, before=0,
+             after=0, spacing=1.1)
+        return
     if style["takeaway_style"] == "band":
         box = card(slide, MARGIN, top, CONTENT_W, height, style,
                    fill=RGBColor(0xEC, 0xF7, 0xF4), line=style["accent2"], radius=0.1)
@@ -183,6 +271,45 @@ def footer(slide, style, idx, total, footer_text):
          align=PP_ALIGN.RIGHT, before=0, after=0)
     _, tf2 = tb(slide, MARGIN, FOOT_TOP, Inches(9.0), Inches(0.3))
     para(tf2, footer_text, size=15, color=style["muted"], first=True, before=0, after=0)
+
+
+
+
+def bullets_two_col(slide, bullets, top, style, height=None, gap=0.36):
+    """把要点分成两栏排（D 版用）。"""
+    height = height or (TAKE_TOP - Inches(0.12) - top)
+    half = Emu(int((CONTENT_W - Inches(gap)) / 2))
+    n = (len(bullets) + 1) // 2
+    cols = [(MARGIN, bullets[:n]), (MARGIN + half + Inches(gap), bullets[n:])]
+    for left, items in cols:
+        if not items:
+            continue
+        _, tf = tb(slide, left, top, half, height)
+        for k, text in enumerate(items):
+            tag, _, rest = text.partition("　")
+            rich(tf, [(f"{tag}　" if rest else "", True, style["accent2"]),
+                      (rest or tag, False, style["ink"])],
+                 size=style["body_size"], first=(k == 0), before=(0 if k == 0 else 15))
+    if len(bullets) > 1 and cols[1][1]:
+        sep = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN + half + Inches(gap / 2),
+                                     top, Pt(0.9), height)
+        sep.fill.solid(); sep.fill.fore_color.rgb = style["rule"]
+        sep.line.fill.background(); sep.shadow.inherit = False
+
+
+def cards_row(slide, cards, top, style, height=1.28, gap=0.26):
+    """把 4 张卡片排成一行（D 版用）。"""
+    n = len(cards)
+    w = Emu(int((CONTENT_W - Inches(gap) * (n - 1)) / n))
+    for k, (label, desc, tone) in enumerate(cards):
+        col = style["accent2"] if tone == "B" else style["accent"]
+        box = card(slide, MARGIN + Emu(int(k * (w + Inches(gap)))), top, w, Inches(height), style)
+        tfc = box.text_frame
+        tfc.vertical_anchor = MSO_ANCHOR.TOP
+        tfc.margin_left = tfc.margin_right = Inches(0.14)
+        tfc.margin_top = Inches(0.10)
+        para(tfc, label, size=17, bold=True, color=col, first=True, before=0, after=3)
+        para(tfc, desc, size=15, color=style["ink"], before=0, after=0, spacing=1.12)
 
 
 def add_notes(slide, text):
@@ -240,10 +367,23 @@ def render(slide, s, style, idx, total, meta):
     top = header(slide, s, style, idx, total)
 
     if kind == "toc":
-        _, tf = tb(slide, MARGIN, top - Inches(0.05), CONTENT_W, Inches(4.3))
-        for k, item in enumerate(s.get("items", [])):
-            rich(tf, [(f"{k + 1:02d}　", True, style["accent2"]), (item, False, style["ink"])],
-                 size=style["toc_number_size"], first=(k == 0), before=(0 if k == 0 else 20))
+        items = s.get("items", [])
+        if style.get("body_style") == "twocol" and len(items) > 3:
+            half = Emu(int((CONTENT_W - Inches(0.5)) / 2))
+            for col, group in enumerate([items[:3], items[3:]]):
+                _, tf = tb(slide, MARGIN + Emu(int(col * (half + Inches(0.5)))), top,
+                           half, Inches(4.2))
+                for k, item in enumerate(group):
+                    idx = col * 3 + k + 1
+                    rich(tf, [(f"{idx:02d}　", True, style["accent2"]), (item, False, style["ink"])],
+                         size=style["toc_number_size"], first=(k == 0),
+                         before=(0 if k == 0 else 26))
+        else:
+            _, tf = tb(slide, MARGIN, top - Inches(0.05), CONTENT_W, Inches(4.3))
+            for k, item in enumerate(items):
+                rich(tf, [(f"{k + 1:02d}　", True, style["accent2"]), (item, False, style["ink"])],
+                     size=style["toc_number_size"], first=(k == 0),
+                     before=(0 if k == 0 else 20))
 
     elif kind == "figure":
         fig_top = top - Inches(0.05)
@@ -257,13 +397,17 @@ def render(slide, s, style, idx, total, meta):
     elif kind == "bullets":
         bullets = s.get("bullets", [])
         has_callout = bool(s.get("callout"))
-        _, tf = tb(slide, MARGIN, top + Inches(0.05), CONTENT_W,
-                   Inches(3.4 if has_callout else 4.3))
-        for k, text in enumerate(bullets):
-            tag, _, rest = text.partition("　")
-            rich(tf, [(f"{tag}　" if rest else "", True, style["accent2"]),
-                      (rest or tag, False, style["ink"])],
-                 size=style["body_size"], first=(k == 0), before=(0 if k == 0 else 16))
+        if style.get("body_style") == "twocol" and len(bullets) >= 4:
+            bullets_two_col(slide, bullets, top + Inches(0.05), style,
+                            height=Inches(3.3 if has_callout else 4.2))
+        else:
+            _, tf = tb(slide, MARGIN, top + Inches(0.05), CONTENT_W,
+                       Inches(3.4 if has_callout else 4.3))
+            for k, text in enumerate(bullets):
+                tag, _, rest = text.partition("　")
+                rich(tf, [(f"{tag}　" if rest else "", True, style["accent2"]),
+                          (rest or tag, False, style["ink"])],
+                     size=style["body_size"], first=(k == 0), before=(0 if k == 0 else 16))
         if has_callout:
             co = s["callout"]
             if style["takeaway_style"] == "band":
@@ -282,21 +426,31 @@ def render(slide, s, style, idx, total, meta):
 
     elif kind == "cards" and s.get("cards"):
         bullets, cards = s.get("bullets", []), s["cards"]
-        _, tf = tb(slide, MARGIN, top + Inches(0.06), Inches(7.15),
-                   TAKE_TOP - Inches(0.15) - (top + Inches(0.06)))
-        for k, text in enumerate(bullets):
-            rich(tf, [("▪　", False, style["accent2"]), (text, False, style["ink"])],
-                 size=16.5, first=(k == 0), before=(0 if k == 0 else 15))
-        y = top + Inches(0.06)
-        card_h = Inches(1.02)
-        for label, desc, tone in cards:
-            col = style["accent2"] if tone == "B" else style["accent"]
-            box = card(slide, MARGIN + Inches(7.45), y, Inches(4.64), card_h, style)
-            box.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
-            box.text_frame.margin_left = Inches(0.16)
-            rich(box.text_frame, [(label + "　", True, col), (desc, False, style["ink"])],
-                 size=18, first=True, before=0, spacing=1.05)
-            y += card_h + Inches(0.16)
+        if style.get("body_style") == "twocol":
+            bullets_two_col(slide, bullets, top + Inches(0.05), style, height=Inches(1.95))
+            cards_row(slide, cards, top + Inches(2.28), style, height=1.32)
+        else:
+            left_w = Inches(7.15) if len(cards) > 2 else Inches(8.4)
+            _, tf = tb(slide, MARGIN, top + Inches(0.06), left_w,
+                       TAKE_TOP - Inches(0.15) - (top + Inches(0.06)))
+            for k, text in enumerate(bullets):
+                rich(tf, [("▪　", False, style["accent2"]), (text, False, style["ink"])],
+                     size=16.5, first=(k == 0), before=(0 if k == 0 else 15))
+            y = top + Inches(0.06)
+            card_h = Inches(1.02)
+            for label, desc, tone in cards:
+                col = style["accent2"] if tone == "B" else style["accent"]
+                if style.get("card_bar"):
+                    bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, MARGIN + Inches(7.45),
+                                                 y, Inches(0.09), card_h)
+                    bar.fill.solid(); bar.fill.fore_color.rgb = style["card_bar"]
+                    bar.line.fill.background(); bar.shadow.inherit = False
+                box = card(slide, MARGIN + Inches(7.45), y, Inches(4.64), card_h, style)
+                box.text_frame.vertical_anchor = MSO_ANCHOR.MIDDLE
+                box.text_frame.margin_left = Inches(0.22 if style.get("card_bar") else 0.16)
+                rich(box.text_frame, [(label + "　", True, col), (desc, False, style["ink"])],
+                     size=18, first=True, before=0, spacing=1.05)
+                y += card_h + Inches(0.16)
 
     elif kind == "cards" and s.get("cards_problems"):
         y = top + Inches(0.05)
@@ -315,10 +469,15 @@ def render(slide, s, style, idx, total, meta):
             y += Inches(1.42)
 
     elif kind == "steps":
-        _, tf = tb(slide, MARGIN, top + Inches(0.1), CONTENT_W, Inches(4.2))
-        for k, (tag, text) in enumerate(s.get("steps", [])):
-            rich(tf, [(tag + "　", True, style["accent2"]), (text, False, style["ink"])],
-                 size=style["body_size"], first=(k == 0), before=(0 if k == 0 else 18))
+        steps = s.get("steps", [])
+        if style.get("body_style") == "twocol" and len(steps) >= 4:
+            bullets = [f"{tag}　{text}" for tag, text in steps]
+            bullets_two_col(slide, bullets, top + Inches(0.12), style, height=Inches(4.0))
+        else:
+            _, tf = tb(slide, MARGIN, top + Inches(0.1), CONTENT_W, Inches(4.2))
+            for k, (tag, text) in enumerate(steps):
+                rich(tf, [(tag + "　", True, style["accent2"]), (text, False, style["ink"])],
+                     size=style["body_size"], first=(k == 0), before=(0 if k == 0 else 18))
 
     if s.get("takeaway"):
         takeaway(slide, s["takeaway"], style)
@@ -342,12 +501,15 @@ def build(style_key: str, data: dict) -> Presentation:
 
 def main() -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--style", choices=["B", "C", "both"], default="both")
+    ap.add_argument("--style", choices=list(STYLES) + ["both", "all"], default="all")
     args = ap.parse_args()
 
     data = json.loads(OUTLINE.read_text(encoding="utf-8"))
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    keys = ["B", "C"] if args.style == "both" else [args.style]
+    if args.style in ("both", "all"):
+        keys = list(STYLES)
+    else:
+        keys = [args.style]
 
     rc = 0
     for k in keys:
@@ -356,7 +518,7 @@ def main() -> int:
         prs.save(str(out))
         print(f"\n=== 风格 {k}（{STYLES[k]['name']}）-> {out}")
         rc |= mp.audit(out)
-    print("\n说明：三版内容一致（同一份 docs/ppt_outline.json），仅版式与配色不同；"
+    print("\n说明：各版内容一致（同一份 docs/ppt_outline.json），仅版式与配色不同；"
           "均为原生可编辑 pptx，且每页写入了演讲备注。")
     return rc
 

@@ -7,10 +7,10 @@
 * 只讲"研究思路 + 工作完成到哪一步"，不展开技术细节（页面上不出现参数、版本、命令、指标数字）
 * 三模型（Attention / LSTM / BERT）共识预测按"已完成"呈现
 * 分析完抗菌肽差异后，用宏蛋白组做二次去重，筛选健康人与各阶段特有的抗菌肽
-* 最后与 AD 发病机制建立关联（Aβ 聚集 / AChE–PAS / 免疫与炎症），并补一个极简抑菌实验
+* 最后与 AD 发病机制建立关联（Aβ 聚集 / AChE–PAS / 免疫与炎症），并补一个抑菌实验验证
 * 例外：工作进度一页保留百分比，因为导师要求"讲清完成到哪一步"
 
-输出：deliverable/中期答辩.pptx（16 页，16:9，全篇最小字号 15 pt）
+输出：deliverable/中期答辩_A_学术蓝.pptx（16 页，16:9，全篇最小字号 15 pt）
 """
 
 from __future__ import annotations
@@ -27,7 +27,7 @@ from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
 from pptx.util import Inches, Pt
 
 FIG = mp.FIG
-OUT = mp.OUT
+OUT = mp.OUT  # -> deliverable/中期答辩_A_学术蓝.pptx
 MARGIN, CONTENT_W = mp.MARGIN, mp.CONTENT_W
 CONTENT_TOP, CONTENT_BOTTOM, TAKEAWAY_TOP = mp.CONTENT_TOP, mp.CONTENT_BOTTOM, mp.TAKEAWAY_TOP
 INK, BLUE, TEAL, ORANGE, GREY, LIGHT, SAND, MINT = (
@@ -87,24 +87,24 @@ def build() -> Presentation:
     add_title(s, "汇报提纲")
     tb, tf = textbox(s, MARGIN, CONTENT_TOP - Inches(0.05), CONTENT_W, Inches(4.3))
     items = [
-        ("01", "研究思路：从肠道微生物组到抗菌肽"),
-        ("02", "已完成工作：数据资源、多肽库与三模型共识预测"),
-        ("03", "已完成工作：分阶段差异分析与宏蛋白组去重"),
+        ("01", "研究思路：从肠道微生物组到候选抗菌肽"),
+        ("02", "已完成：数据资源、短肽库与三模型共识预测"),
+        ("03", "已完成：分阶段差异分析与宏蛋白组二次去重"),
         ("04", "下一步：与 AD 发病机制的关联分析"),
-        ("05", "下一步：极简抑菌实验验证"),
+        ("05", "下一步：候选抗菌肽抑菌实验验证"),
         ("06", "工作进度与后续安排"),
     ]
     for k, (num, text) in enumerate(items):
         add_rich(tf, [(num + "　", True, TEAL), (text, False, INK)], size=20,
                  first=(k == 0), space_before=(0 if k == 0 else 20), space_after=0)
-    add_takeaway(s, "本次汇报按导师要求，重点讲清研究思路与各项工作的完成程度")
+    add_takeaway(s, "按导师意见，本次汇报重点说明研究思路与各项工作的完成程度")
     slides.append(s)
 
     # 3 ─ 研究思路总览 -----------------------------------------------------
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_title(s, "研究思路：八步走的整体框架与完成进度", "研究思路")
     place_figure(s, "figA_研究思路总览.png", max_h=CONTENT_BOTTOM - CONTENT_TOP)
-    add_takeaway(s, "思路主线：数据资源 → 短肽库 → 三模型预测 → 分阶段差异 → 去重定特有种 → 机制关联与验证")
+    add_takeaway(s, "主线：数据资源 → 短肽库 → 三模型共识预测 → 分阶段差异 → 去重筛选特有肽 → 机制关联与验证")
     slides.append(s)
 
     # 4 ─ 科学问题 ---------------------------------------------------------
@@ -112,12 +112,12 @@ def build() -> Presentation:
     add_title(s, "科学问题：AD 患者与健康人群的抗菌肽是否存在差异", "研究背景与科学问题")
     tb, tf = textbox(s, MARGIN, CONTENT_TOP, CONTENT_W, Inches(3.2))
     rows = [
-        ("背景", "AD 的发生发展被认为与肠—脑轴介导的慢性神经炎症密切相关，肠道微生物组的组成与功能"
-                 "在 AD 患者与健康人群之间存在差异。"),
-        ("切入点", "肠道微生物基因组中的小开放阅读框可编码短肽，其中包含具有抗菌与免疫调节功能的"
+        ("背景", "AD 的发生发展与肠—脑轴介导的慢性神经炎症密切相关，AD 患者与健康人群的"
+                 "肠道微生物组在组成与功能上均存在差异。"),
+        ("切入点", "微生物基因组中的小开放阅读框可编码短肽，其中包含具有抗菌与免疫调节功能的"
                    "抗菌肽，可能是连接微生物刺激与神经炎症的潜在效应分子。"),
-        ("空白", "已有抗菌肽研究多基于通用训练集与宿主来源数据，缺乏面向 AD 人群、"
-                 "并按认知阶段分层比较微生物源抗菌肽的工作。"),
+        ("空白", "已有抗菌肽研究多基于通用训练集与宿主来源序列，尚缺少面向 AD 人群、"
+                 "并按认知功能阶段分层比较的微生物源抗菌肽研究。"),
     ]
     for k, (tag, text) in enumerate(rows):
         add_rich(tf, [(tag + "　", True, BLUE), (text, False, INK)], size=17,
@@ -138,10 +138,10 @@ def build() -> Presentation:
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_title(s, "已完成：数据资源与微生物源短肽库构建", "已完成工作 · 第一步")
     bullets = [
-        "完成全队列宏基因组数据的统一处理，获得高质量的微生物基因组参考集",
-        "对参考基因组完成短开放阅读框预测，构建覆盖全队列的非冗余微生物源短肽库",
-        "短肽库保留来源可溯源性，每条短肽均可回溯到基因组与临床样本",
-        "参考集按物种多样性构建，避免因组装质量差异造成样本偏倚",
+        "完成全队列宏基因组数据的统一处理与质量评估，获得高质量的微生物基因组参考集",
+        "基于参考集完成小开放阅读框预测，构建覆盖全队列、非冗余的微生物源短肽库",
+        "短肽库保留完整溯源信息，每条短肽均可回溯到对应基因组与临床样本",
+        "参考集按物种多样性原则构建，减少因组装质量差异带来的样本偏倚",
     ]
     bullet_block(s, bullets, MARGIN, CONTENT_TOP + Inches(0.15), Inches(7.05))
     number_cards(s, [
@@ -151,7 +151,7 @@ def build() -> Presentation:
         ("可溯源", "每条短肽可回溯至样本", TEAL),
     ], left=MARGIN + Inches(7.35), top=CONTENT_TOP + Inches(0.15),
         width=Inches(4.74), height=Inches(4.35))
-    add_takeaway(s, "第一步与第二步均已完成：数据资源与短肽库已经就绪，为预测与差异分析提供统一输入")
+    add_takeaway(s, "第一步与第二步均已完成：数据资源与短肽库已就绪，为后续预测与差异分析提供统一输入")
     slides.append(s)
 
     # 6 ─ 三模型共识预测 ---------------------------------------------------
@@ -164,7 +164,7 @@ def build() -> Presentation:
                  "三者一致判为阳性的序列才纳入候选抗菌肽集合；"
                  "该步骤已在本阶段完成，得到候选抗菌肽名单。",
              size=16.5, color=INK, first=True, space_before=0, space_after=0, line_spacing=1.25)
-    add_takeaway(s, "三模型协同用于提高候选集可信度：已完成预测，候选抗菌肽名单已产出")
+    add_takeaway(s, "三模型协同提高候选集合可信度；该步骤已完成，候选抗菌肽名单已产出")
     slides.append(s)
 
     # 7 ─ 分阶段差异分析 ---------------------------------------------------
@@ -176,7 +176,7 @@ def build() -> Presentation:
     add_para(tf, "按认知阶段对队列分组，比较各阶段与健康人群之间候选抗菌肽的丰度与组成差异，"
                  "筛选出随病程变化明显的候选抗菌肽。",
              size=16.5, color=INK, first=True, space_before=0, space_after=0, line_spacing=1.25)
-    add_takeaway(s, "分工明确：先找出“有差异的候选抗菌肽”，再用表达证据过滤，为后续特有肽筛选做准备")
+    add_takeaway(s, "先得到随病程变化的候选抗菌肽，再用表达证据过滤，为特有肽筛选做准备")
     slides.append(s)
 
     # 8 ─ 宏蛋白组去重 -----------------------------------------------------
@@ -188,7 +188,7 @@ def build() -> Presentation:
     add_para(tf, "在第一层序列去冗余之后，引入宏蛋白组表达证据进行二次去重，"
                  "只保留真实存在且被检出的抗菌肽，并据此区分健康人群特有与各疾病阶段特有的抗菌肽。",
              size=16.5, color=INK, first=True, space_before=0, space_after=0, line_spacing=1.25)
-    add_takeaway(s, "两次去重解决两个问题：序列冗余，以及“预测得到但实际不表达”的假阳性")
+    add_takeaway(s, "二次去重解决两类问题：序列冗余，以及“有预测、无表达”的假阳性")
     slides.append(s)
 
     # 9 ─ 机制关联 ---------------------------------------------------------
@@ -201,19 +201,20 @@ def build() -> Presentation:
                  "从三个方向考察特有抗菌肽与 AD 发病机制的关联："
                  "与 Aβ 的相互作用、与 AChE 外周阴离子位点的结合、以及免疫与炎症调节通路。",
              size=16.5, color=INK, first=True, space_before=0, space_after=0, line_spacing=1.25)
-    add_takeaway(s, "关联分析的落点：从“差异肽”推进到“可能与 AD 病理相关的肽”")
+    add_takeaway(s, "关联分析的落点：从“差异肽”推进到“可能与 AD 病理相关的候选肽”")
     slides.append(s)
 
     # 10 ─ 抑菌实验 --------------------------------------------------------
     s = prs.slides.add_slide(prs.slide_layouts[6])
-    add_title(s, "下一步：极简抑菌实验验证候选抗菌肽", "下一步计划 · 第七步")
+    add_title(s, "下一步：候选抗菌肽抑菌实验验证", "下一步计划 · 第七步")
     place_figure(s, "figF_抑菌实验方案.png", top=CONTENT_TOP - Inches(0.02),
                  max_h=Inches(3.3))
     tb, tf = textbox(s, MARGIN, CONTENT_BOTTOM - Inches(1.0), CONTENT_W, Inches(1.0))
-    add_para(tf, "选择少量、有代表性的候选抗菌肽进行人工合成，以常见指示菌做纸片扩散法初筛，"
-                 "再以微量肉汤稀释法测定最低抑菌浓度，用最小工作量获得最直接的活性证据。",
+    add_para(tf, "选取有代表性的候选抗菌肽进行人工合成，以大肠杆菌与金黄色葡萄球菌作为指示菌，"
+                 "先以纸片扩散法观察抑菌圈进行初筛，再以微量肉汤稀释法测定最低抑菌浓度，"
+                 "并设置阳性与阴性对照，以获得抑菌活性的直接证据。",
              size=16.5, color=INK, first=True, space_before=0, space_after=0, line_spacing=1.25)
-    add_takeaway(s, "实验方案刻意保持简单：常规微生物实验室即可完成，用于最小可行性验证")
+    add_takeaway(s, "以通用、可及的微生物学方法，完成候选抗菌肽抑菌活性的直接验证")
     slides.append(s)
 
     # 11 ─ 进度 ------------------------------------------------------------
@@ -225,7 +226,7 @@ def build() -> Presentation:
     add_para(tf, "数据资源、短肽库、三模型共识预测、分阶段差异分析与宏蛋白组去重均已完成；"
                  "当前处于机制关联与抑菌实验验证阶段，论文撰写同步推进。",
              size=16.5, color=INK, first=True, space_before=0, space_after=0, line_spacing=1.25)
-    add_takeaway(s, "前五项已完成，后两项正在推进，整体进度与开题计划一致")
+    add_takeaway(s, "前五项已完成，机制关联分析与抑菌实验验证正在推进，整体进度与开题计划一致")
     slides.append(s)
 
     # 12 ─ 后续安排 --------------------------------------------------------
@@ -234,7 +235,7 @@ def build() -> Presentation:
     tb, tf = textbox(s, MARGIN, CONTENT_TOP + Inches(0.1), CONTENT_W, Inches(4.2))
     rows = [
         ("1. 机制关联分析", "完成特有抗菌肽与 Aβ 聚集、AChE 结合及炎症通路的关联分析，形成候选肽清单。"),
-        ("2. 抑菌实验验证", "完成候选肽的合成与抑菌实验，获得活性初筛结果。"),
+        ("2. 抑菌实验验证", "完成候选抗菌肽的合成与抑菌实验，获得抑菌活性初筛结果。"),
         ("3. 结果整理", "整理候选抗菌肽、特有肽与验证结果，形成完整的图表与结论。"),
         ("4. 论文撰写", "完成学位论文撰写与投稿论文准备，按计划申请预答辩。"),
     ]
@@ -254,7 +255,7 @@ def build() -> Presentation:
         ("候选肽挖掘", "开题计划提取 sORF 并预测抗菌肽 → 已完成短肽库构建与三模型共识预测"),
         ("差异分析", "开题计划按病程阶段比较 → 已完成分阶段差异分析，并新增宏蛋白组二次去重"),
         ("模型方案", "开题拟构建 DeepMetaAMP → 实际采用 Attention / LSTM / BERT 三个已发表模型协同预测"),
-        ("机制与验证", "开题拟做功能与可视化分析 → 下一步进行机制关联与极简抑菌实验"),
+        ("机制与验证", "开题拟做功能与可视化分析 → 下一步进行机制关联分析与抑菌实验验证"),
     ]
     for k, (tag, text) in enumerate(rows):
         add_rich(tf, [(tag + "　", True, TEAL), (text, False, INK)], size=16.5,
@@ -268,7 +269,7 @@ def build() -> Presentation:
     add_title(s, "存在问题与应对措施", "问题与对策")
     cards = [
         ("问题 1", "预测结果存在假阳性风险",
-         "应对：三模型共识判定提高可信度，再用宏蛋白组表达证据二次去重，最后以抑菌实验做最小验证。"),
+         "应对：以三模型共识判定提高候选集合可信度，再用宏蛋白组表达证据二次去重，最后以抑菌实验验证活性。"),
         ("问题 2", "部分样本缺少可用的参考基因组",
          "应对：在丰度分析阶段改用全量基因组回贴，恢复样本覆盖，避免参考集筛选造成样本缺失。"),
         ("问题 3", "机制关联的证据强度有限",

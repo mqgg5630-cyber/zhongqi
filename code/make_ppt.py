@@ -13,7 +13,7 @@ Design rules
 * layout is fixed by constants below (TITLE_TOP / CONTENT_TOP / TAKEAWAY_TOP /
   FOOTER_TOP) so pictures, conclusion bars and footers can never overlap
 
-    python code/make_ppt.py            # -> deliverable/中期答辩.pptx
+    python code/make_ppt.py            # -> deliverable/中期答辩_A_学术蓝.pptx（v1 旧版，保留备查）
 """
 
 from __future__ import annotations
@@ -57,7 +57,7 @@ SAND = RGBColor(0xFD, 0xF2, 0xE3)
 CN_FONT = "微软雅黑"
 EN_FONT = "Arial"
 FIG = Path("results/figures")
-OUT = Path("deliverable/中期答辩.pptx")
+OUT = Path("deliverable/中期答辩_A_学术蓝.pptx")
 
 TITLE_MAX = 32
 PROBLEMS: list[str] = []

@@ -61,7 +61,7 @@ pip install -r requirements.txt
 
 **与本仓库的配合方式（推荐）**：
 1. 把 `docs/PPT大纲.md`（人读版）或 `docs/ppt_outline.json`（机器版）连同 `results/figures/` 给模型；
-2. 想要和现在完全一致的风格，可用**模板填充模式**，源文件用 `deliverable/中期答辩.pptx`（A 版）或 `deliverable/versions/` 下的 B / C 版；
+2. 想要和现在完全一致的风格，可用**模板填充模式**，源文件用 `deliverable/` 下的 A—E 任选一版；
 3. 生成后仍建议跑一遍 `python code/check_ppt.py <新文件>` 复核"最小字号 ≥15 pt、无越界"。
 
 ---
@@ -94,7 +94,7 @@ npm run dev
 
 **与本仓库的配合方式**：把 `docs/PPT大纲.md` 正文粘进提示词（或上传 `docs/中期答辩PPT大纲.md` 作为素材文档），
 要求"16 页、16:9、中文字体微软雅黑、每页保留备注、插图按顺序使用我提供的图片"；
-想统一风格可以先上传 `deliverable/中期答辩.pptx` 当作模板来源。
+想统一风格可以先上传 `deliverable/中期答辩_A_学术蓝.pptx`（或 B—E 任选一版）当作模板来源。
 
 ---
 
@@ -118,7 +118,7 @@ npm run dev
 | `docs/PPT大纲.md` | **人读版大纲**（由上一个文件自动生成，含配色字号规范与一段现成的提示词模板） |
 | `docs/中期答辩PPT大纲.md` | 导师意见落实对照表 + 逐页清单 + 7 个答辩预判问答（给"讲什么"用的） |
 | `results/figures/figA_*.png … figG_*.png` | 大纲里点名要用的 7 张示意图，文件名与大纲一一对应 |
-| `deliverable/中期答辩.pptx`（A 版）、`deliverable/versions/*.pptx`（B / C 版） | 已经做好的三版可编辑成果，可作为模板来源或兜底方案 |
+| `deliverable/中期答辩_*.pptx`（A—E 五版） | 已经做好的五版可编辑成果，可作为模板来源或兜底方案 |
 
 **一句话提示词**（两个 skill 都能用）：
 

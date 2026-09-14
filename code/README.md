@@ -23,11 +23,11 @@ docs/PPT大纲.md                              ← 人读版大纲（含配色�
 ```
 
 ```
-results/figures/*.png                        ← 由 make_figures.py 生成（含字号自检）
-        │  make_ppt2.py           → A 版 学术蓝   deliverable/中期答辩.pptx
-        │  make_ppt_variants.py   → B 版 极简线框 / C 版 卡片色块  deliverable/versions/*.pptx
+results/figures/*.png                        ← 由 make_figures2.py 生成（含字号自检）
+        │  make_ppt2.py           → A 版 学术蓝       deliverable/中期答辩_A_学术蓝.pptx
+        │  make_ppt_variants.py   → B/C/D/E 四种风格  deliverable/中期答辩_B..E_*.pptx
         ▼
-三版原生可编辑 pptx（最小 15 pt，每页带演讲备注）
+五版原生可编辑 pptx（最小 15 pt，每页带演讲备注）
         │  check_ppt.py + preview_ppt.py
         ▼
 版式校验 + 逐页 PNG 预览（build/ppt_preview、results/ppt_preview）
@@ -42,14 +42,14 @@ python code/verify_docx.py --base sources/中期.docx --filled deliverable/中�
        --cells 22:0:3 22:2:0 22:3:0 22:4:0 22:5:0 \
        --tc-skip 22:0:1 22:2:0 22:3:0 22:4:0 22:5:0 \
        --sdt-cells 13:0:0 13:1:0 13:2:0 13:3:0 13:4:0 13:5:0 13:6:0   # 格式校验（含封面）
-python code/make_figures.py              # 画图（含框内文字溢出检查 + 投影字号核算）
+python code/make_figures2.py             # 画图（含框内文字溢出检查 + 投影字号核算）
 python code/make_ppt.py                  # 出旧版（细节版）PPT（含字号/越界/图文重叠检查）
-python code/make_ppt2.py                 # 出 A 版（当前）PPT -> deliverable/中期答辩.pptx
+python code/make_ppt2.py                 # 出 A 版 PPT -> deliverable/中期答辩_A_学术蓝.pptx
 python code/outline_to_md.py             # PPT 大纲 json -> docs/PPT大纲.md
-python code/make_ppt_variants.py         # 出 B / C 两版 PPT -> deliverable/versions/
-python code/add_notes.py deliverable/中期答辩.pptx      # 给 A 版补演讲备注（大纲 -> 备注区）
-python code/check_ppt.py deliverable/versions/中期答辩_B_极简线框.pptx   # 独立版式检查
-python code/preview_ppt.py deliverable/中期答辩.pptx -o build/ppt_preview
+python code/make_ppt_variants.py         # 出 B / C / D / E 四版 PPT -> deliverable/（--style D 只出一版）
+python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"   # 给 A 版补演讲备注（大纲 -> 备注区）
+python code/check_ppt.py "deliverable/中期答辩_B_极简线框.pptx" # 独立版式检查
+python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/prevA
 ```
 
 ## 各脚本用途
@@ -61,12 +61,12 @@ python code/preview_ppt.py deliverable/中期答辩.pptx -o build/ppt_preview
 | `verify_docx.py` | 校验成品是否保持模板格式（页面设置、页眉页脚、表格属性、非目标单元格逐字节一致、目标单元格段落/字体格式一致）；新增 `--sdt-cells` / `--tc-cells` / `--tc-skip` 三个参数，覆盖封面内容控件与"整格重建"的正文格 |
 | `build_ops.py` | 把 `deliverable/中期检查表_填写内容.md` 编译成 `fill_docx.py` 的 ops；`# 封面信息` 段 → 封面表（body 序号 13）7 栏，`## n.` 段 → 正文单元格 |
 | `make_figures.py` | 生成 fig1—fig8（**细节版**，供学位论文用）；含折行与溢出测量工具函数；自检：文本是否超出方框、缩放到幻灯片后最小有效字号是否 ≥15 pt |
-| `make_figures2.py` | 生成 figA—figG（**思路版**，中期答辩用：研究思路、三模型预测、分阶段差异、宏蛋白组去重、机制关联、抑菌实验、进度） |
+| `make_figures2.py` | 生成 figA—figG（**思路版**，中期答辩用：研究思路、三模型预测、分阶段差异、宏蛋白组去重、机制关联、抑菌实验验证、进度） |
 | `make_ppt.py` | 生成第一版 16 页答辩 PPT（细节版）；自检：每个 run ≥15 pt、形状不越界、文字不压图 |
 | `make_ppt2.py` | 生成 **A 版**答辩 PPT（按导师意见：只讲思路与完成度，三模型预测与宏蛋白组去重按已完成呈现） |
-| `make_ppt_variants.py` | 由 `docs/ppt_outline.json` 生成 **B 版（极简线框）/ C 版（卡片色块）** PPT，可选 `--style B`；风格表见文件顶部 `STYLES` |
+| `make_ppt_variants.py` | 由 `docs/ppt_outline.json` 生成 **B 极简线框 / C 卡片色块 / D 双栏杂志风 / E 深色标题区** 四版 PPT，可选 `--style D`；版式差异集中在文件顶部 `STYLES` 风格表（`header_style` / `takeaway_style` / `body_style`）与 `header()` / `takeaway()` / `bullets_two_col()` / `cards_row()` |
 | `outline_to_md.py` | 把 `docs/ppt_outline.json` 转成 `docs/PPT大纲.md`（人读版 + 提示词模板），供 ppt-master / presenton 等工具使用 |
-| `add_notes.py` | 把大纲里的演讲备注（口播稿）按页序写进任意 pptx（A 版补备注即用它），三版备注口径一致 |
+| `add_notes.py` | 把大纲里的演讲备注（口播稿）按页序写进任意 pptx（A 版补备注即用它），五版备注口径一致 |
 | `check_ppt.py` | 独立的 PPT 版式检查（用真实 CJK 字体估算换行高度） |
 | `preview_ppt.py` | 无 PowerPoint 环境下的逐页 PNG 预览（用于核版式） |
 | `get_cjk_font.py` | 从 PyPI 的 `noto-cjk-sans-otc` 抽出思源黑体 SC 单字体，供 matplotlib/PIL 使用 |

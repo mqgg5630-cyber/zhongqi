@@ -12,7 +12,7 @@ in this environment:
    reported so it can be shortened before delivery.
 
 Usage:
-    python code/check_ppt.py deliverable/中期答辩.pptx
+    python code/check_ppt.py deliverable/中期答辩_A_学术蓝.pptx
 """
 
 from __future__ import annotations
@@ -53,7 +53,7 @@ def wrap_width(font, text: str, box_px: float) -> int:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("pptx", nargs="?", default="deliverable/中期答辩.pptx")
+    ap.add_argument("pptx", nargs="?", default="deliverable/中期答辩_A_学术蓝.pptx")
     ap.add_argument("--min-pt", type=float, default=MIN_PT)
     args = ap.parse_args(argv)
 

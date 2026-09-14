@@ -3,7 +3,7 @@
 """add_notes.py - 把 docs/ppt_outline.json 里的演讲备注写进任意 pptx（按页序对应）。
 
 用法：
-    python code/add_notes.py deliverable/中期答辩.pptx                 # 就地写入
+    python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"     # 就地写入
     python code/add_notes.py in.pptx -o out.pptx --outline docs/ppt_outline.json
 
 用途：A 版 PPT 由 make_ppt2.py 生成时没有备注；此脚本可把大纲里的

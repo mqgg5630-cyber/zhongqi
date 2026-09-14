@@ -7,7 +7,7 @@ rendered exactly. This script draws the shapes with PIL using the same
 coordinates, colours and the real CJK font, which is accurate enough to spot
 overlaps, text that runs out of its box, and missing images.
 
-    python code/preview_ppt.py deliverable/中期答辩.pptx -o build/ppt_preview
+    python code/preview_ppt.py deliverable/中期答辩_A_学术蓝.pptx -o build/ppt_preview
 """
 
 from __future__ import annotations
@@ -91,7 +91,7 @@ def draw_text_frame(draw: ImageDraw.ImageDraw, shape, scale_x, scale_y):
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("pptx", nargs="?", default="deliverable/中期答辩.pptx")
+    ap.add_argument("pptx", nargs="?", default="deliverable/中期答辩_A_学术蓝.pptx")
     ap.add_argument("-o", "--out", default="build/ppt_preview")
     args = ap.parse_args(argv)
 

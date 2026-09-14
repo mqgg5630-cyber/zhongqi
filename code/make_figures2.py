@@ -3,7 +3,7 @@
 """make_figures2.py - figures for the NEW narrative of the midterm deck:
 
     数据资源 -> 三模型共识预测 -> 分阶段差异分析 -> 宏蛋白组去重与特有肽
-             -> 与 AD 发病机制关联 -> 极简抑菌实验
+             -> 与 AD 发病机制关联 -> 抑菌实验验证
 
 Every figure is a *process / schematic* figure (流程示意), so no numeric result
 is invented. Only the finish state (已完成 / 进行中 / 下一步) is shown, which is
@@ -178,7 +178,7 @@ def fig_mechanism():
     mf.save(fig, "figE_机制关联.png")
 
 
-# ---------------------------------------------------------------- 极简抑菌实验
+# ---------------------------------------------------------------- 抑菌实验验证
 def fig_antibacterial():
     fig, ax = mf.canvas(11.8, 3.6)
     steps = [
@@ -195,10 +195,10 @@ def fig_antibacterial():
         if i < len(steps) - 1:
             mf.arrow(ax, (x + w, 0.57), (x + w + gap, 0.57), color=ec, lw=1.8)
     ax.text(0.5, 0.19,
-            "方案极简：常规微生物实验室即可完成，用于对候选肽做最小可行性验证",
+            "通用方法：常规微生物实验室即可完成，用于候选肽抑菌活性的直接验证",
             ha="center", fontsize=15.5, color=GREY)
     ax.text(0.5, 0.045,
-            "设阳性对照（已知抗菌肽）与阴性对照（溶剂），每组 3 重复",
+            "设阳性对照（已知抗菌肽）与阴性对照（溶剂），每组设重复",
             ha="center", fontsize=15, color=GREY)
     mf.save(fig, "figF_抑菌实验方案.png")
 
@@ -211,7 +211,7 @@ def fig_progress2():
         ("分阶段差异分析", 5, 2, 100),
         ("宏蛋白组去重与特有肽", 6, 2, 100),
         ("机制关联分析", 8, 1, 100),
-        ("极简抑菌实验验证", 8, 2, 45),
+        ("抑菌实验验证", 8, 2, 45),
         ("论文撰写与预答辩", 9, 4, 30),
     ]
     fig, ax = plt.subplots(figsize=(11, 3.75))

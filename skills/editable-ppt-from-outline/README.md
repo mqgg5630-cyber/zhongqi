@@ -19,7 +19,7 @@ skills/editable-ppt-from-outline/
 | 脚本 | 作用 |
 |---|---|
 | `code/make_ppt2.py` | A 版（学术蓝） |
-| `code/make_ppt_variants.py` | B 版（极简线框）/ C 版（卡片色块），`STYLES` 里改配色 |
+| `code/make_ppt_variants.py` | B 极简线框 / C 卡片色块 / D 双栏杂志风 / E 深色标题区，配色与版式都在 `STYLES` 里 |
 | `code/outline_to_md.py` | JSON → 人读版大纲（含提示词模板） |
 | `code/add_notes.py` | 大纲里的 `note` → PowerPoint 备注区（按页序） |
 | `code/check_ppt.py` | 独立校验：最小字号 ≥ 15 pt、不越界、文字不压图 |
@@ -32,11 +32,11 @@ skills/editable-ppt-from-outline/
 
 ```powershell
 # 只改内容：编辑 docs/ppt_outline.json
-python code/outline_to_md.py                     # 更新人读版大纲
-python code/make_ppt2.py                         # 出 A 版
-python code/make_ppt_variants.py                 # 出 B / C 版
-python code/add_notes.py deliverable/中期答辩.pptx   # A 版补演讲备注
-python code/check_ppt.py deliverable/中期答辩.pptx   # 质量门：必须 OK
+python code/outline_to_md.py                        # 更新人读版大纲
+python code/make_ppt2.py                            # 出 A 版
+python code/make_ppt_variants.py                    # 出 B / C / D / E 四版
+python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"   # A 版补演讲备注
+python code/check_ppt.py "deliverable/中期答辩_A_学术蓝.pptx"   # 质量门：必须 OK
 ```
 
 ### 2. 用在新项目里（复用）
@@ -49,7 +49,7 @@ python code/check_ppt.py deliverable/中期答辩.pptx   # 质量门：必须 OK
 cd C:\MyNewProject
 pip install python-pptx matplotlib pillow fonttools noto-cjk-sans-otc
 python code/get_cjk_font.py
-python code/make_ppt_variants.py --style B
+python code/make_ppt_variants.py            # 出四版；--style B / D 可只出一版
 python code/check_ppt.py deliverable\*.pptx
 ```
 
@@ -79,6 +79,6 @@ python code/check_ppt.py deliverable\*.pptx
 
 ## 五、备注
 
-- `code/make_ppt2.py`（A 版）的内容是**写死在脚本里的**，改文字要改脚本；B/C 版是从 JSON 现读现画，改 JSON 即可。
-  以后新建的 deck 建议**只用 JSON 路线**（`make_ppt_variants.py`）。
+- `code/make_ppt2.py`（A 版）的内容是**写死在脚本里的**，改文字要改脚本；B—E 版是从 JSON 现读现画，改 JSON 即可。
+  以后新建的 deck 建议**只用 JSON 路线**（先把 `make_ppt2.py` 的文字搬进 JSON，或直接用 `make_ppt_variants.py`）。
 - 出稿不需要 Office；只有在最后交付/演示时才用 PowerPoint 或 WPS 打开（`.pptx` 是原生格式，字体已显式指定）。
