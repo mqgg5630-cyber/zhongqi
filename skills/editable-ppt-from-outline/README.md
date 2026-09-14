@@ -22,6 +22,8 @@ skills/editable-ppt-from-outline/
 | `code/make_ppt_variants.py` | B 白底细线 / C 卡片色块 / D 双栏杂志风 / E 深色标题区，配色与版式都在 `STYLES` 里 |
 | `code/make_ppt_svg.py` | **另一条生产线**：SVG 排版 + ppt-master 原生导出 → F 深色科技风 / G 学术期刊风（版式与 A—E 完全不同） |
 | `code/fetch_ppt_master.py` | 首次使用时把 ppt-master 下到 `build/`（不入库） |
+| `code/make_ppt_nature.py` | **第三条路线**：按 nature-skills 的 `nature-paper2ppt` 出 H nature 风（论文汇报规范） |
+| `code/check_consistency.py` | docx 与各版 PPT 的口径核对（含禁用词） |
 | `code/outline_to_md.py` | JSON → 人读版大纲（含提示词模板） |
 | `code/add_notes.py` | 大纲里的 `note` → PowerPoint 备注区（按页序） |
 | `code/check_ppt.py` | 独立校验：最小字号 ≥ 15 pt、不越界、文字不压图 |
@@ -38,6 +40,9 @@ python code/outline_to_md.py                        # 更新人读版大纲
 python code/make_ppt2.py                            # 出 A 版
 python code/fetch_ppt_master.py                     # 首次：下载 ppt-master（约 125 MB，build/ 下不入库）
 python code/make_ppt_svg.py                         # 出 F / G 两版（SVG -> 原生 DrawingML）
+python code/fetch_nature_skills.py                  # 首次：下载 nature-skills（build/ 下不入库）
+python code/make_ppt_nature.py --audit              # 出 H 版 + 跑 skill 自带审计
+python code/check_consistency.py                    # docx 与各版口径核对
 python code/make_ppt_variants.py                    # 出 B / C / D / E 四版
 python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"   # A 版补演讲备注
 python code/check_ppt.py "deliverable/中期答辩_A_学术蓝.pptx"   # 质量门：必须 OK

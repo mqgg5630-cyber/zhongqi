@@ -22,6 +22,9 @@ description: 用一份 JSON 大纲批量生成「原生可编辑」的 PowerPoin
 | `code/make_ppt_variants.py` | 生成 **B / C / D / E 四版**（白底细线 · 卡片色块 · 双栏杂志风 · 深色标题区）→ `deliverable/中期答辩_{B..E}_*.pptx` |
 | `code/make_ppt_svg.py` | **路线二**：把同一份 JSON 渲染成 16 页 SVG，再调 ppt-master 原生导出 **F 深色科技风 / G 学术期刊风** → `deliverable/中期答辩_{F,G}_*.pptx` |
 | `code/fetch_ppt_master.py` | 按需下载 ppt-master（54k★，MIT）到 `build/ppt-master/`（约 125 MB，不入库），供上面那条路线调用 |
+| `code/make_ppt_nature.py` | **路线三**：按 [nature-skills](https://github.com/mqgg5630-cyber/nature-skills) 的 `nature-paper2ppt`（Apache-2.0）出 **H nature 风**（论文汇报叙事弧 + 结论式标题 + 原生表格） |
+| `code/fetch_nature_skills.py` | 按需下载 nature-skills 到 `build/nature-skills/`，用于跑它自带的 `audit_pptx_quality.py` |
+| `code/check_consistency.py` | 核对 docx 与各版 pptx 的口径（题目 / 封面 / 阶段 / 机制 / 成果 / 禁用词） |
 | `code/outline_to_md.py` | JSON → 人读版大纲 |
 | `code/add_notes.py` | 把大纲里的 `note` 写进任意 pptx 的备注区（按页序） |
 | `code/check_ppt.py` | 独立校验：最小字号 / 越界 / 图文重叠 |
@@ -99,6 +102,10 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 | 换风格像不像"换了版" | 同一套排版的换肤 | 版式结构本身不同，观感差异最大 |
 | 依赖 | python-pptx | ppt-master（首跑 `fetch_ppt_master.py` 下载一次） |
 | 适用 | 需要快速多版对比、内容还会微调 | 定稿前要"真正换风格"、或要用别人的成品模板观感 |
+
+**路线三**（`make_ppt_nature.py`）面向"论文汇报 / 正式答辩"：它不追求视觉炫技，而是按 Nature 系论文汇报的规范
+组织内容——先判内容类型选叙事弧、每页一句结论式标题、图占主位而文字进备注、显式数值用原生表格、
+成稿后跑 skill 自带审计脚本并在 `results/qa/` 留 QA 报告。
 
 路线二的两个硬约束：**SVG 里 `<path>` 必须显式 `fill="none"`**（否则导出后在 PowerPoint 里会被填成黑色盖住整页）；
 **页内文字 ≥ 20 px**（1280 px 画布 ≈ 幻灯片 15 pt）。`make_ppt_svg.py` 已内置这两条的自检。

@@ -1,0 +1,213 @@
+{
+  "file": "deliverable/中期答辩_E_深色标题区.pptx",
+  "slide_count": 16,
+  "media_count": 7,
+  "notes_count": 16,
+  "finding_counts": {
+    "high": 0,
+    "medium": 0,
+    "low": 17
+  },
+  "findings": [
+    {
+      "severity": "low",
+      "slide": 2,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 3,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 4,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 5,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 6,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 7,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 8,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 9,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 10,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 10,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 10,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 10,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 11,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 12,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 13,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 14,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    },
+    {
+      "severity": "low",
+      "slide": 15,
+      "code": "alignment_near_miss",
+      "message": "Two objects have left-edge near-miss alignment (7.2 pt apart)"
+    }
+  ],
+  "slides": [
+    {
+      "slide": 1,
+      "shape_count": 4,
+      "image_count": 0,
+      "text_chars": 118
+    },
+    {
+      "slide": 2,
+      "shape_count": 8,
+      "image_count": 0,
+      "text_chars": 194
+    },
+    {
+      "slide": 3,
+      "shape_count": 9,
+      "image_count": 1,
+      "text_chars": 117
+    },
+    {
+      "slide": 4,
+      "shape_count": 8,
+      "image_count": 0,
+      "text_chars": 331
+    },
+    {
+      "slide": 5,
+      "shape_count": 17,
+      "image_count": 0,
+      "text_chars": 308
+    },
+    {
+      "slide": 6,
+      "shape_count": 10,
+      "image_count": 1,
+      "text_chars": 184
+    },
+    {
+      "slide": 7,
+      "shape_count": 10,
+      "image_count": 1,
+      "text_chars": 156
+    },
+    {
+      "slide": 8,
+      "shape_count": 10,
+      "image_count": 1,
+      "text_chars": 176
+    },
+    {
+      "slide": 9,
+      "shape_count": 10,
+      "image_count": 1,
+      "text_chars": 199
+    },
+    {
+      "slide": 10,
+      "shape_count": 10,
+      "image_count": 1,
+      "text_chars": 198
+    },
+    {
+      "slide": 11,
+      "shape_count": 10,
+      "image_count": 1,
+      "text_chars": 170
+    },
+    {
+      "slide": 12,
+      "shape_count": 9,
+      "image_count": 0,
+      "text_chars": 248
+    },
+    {
+      "slide": 13,
+      "shape_count": 9,
+      "image_count": 0,
+      "text_chars": 311
+    },
+    {
+      "slide": 14,
+      "shape_count": 11,
+      "image_count": 0,
+      "text_chars": 260
+    },
+    {
+      "slide": 15,
+      "shape_count": 9,
+      "image_count": 0,
+      "text_chars": 229
+    },
+    {
+      "slide": 16,
+      "shape_count": 2,
+      "image_count": 0,
+      "text_chars": 28
+    }
+  ]
+}

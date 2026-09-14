@@ -9,6 +9,7 @@
 
 | 文件 | 说明 |
 |---|---|
+| `deliverable/中期答辩_H_nature风.pptx` | **16 页中期答辩 PPT（H 版·nature 风）**——按 [nature-skills](https://github.com/mqgg5630-cyber/nature-skills) 的 `nature-paper2ppt` 生成：论文汇报叙事弧、结论式标题、原生对照表、留白多；**论文汇报/答辩首选** |
 | `deliverable/中期答辩_F_深色科技风.pptx` | **16 页中期答辩 PPT（F 版·深色科技风）**——近黑底 + 青色强调 + 网格底纹 + 深色结论条，**推荐首选**；由 ppt-master 原生导出（DrawingML） |
 | `deliverable/中期答辩_G_学术期刊风.pptx` | **G 版·学术期刊风**——白底纸面 + 期刊红 + 细线分隔 + 衬线标题，**推荐次选**；同为 ppt-master 原生导出 |
 | `deliverable/中期答辩_A_学术蓝.pptx` | A 版·学术蓝（深蓝 + 青绿标签块，常见工作汇报观感） |
@@ -16,8 +17,9 @@
 | `deliverable/中期答辩_C_卡片色块.pptx` | C 版·卡片色块（顶部色带 + 左侧竖条 + 卡片底色块） |
 | `deliverable/中期答辩_D_双栏杂志风.pptx` | D 版·双栏杂志风（正文两栏 + 细分隔线 + 右上角页码） |
 | `deliverable/中期答辩_E_深色标题区.pptx` | E 版·深色标题区（深色标题带 + 深色结论条） |
-| `results/ppt_preview/四版主推对比_封面与第10页.png` | **A / B / F / G 一眼对比图**（封面 + 第 10 页），不用装 Office 也能挑版本 |
-| `deliverable/PPT版本选择.md` | 七版怎么挑、怎么改（含换色/加减页、两条生产线的重出命令） |
+| `results/ppt_preview/三版新风格对比_封面与第10页.png` | **F / G / H 一眼对比图**（封面 + 第 10 页），不用装 Office 也能挑版本 |
+| `results/qa/ppt_H_qa_report.md` | H 版的 QA 报告（生成状态 / 自检与修正 / 口径一致性核对，按 nature skill 要求填写） |
+| `deliverable/PPT版本选择.md` | 八版怎么挑、怎么改（含换色/加减页、三条生产线的重出命令） |
 | `docs/ppt_outline.json` | **PPT 大纲（机器可读）**：16 页逐页标题/正文/卡片/结论条/演讲备注/配图，换任何 PPT skill 都能直接喂 |
 | `docs/PPT大纲.md` | **PPT 大纲（人读版）**，由上面那份 JSON 自动生成，含配色字号规范与现成提示词 |
 | `docs/PPT生成Skill选择.md` | **两个高 star PPT skill 推荐**（ppt-master 54.1k★ / presenton 10.2k★）：安装、用法、怎么配合本大纲 |
@@ -28,20 +30,25 @@
 | `docs/中期答辩PPT大纲.md` | **导师意见逐条落实对照表** + 逐页清单 + 7 个答辩预判问答 |
 
 > 封面信息已从 `sources/开题.docx`（封面表）读取并填入：**文绍华 / 2024110316 / 学术学位硕士研究生 / 生命科学学院 /
-> 生物学 / 生物化学与分子生物学 / 指导教师 申亮** —— 中期检查表封面 7 栏 + 七版 PPT 封面全部同步填入，无占位符。
+> 生物学 / 生物化学与分子生物学 / 指导教师 申亮** —— 中期检查表封面 7 栏 + 八版 PPT 封面全部同步填入，无占位符。
 > 表中"除签名外需打印填写"指的是本表**用打印稿提交**，如学院要求手写，把封面 7 栏改成手写即可，正文内容不受影响。
 
 ---
 
-## 〇、七版 PPT 与通用大纲（每次都会同步）
+## 〇、八版 PPT 与通用大纲（每次都会同步）
 
-- **七版可编辑 PPT（都在 `deliverable\` 根目录，文件名以"中期答辩_"开头）**，分两条生产线：
+- **八版可编辑 PPT（都在 `deliverable\` 根目录，文件名以"中期答辩_"开头）**，分三条生产线：
   - **A—E 版**（学术蓝 / 白底细线 / 卡片色块 / 双栏杂志风 / 深色标题区）由 `code\make_ppt2.py`、`code\make_ppt_variants.py` 用 python-pptx 直接摆形状生成；
   - **F 深色科技风 / G 学术期刊风**由 `code\make_ppt_svg.py` 把每页写成 SVG，再经
     [ppt-master](https://github.com/hugohe3/ppt-master)（54k★，MIT，**已实际用于出稿**）的原生导出通路编译成 pptx ——
-    版式与配色和 A—E 完全不同，是真正"换了风格"的两版。
-  七版**文字内容完全一致**（同一份 `docs/ppt_outline.json`），都是**原生形状 + 文本框**（可直接改字改色、不是图片），
-  全篇最小 **15 pt**，且**每页都写入了演讲备注**（口播稿）。挑一版用即可，改法见 `deliverable/PPT版本选择.md`。
+    版式与配色和 A—E 完全不同，是真正"换了风格"的两版；
+  - **H nature 风**由 `code\make_ppt_nature.py` 按
+    [nature-skills](https://github.com/mqgg5630-cyber/nature-skills) 的 `nature-paper2ppt`（Apache-2.0）生成：
+    论文汇报叙事弧（概述 → 队列 → 流程 → 证据 → 验证与边界 → 总结）、结论式标题、原生可编辑对照表。
+    该 skill 自带的审计脚本 `audit_pptx_quality.py` 对八版 PPT 全部跑过，H 版 findings = 0（详见 `results\qa\`）。
+  八版**内容口径完全一致**（同一份 `docs/ppt_outline.json` + `docs/术语表.md`），都是**原生形状 + 文本框 + 原生表格**
+  （可直接改字改色、不是图片），全篇最小 **15 pt**，且**每页都写入了演讲备注**（口播稿）。
+  挑一版用即可，改法见 `deliverable/PPT版本选择.md`；口径核对见 `code/check_consistency.py`。
 - **每次都附一份大纲**：`docs/ppt_outline.json`（机器可读，16 页逐页要素）+ `docs/PPT大纲.md`（人读版，含配色字号规范与提示词模板）。
   若想换工具重做，把这两个文件加 `results/figures/` 交给对方即可。
 - **两个高 star PPT skill 推荐**：`docs/PPT生成Skill选择.md` ——
@@ -84,7 +91,14 @@
 - 三重自检（脚本可复跑）：
   - `code/make_figures2.py`：检查图内文字是否越出方框、并折算"图片缩放到幻灯片后的最小有效字号"（7 张图均 ≥15 pt）；
   - `code/make_ppt2.py`：逐条检查 run 字号 ≥15 pt、形状不越界、文字不压图；
-  - `code/check_ppt.py`：用真实中文字体估算换行高度，独立复核七版 PPT 无溢出。
+  - `code/check_ppt.py`：用真实中文字体估算换行高度，独立复核八版 PPT 无溢出。
+
+## 二·五、docx 与 PPT 的口径核对
+
+`code\check_consistency.py` 以 **docx 中期检查表为准**，逐条核对 8 份 PPT 的：论文题目、封面 5 项信息、
+阶段划分（NC / SCS / SCD / MCI / AD）、机制关联的三个方向（Aβ / AChE / 免疫炎症通路）、成果形式（SCI 论文 + 学位论文）、
+完成度口径，以及禁用表述（极简 / 最小工作量 / 最小可行性）。输出 `RESULT: docx 与全部 PPT 口径一致` 即通过。
+用词标准见 `docs\术语表.md`。
 
 ## 三、数据口径（每个数字都能溯源）
 
@@ -130,10 +144,10 @@ git add -A; git commit -m "加入本地文件"; git push origin arena/01a09d79-z
 
 ```
 zhongqi\
-├── deliverable\            成品：中期.docx、七版中期答辩 PPT（A—G）、正文草稿 md、PPT版本选择.md
+├── deliverable\            成品：中期.docx、八版中期答辩 PPT（A—H）、正文草稿 md、PPT版本选择.md
 ├── sources\                你的原件：开题.docx、中期.docx（模板）、已完成1.docx、1.md
 ├── code\                   脚本：填表/校验/画图/出 PPT/版式检查（详见 code\README.md）
-├── results\figures\        7 张插图；results\ppt_preview\ 七版各 4 张版式预览 + 主推四版对比图
+├── results\figures\        7 张插图；results\ppt_preview\ 八版各 4 张版式预览 + 对比图；results\qa\ 审计与 QA 报告
 ├── docs\                   开题要点、数据台账、PPT 大纲（json+md）、PPT skill 推荐、模板结构解析（docs\_template\）
 ├── skills\                 可复用 skill：可编辑 PPT 流水线、本地 git 同步脚本
 ├── sync.ps1 / upload.ps1 / push.ps1   一键拉取 / 上传 / 推送
@@ -144,7 +158,7 @@ zhongqi\
 
 | skill | 内容 | 文件 |
 |---|---|---|
-| **可编辑 PPT 流水线** | 一份 JSON 大纲 → 多条路线的原生可编辑 PPT（python-pptx 直排 A—E；SVG + ppt-master 原生导出 F/G）+ 自动校验（≥15 pt、不越界）+ 演讲备注；含大纲模板与"装到新项目"脚本 | `skills/editable-ppt-from-outline/`（`SKILL.md` / `README.md` / `outline.template.json` / `scripts/install.ps1`） |
+| **可编辑 PPT 流水线** | 一份 JSON 大纲 → 多条路线的原生可编辑 PPT（python-pptx 直排 A—E；SVG + ppt-master 原生导出 F/G；nature-skills 出 H）+ 自动校验（≥15 pt、不越界）+ 演讲备注；含大纲模板与"装到新项目"脚本 | `skills/editable-ppt-from-outline/`（`SKILL.md` / `README.md` / `outline.template.json` / `scripts/install.ps1`） |
 | **本地 git 同步** | `sync.ps1`（拉取，自动 stash）/ `push.ps1`（提交推送）/ `upload.ps1`（附件归位后推送）；含通用版脚本与 PowerShell 5.1 的中文坑说明 | `skills/git-sync/` |
 
 用法（在本仓库）：
@@ -158,7 +172,7 @@ zhongqi\
 
 | 位置 | 需要的信息 |
 |---|---|
-| ~~封面信息~~ | ✅ 已从 `sources/开题.docx` 填入（中期检查表 + 七版 PPT） |
+| ~~封面信息~~ | ✅ 已从 `sources/开题.docx` 填入（中期检查表 + 八版 PPT） |
 | 第 2 节"阶段性成果（五）" | 是否有已投稿/在审论文（期刊、状态） |
 | 第 1 节进度 | 进度口径是否需要写具体百分比（当前正文按"已完成/进行中"描述，PPT 进度页保留百分比） |
 | 若要在报告中写临床评分 | MMSE / MoCA 的组间分布数据（当前未写） |

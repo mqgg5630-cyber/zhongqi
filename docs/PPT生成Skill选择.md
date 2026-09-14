@@ -94,7 +94,32 @@ npm run dev
 
 **与本仓库的配合方式**：把 `docs/PPT大纲.md` 正文粘进提示词（或上传 `docs/中期答辩PPT大纲.md` 作为素材文档），
 要求"16 页、16:9、中文字体微软雅黑、每页保留备注、插图按顺序使用我提供的图片"；
-想统一风格可以先上传 `deliverable/中期答辩_A_学术蓝.pptx`（或 B—E 任选一版）当作模板来源。
+想统一风格可以先上传 `deliverable/中期答辩_H_nature风.pptx`（或 A—G 任选一版）当作模板来源。
+
+---
+
+## 三、nature-skills（本项目已用，出 H 版）
+
+[mqgg5630-cyber/nature-skills](https://github.com/mqgg5630-cyber/nature-skills) —— Apache-2.0，
+面向 Nature 系论文写作与科研汇报的 skill 集合（`nature-paper2ppt`、`nature-figure`、`nature-writing`、`nature-polishing` 等 20 个）。
+
+**本项目用到的是 `skills/nature-paper2ppt`**，落地方式：
+
+| skill 要求 | 本项目落地 |
+|---|---|
+| 先判论文类型，再选叙事弧 | 判为 **resource**（数据/组学/流程）→ workflow-to-validation 弧 |
+| 结论式标题、图上字少、正文进备注 | H 版每页一句结论标题 + 1 行解读，成篇说明放演讲备注（16/16 页） |
+| 禁止 AI 套话（"一句话总结""不是…而是…"等） | skill 审计脚本核对，0 命中 |
+| 至少一轮自检 + 修正 | 目视预览 → 发现 2 处近对齐 → 修正 → 复审 0 条（见 `results/qa/ppt_H_qa_report.md`） |
+| 用 skill 自带审计脚本复核 | `scripts/audit_pptx_quality.py` 对 **8 版 pptx** 全跑过，H 版 findings = 0 |
+| 术语一致性（terminology ledger） | `docs/术语表.md` + `code/check_consistency.py`（docx vs 8 版 PPT） |
+
+重出 H 版：
+
+```powershell
+python code/fetch_nature_skills.py     # 首次：下载 skill 到 build\nature-skills（不入库）
+python code/make_ppt_nature.py --audit # 出 H 版并跑 skill 自带质量审计
+```
 
 ---
 
@@ -118,7 +143,7 @@ npm run dev
 | `docs/PPT大纲.md` | **人读版大纲**（由上一个文件自动生成，含配色字号规范与一段现成的提示词模板） |
 | `docs/中期答辩PPT大纲.md` | 导师意见落实对照表 + 逐页清单 + 7 个答辩预判问答（给"讲什么"用的） |
 | `results/figures/figA_*.png … figG_*.png` | 大纲里点名要用的 7 张示意图，文件名与大纲一一对应 |
-| `deliverable/中期答辩_*.pptx`（A—G 七版） | 已经做好的七版可编辑成果；其中 F / G **就是用 ppt-master 的原生导出通路做的**（`code/make_ppt_svg.py`），可作为"本仓库已跑通"的参考实现 |
+| `deliverable/中期答辩_*.pptx`（A—H 八版） | 已经做好的八版可编辑成果；F / G **就是用 ppt-master 的原生导出通路做的**（`code/make_ppt_svg.py`），H **是用 nature-skills 的 nature-paper2ppt 做的**（`code/make_ppt_nature.py`），都是"本仓库已跑通"的参考实现 |
 
 **一句话提示词**（两个 skill 都能用）：
 

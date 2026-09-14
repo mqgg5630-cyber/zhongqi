@@ -129,6 +129,41 @@ def main(argv=None) -> int:
         img = Image.new("RGB", (W, H), page_bg(slide) or "white")
         d = ImageDraw.Draw(img)
         for sh in slide.shapes:
+            if getattr(sh, "has_table", False) and sh.has_table:
+                x0, y0 = pt2px(sh.left), pt2px(sh.top)
+                col_w = [pt2px(c.width) for c in sh.table.columns]
+                row_h = [pt2px(r.height) for r in sh.table.rows]
+                cx = x0
+                for w in col_w:
+                    cy = y0
+                    for h in row_h:
+                        d.rectangle([cx, cy, cx + w, cy + h], outline=(180, 180, 176))
+                        cy += h
+                    cx += w
+                cy = y0
+                for r_i, row in enumerate(sh.table.rows):
+                    cx = x0
+                    for c_i, cell in enumerate(row.cells):
+                        text = cell.text
+                        if text:
+                            f = font_for(14, bold=(r_i == 0))
+                            lines, cur = [], ""
+                            for ch in text:
+                                if d.textlength(cur + ch, font=f) > col_w[c_i] - 10 and cur:
+                                    lines.append(cur); cur = ch
+                                else:
+                                    cur += ch
+                            if cur:
+                                lines.append(cur)
+                            ty = cy + 6
+                            for line in lines[:3]:
+                                d.text((cx + 5, ty), line, font=f, fill=(30, 30, 30))
+                                ty += 14 * 110 / 72 * 1.15
+                        cx += col_w[c_i]
+                    cy += row_h[r_i]
+                if sh.has_text_frame:
+                    draw_text_frame(d, sh, 1.0, 1.0)
+                continue
             if sh.shape_type == MSO_SHAPE_TYPE.PICTURE:
                 import io
                 pic = Image.open(io.BytesIO(sh.image.blob))
