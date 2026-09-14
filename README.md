@@ -123,19 +123,32 @@
 
 ---
 
-## 五、协作方式（拉取 / 上传）
+## 五、协作方式（取 / 传 / 下载 / 打包）
+
+唯一需要记的两条：
 
 ```powershell
-# ① 拿我推送的最新成果
 cd E:\0zhongqi\zhongqi
-.\sync.ps1
+.\sync.ps1        # ① 拿我推送的最新成果（本地有改动会自动 stash）
+.\upload.ps1      # ② 把你的新文件传上来（按扩展名归位后自动 commit + push）
+```
 
-# ② 把你的新文件（结果表、PPT、图）传上来
-.\upload.ps1
+另外几个按需用：
+
+```powershell
+.\download.ps1 -List          # 看有哪些下载集合
+.\download.ps1 -Set final     # ③ 把 deliverable\ 中间版\ 中间版2\ 复制到本机（robocopy 镜像）
+.\pack.ps1 -Set final         # ④ 打成 _export\<日期>_final.zip，方便直接交材料
+.\doctor.ps1                  # ⑤ "哪里不对劲"先跑它：分支/远端/落后领先/未提交/stash 一次看清
+.\bootstrap.ps1               # ⑥ 换电脑或重装后的首次准备（执行策略 + 身份 + 切分支 + 首拉）
 ```
 
 `upload.ps1` 会自动在仓库旁找到附件目录，按扩展名归位（docx/pptx/pdf/md → `sources\`，py → `code\`，xlsx/csv → `results\`）后提交推送。
 首次 push 会弹 GitHub 登录窗；若提示要输**密码**，那里应填 token，或改用 GitHub Desktop 点 Push，亦可直接在 Arena 里把文件作为附件发我。
+
+**这套脚本本身已沉淀成 skill**：`skills\git-sync\`（`SKILL.md` 给 Agent 看，`README.md` 给你看，
+`sync.config.json` 是唯一的配置 —— 分支名、下载集合、扩展名归位规则都改这里）。
+换项目时用 `skills\git-sync\scripts\install.ps1 -Target <新仓库>` 一键装好。
 
 不用脚本时的等价命令：
 
@@ -159,6 +172,8 @@ zhongqi\
 ├── docs\                   开题要点、数据台账、PPT 大纲（json+md）、PPT skill 推荐、模板结构解析（docs\_template\）
 ├── skills\                 可复用 skill：可编辑 PPT 流水线、本地 git 同步脚本
 ├── sync.ps1 / upload.ps1 / push.ps1   一键拉取 / 上传 / 推送
+├── download.ps1 / pack.ps1            一键下载交付物 / 打包成 zip
+├── doctor.ps1 / bootstrap.ps1         体检排障 / 换机首次准备
 └── build\                  中间产物（可重新生成，已 gitignore）
 ```
 
@@ -167,7 +182,7 @@ zhongqi\
 | skill | 内容 | 文件 |
 |---|---|---|
 | **可编辑 PPT 流水线** | 一份 JSON 大纲 → 多条路线的原生可编辑 PPT（python-pptx 直排 A—E；SVG + ppt-master 原生导出 F/G；nature-skills 出 H）+ 自动校验（≥15 pt、不越界）+ 演讲备注；含大纲模板与"装到新项目"脚本 | `skills/editable-ppt-from-outline/`（`SKILL.md` / `README.md` / `outline.template.json` / `scripts/install.ps1`） |
-| **本地 git 同步** | `sync.ps1`（拉取，自动 stash）/ `push.ps1`（提交推送）/ `upload.ps1`（附件归位后推送）；含通用版脚本与 PowerShell 5.1 的中文坑说明 | `skills/git-sync/` |
+| **本地 ↔ Agent 双向同步** | 取 / 传 / 下载 / 打包 / 体检 / 首次准备 七个 `.ps1` + 唯一配置 `sync.config.json` + 助手侧 `agent-sync.sh`（分支守卫、提交前自检、发散自愈）与 `agent-recover.sh`（沙箱 `.git` 重置后恢复历史）；含 PowerShell 5.1 的中文坑与 ASCII 自动校验 | `skills/git-sync/`（SKILL.md + README.md + scripts/） |
 
 用法（在本仓库）：
 

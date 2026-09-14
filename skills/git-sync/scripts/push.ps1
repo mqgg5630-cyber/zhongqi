@@ -1,15 +1,20 @@
-# push.ps1 - commit local changes and push them to the remote branch.
+# push.ps1 (skill version) - commit local changes and push them to the remote.
 #
 # Usage (inside the repo folder):
-#     .\push.ps1
-#     .\push.ps1 "add report files"
-#     .\push.ps1 -Branch main -Message "update"
+#     .\push.ps1                      # auto commit message
+#     .\push.ps1 "add midterm files"  # custom commit message
+#     .\push.ps1 -Branch other/branch
 #
-# NOTE: ASCII only on purpose (see sync.ps1).
+# Branch / remote come from sync.config.json when present. A safety guard
+# refuses to push to main / master, so a stray edit can never move the shared
+# branch.
+#
+# ASCII-only on purpose (Windows PowerShell 5.1 decodes .ps1 as ANSI/GBK).
 
 param(
     [string]$Message = '',
-    [string]$Branch = ''
+    [string]$Branch  = '',
+    [string]$Remote  = ''
 )
 
 $ErrorActionPreference = 'Stop'
@@ -17,28 +22,45 @@ $ErrorActionPreference = 'Stop'
 $repo = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
 Set-Location -LiteralPath $repo
 
-if (-not (Test-Path (Join-Path $repo '.git'))) {
+if (-not (Test-Path -LiteralPath (Join-Path $repo '.git'))) {
     Write-Host "[ERROR] Not a git repository: $repo" -ForegroundColor Red
     exit 1
 }
 
-if (-not $Branch) {
-    $Branch = (git rev-parse --abbrev-ref HEAD).Trim()
-    if (-not $Branch -or $Branch -eq 'HEAD') { $Branch = 'main' }
+# ------------------------------------------------------------------- config
+$cfgPath = @(
+    (Join-Path $repo 'skills\git-sync\sync.config.json'),
+    (Join-Path $PSScriptRoot 'sync.config.json')
+) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+if ($cfgPath) {
+    $cfg = Get-Content -LiteralPath $cfgPath -Encoding UTF8 -Raw | ConvertFrom-Json
+    if (-not $Branch -and $cfg.branch) { $Branch = [string]$cfg.branch }
+    if (-not $Remote -and $cfg.remote) { $Remote = [string]$cfg.remote }
+}
+if (-not $Remote) { $Remote = 'origin' }
+if (-not $Branch) { $Branch = (git rev-parse --abbrev-ref HEAD).Trim() }
+
+# -------------------------------------------------------------------- guard
+if ($Branch -eq 'main' -or $Branch -eq 'master') {
+    Write-Host "[REFUSED] pushing straight to $Branch is not allowed." -ForegroundColor Red
+    Write-Host "          Set a working branch in skills\git-sync\sync.config.json" -ForegroundColor Yellow
+    exit 1
 }
 
+# git refuses to commit without an identity; set a local one if missing
 if (-not (git config user.name)) {
-    git config user.name  'local user'
-    git config user.email 'local@example.com'
-    Write-Host "== set a default git identity for this repo" -ForegroundColor Yellow
+    git config user.name  'mqgg5630-cyber'
+    git config user.email 'mqgg5630-cyber@users.noreply.github.com'
+    Write-Host "== set a default git identity for this repo (change it with git config user.name)" -ForegroundColor Yellow
 }
 
 Write-Host "== repo  : $repo" -ForegroundColor Cyan
 Write-Host "== branch: $Branch" -ForegroundColor Cyan
 
-git fetch origin
+# Get the server side first so the push cannot be rejected as non-fast-forward
+git fetch $Remote
 git checkout $Branch
-git pull --ff-only origin $Branch
+git pull --ff-only $Remote $Branch
 
 git add -A
 if (-not (git status --porcelain)) {
@@ -58,13 +80,13 @@ git status --short
 git commit -m $Message
 if ($LASTEXITCODE -ne 0) { Write-Host "[ERROR] commit failed." -ForegroundColor Red; exit 1 }
 
-git push origin $Branch
+git push $Remote $Branch
 if ($LASTEXITCODE -ne 0) {
     Write-Host ""
     Write-Host "[ERROR] push failed." -ForegroundColor Red
-    Write-Host "  * If it asks for a password: GitHub needs a token, not a password." -ForegroundColor Yellow
+    Write-Host "  * If it asks for a password: GitHub needs a token, not your password." -ForegroundColor Yellow
     Write-Host "    Install/run GitHub Desktop or 'gh auth login', then push again." -ForegroundColor Yellow
-    Write-Host "  * If it says 'rejected': the remote moved. Run .\sync.ps1 first." -ForegroundColor Yellow
+    Write-Host "  * If it says 'rejected': the remote branch moved. Run .\sync.ps1 first." -ForegroundColor Yellow
     exit 1
 }
 

@@ -1,26 +1,49 @@
-# push.ps1 - commit your local files and push them to the Arena working branch.
+# push.ps1 (skill version) - commit local changes and push them to the remote.
 #
 # Usage (inside the repo folder):
 #     .\push.ps1                      # auto commit message
 #     .\push.ps1 "add midterm files"  # custom commit message
+#     .\push.ps1 -Branch other/branch
 #
-# The first push will pop up a GitHub login window (your own account). After
-# that Windows remembers the credential and later pushes are silent.
+# Branch / remote come from sync.config.json when present. A safety guard
+# refuses to push to main / master, so a stray edit can never move the shared
+# branch.
 #
-# NOTE: this file is intentionally ASCII-only (see sync.ps1 for the reason).
+# ASCII-only on purpose (Windows PowerShell 5.1 decodes .ps1 as ANSI/GBK).
 
 param(
-    [string]$Message = ''
+    [string]$Message = '',
+    [string]$Branch  = '',
+    [string]$Remote  = ''
 )
 
 $ErrorActionPreference = 'Stop'
-$Branch = 'arena/01a09d79-zhongqi'
 
 $repo = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
 Set-Location -LiteralPath $repo
 
-if (-not (Test-Path (Join-Path $repo '.git'))) {
+if (-not (Test-Path -LiteralPath (Join-Path $repo '.git'))) {
     Write-Host "[ERROR] Not a git repository: $repo" -ForegroundColor Red
+    exit 1
+}
+
+# ------------------------------------------------------------------- config
+$cfgPath = @(
+    (Join-Path $repo 'skills\git-sync\sync.config.json'),
+    (Join-Path $PSScriptRoot 'sync.config.json')
+) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+if ($cfgPath) {
+    $cfg = Get-Content -LiteralPath $cfgPath -Encoding UTF8 -Raw | ConvertFrom-Json
+    if (-not $Branch -and $cfg.branch) { $Branch = [string]$cfg.branch }
+    if (-not $Remote -and $cfg.remote) { $Remote = [string]$cfg.remote }
+}
+if (-not $Remote) { $Remote = 'origin' }
+if (-not $Branch) { $Branch = (git rev-parse --abbrev-ref HEAD).Trim() }
+
+# -------------------------------------------------------------------- guard
+if ($Branch -eq 'main' -or $Branch -eq 'master') {
+    Write-Host "[REFUSED] pushing straight to $Branch is not allowed." -ForegroundColor Red
+    Write-Host "          Set a working branch in skills\git-sync\sync.config.json" -ForegroundColor Yellow
     exit 1
 }
 
@@ -35,9 +58,9 @@ Write-Host "== repo  : $repo" -ForegroundColor Cyan
 Write-Host "== branch: $Branch" -ForegroundColor Cyan
 
 # Get the server side first so the push cannot be rejected as non-fast-forward
-git fetch origin
+git fetch $Remote
 git checkout $Branch
-git pull --ff-only origin $Branch
+git pull --ff-only $Remote $Branch
 
 git add -A
 if (-not (git status --porcelain)) {
@@ -57,7 +80,7 @@ git status --short
 git commit -m $Message
 if ($LASTEXITCODE -ne 0) { Write-Host "[ERROR] commit failed." -ForegroundColor Red; exit 1 }
 
-git push origin $Branch
+git push $Remote $Branch
 if ($LASTEXITCODE -ne 0) {
     Write-Host ""
     Write-Host "[ERROR] push failed." -ForegroundColor Red
