@@ -1,2 +1,67 @@
-实验/数据处理/画图脚本放这里（Python 为主）。
-建议每个脚本开头写清：输入文件、输出文件、运行命令，方便写进中期报告的"证据"一栏。
+# code —— 分析与会话工具脚本
+
+## 交付物生成流水线（中期报告 + 答辩 PPT）
+
+```
+deliverable/中期检查表_填写内容.md          ← 正文草稿（可直接改这个文件）
+        │  build_ops.py
+        ▼
+build/ops_中期.json                          ← 描述"往哪个单元格写哪些段落"
+        │  fill_docx.py --ops
+        ▼
+deliverable/中期.docx                        ← 成品（学校模板格式零改动）
+        │  verify_docx.py
+        ▼
+格式校验：页面设置 / 表格 / 提示语 / 字体字号是否与模板一致
+```
+
+```
+results/figures/*.png                        ← 由 make_figures.py 生成（含字号自检）
+        │  make_ppt.py
+        ▼
+deliverable/中期答辩.pptx                    ← 16 页，最小 15 pt
+        │  check_ppt.py + preview_ppt.py
+        ▼
+版式校验 + 逐页 PNG 预览（build/ppt_preview、results/ppt_preview）
+```
+
+### 常用命令
+
+```bash
+python code/build_ops.py                 # 草稿 md -> ops json
+python code/fill_docx.py --ops build/ops_中期.json      # 填表
+python code/verify_docx.py --base sources/中期.docx --filled deliverable/中期.docx \
+       --cells 22:0:3 22:2:0 22:3:0 22:4:0 22:5:0       # 格式校验
+python code/make_figures.py              # 画图（含框内文字溢出检查 + 投影字号核算）
+python code/make_ppt.py                  # 出 PPT（含字号/越界/图文重叠检查）
+python code/check_ppt.py deliverable/中期答辩.pptx       # 独立版式检查
+python code/preview_ppt.py deliverable/中期答辩.pptx -o build/ppt_preview
+```
+
+## 各脚本用途
+
+| 脚本 | 作用 |
+|---|---|
+| `inspect_docx.py` | 解析 docx 结构：段落样式、字体（含东亚字体）、字号、缩进、表格逐格内容、Word 表单域，输出 txt + json |
+| `fill_docx.py` | 就地填 docx：`replace_text` / `set_cell` / `fill_cell` / `insert_in_cell` / `set_paragraph` / `insert_after` / `insert_after_text` / `delete_paragraph`，全部基于模板原有段落格式 |
+| `verify_docx.py` | 校验成品是否保持模板格式（页面设置、页眉页脚、表格属性、非目标单元格逐字节一致、目标单元格段落/字体格式一致） |
+| `build_ops.py` | 把 `deliverable/中期检查表_填写内容.md` 编译成 `fill_docx.py` 的 ops |
+| `make_figures.py` | 生成 8 张图；自检：文本是否超出方框、缩放到幻灯片后最小有效字号是否 ≥15 pt |
+| `make_ppt.py` | 生成 16 页答辩 PPT；自检：每个 run ≥15 pt、形状不越界、文字不压图 |
+| `check_ppt.py` | 独立的 PPT 版式检查（用真实 CJK 字体估算换行高度） |
+| `preview_ppt.py` | 无 PowerPoint 环境下的逐页 PNG 预览（用于核版式） |
+| `get_cjk_font.py` | 从 PyPI 的 `noto-cjk-sans-otc` 抽出思源黑体 SC 单字体，供 matplotlib/PIL 使用 |
+| `check_ps1.py` | 校验 .ps1 脚本为纯 ASCII（避免 Windows PowerShell 5.1 按 GBK 解码导致的解析错误） |
+| `1.py` | 你的原始脚本：全队列 476 样本 MAGs 成果校验与统计（bash/SLURM 流程） |
+
+## 依赖
+
+```bash
+pip install python-docx python-pptx matplotlib numpy pillow fonttools noto-cjk-sans-otc
+python code/get_cjk_font.py     # 抽出 /tmp/fonts/NotoSansCJKsc-Regular.otf
+```
+
+## 注意
+
+- `build/` 目录是中间产物（ops json、PPT 预览图），可随时重新生成，不纳入版本管理。
+- 表格/文档中的中文数字使用半角空格分组（如 `22 582`），与已完成1.docx 的写法保持一致。

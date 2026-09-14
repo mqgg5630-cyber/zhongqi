@@ -1,0 +1,3523 @@
+{
+ "file": "sources/已完成1.docx",
+ "n_body_elements": 34,
+ "n_paragraphs": 32,
+ "n_tables": 2,
+ "sections": [
+  {
+   "section": 0,
+   "orientation": "PORTRAIT (0)",
+   "page_w_pt": 595.3,
+   "page_h_pt": 841.9,
+   "header": [
+    ""
+   ],
+   "footer": [
+    ""
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "index": 0,
+   "style": "Heading 2",
+   "text": "宏基因组组装基因组的重建与种水平去冗余",
+   "runs": [
+    {
+     "text": "宏基因组组装基因组的重建与种水平去冗余",
+     "size_pt": 16.0,
+     "bold": true
+    }
+   ],
+   "first_line_indent_pt": 0.0,
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 1,
+   "style": "Normal",
+   "text": "对476例粪便样本的双端鸟枪法宏基因组测序数据，首先使用fastp进行质量过滤，随后采用KneadData结合Bowtie2比对人类参考基因组hg38以去除宿主序列。各样本的高质量clean reads分别使用MEGAHIT进行从头组装。所得contigs采用MetaBAT2、MaxBin2与CONCOCT三种算法独立分箱，并通过metaWRAP的bin_refinement模块对三套分箱结果进行整合与提纯，保留完整度不低于50%且污染度不高于10%的基因组，最终在全队列中获得22 582个宏基因组组装基因组（metagenome-assembled genomes，MAGs）。",
+   "runs": [
+    {
+     "text": "对476例粪便样本的双端鸟枪法宏基因组测序数据，首先使用fastp进行质量过滤，随后采用KneadData结合Bowtie2比对人类参考基因组hg38以去除宿主序列。各样本的高质量clean reads分别使用MEGAHIT进行从头组装。所得contigs采用MetaBAT2、MaxBin2与CONCOCT三种算法独立分箱，并通过metaWRAP的bin_refinement模块对三套分箱结果进行整合与提纯，保留完整度不低于50%且污染度不高于10%的基因组，最终在全队列中获得22 582个宏基因组组装基因组（metagenome-assembled genomes，MAGs）。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 2,
+   "style": "Normal",
+   "text": "基因组质量评估基于CheckM的谱系特异性标记基因集完成。核糖体RNA基因使用barrnap注释，转运RNA基因使用tRNAscan-SE注释，据此依照宏基因组组装基因组最小信息标准（Minimum Information about a Metagenome-Assembled Genome，MIMAG）进行质量分级。在全部22 582个MAGs中，共有757个满足MIMAG高质量标准，即完整度不低于90%、污染度不高于5%、含有完整的5S、16S与23S rRNA基因，且包含至少18种不同的tRNA。",
+   "runs": [
+    {
+     "text": "基因组质量评估基于CheckM的谱系特异性标记基因集完成。核糖体RNA基因使用barrnap注释，转运RNA基因使用tRNAscan-SE注释，据此依照宏基因组组装基因组最小信息标准（Minimum Information about a Metagenome-Assembled Genome，MIMAG）进行质量分级。在全部22 582个MAGs中，共有757个满足MIMAG高质量标准，即完整度不低于90%、污染度不高于5%、含有完整的5S、16S与23S rRNA基因，且包含至少18种不同的tRNA。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 3,
+   "style": "Normal",
+   "text": "为构建用于多肽挖掘的非冗余参考基因组集，全部22 582个MAGs使用dRep在95%平均核苷酸一致性（average nucleotide identity，ANI）阈值下进行聚类去冗余，该阈值为国际公认的细菌种水平划分界限。在每一个种水平聚类簇内，代表基因组依据dRep默认打分函数选出，其计算式为：完整度减去5倍污染度，加上污染度与菌株异质性百分比之积，加上0.5倍log(N50)，再加上中心性校正项。去冗余后共获得1 971个种水平代表基因组，对应约11.5个bin归并为1个物种的压缩比。这1 971个代表基因组来源于476例受试者中的459例，其余17例受试者所得bins在同物种竞争中均未获选为代表。",
+   "runs": [
+    {
+     "text": "为构建用于多肽挖掘的非冗余参考基因组集，全部22 582个MAGs使用dRep在95%平均核苷酸一致性（average nucleotide identity，ANI）阈值下进行聚类去冗余，该阈值为国际公认的细菌种水平划分界限。在每一个种水平聚类簇内，代表基因组依据dRep默认打分函数选出，其计算式为：完整度减去5倍污染度，加上污染度与菌株异质性百分比之积，加上0.5倍log(N50)，再加上中心性校正项。去冗余后共获得1 971个种水平代表基因组，对应约11.5个bin归并为1个物种的压缩比。这1 971个代表基因组来源于476例受试者中的459例，其余17例受试者所得bins在同物种竞争中均未获选为代表。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 4,
+   "style": "Normal",
+   "text": "下游sORF挖掘采用上述1 971个种水平代表基因组，而非仅使用757个高质量MAGs，其目的在于最大限度保留队列的物种多样性。经核实，若将参考集限定为757个高质量MAGs，去重后仅对应80个物种，将损失约96%的物种多样性，并使476例样本中的98例（占21%）完全无基因组入选，从而引入与测序深度和组装质量相关的系统性偏倚。",
+   "runs": [
+    {
+     "text": "下游sORF挖掘采用上述1 971个种水平代表基因组，而非仅使用757个高质量MAGs，其目的在于最大限度保留队列的物种多样性。经核实，若将参考集限定为757个高质量MAGs，去重后仅对应80个物种，将损失约96%的物种多样性，并使476例样本中的98例（占21%）完全无基因组入选，从而引入与测序深度和组装质量相关的系统性偏倚。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 5,
+   "style": "Heading 2",
+   "text": "小开放阅读框预测与非冗余多肽库构建",
+   "runs": [
+    {
+     "text": "小开放阅读框预测与非冗余多肽库构建",
+     "size_pt": 16.0,
+     "bold": true
+    }
+   ],
+   "first_line_indent_pt": 0.0,
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 6,
+   "style": "Normal",
+   "text": "参照人肠道微生物组抗菌肽挖掘的既有流程，使用EMBOSS软件包（版本6.6.0.0）中的getorf程序对1 971个代表基因组逐一进行小开放阅读框（small open reading frames，sORFs）预测，命令为：getorf -sequence <genome.fa> -find 0 -table 11 -minsize 15 -maxsize 150 -outseq <output.orf.fa>。",
+   "runs": [
+    {
+     "text": "参照人肠道微生物组抗菌肽挖掘的既有流程，使用EMBOSS软件包（版本6.6.0.0）中的getorf程序对1 971个代表基因组逐一进行小开放阅读框（small open reading frames，sORFs）预测，命令为：getorf -sequence <genome.fa> -find 0 -table 11 -minsize 15 -maxsize 150 -outseq <output.orf.fa>。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 7,
+   "style": "Normal",
+   "text": "其中，-find 0参数指定输出六个阅读框中所有由终止密码子界定区段的氨基酸翻译产物，不要求存在起始密码子；-table 11参数指定细菌、古菌与植物质体标准遗传密码表。需要说明的是，EMBOSS规范中-minsize与-maxsize参数的长度单位为核苷酸而非氨基酸，因此15与150的取值实际对应5至50个氨基酸的多肽区间，该范围与抗菌肽的经典长度分布相符，亦与同类宏基因组多肽挖掘研究所采用的参数设置一致。",
+   "runs": [
+    {
+     "text": "其中，-find 0参数指定输出六个阅读框中所有由终止密码子界定区段的氨基酸翻译产物，不要求存在起始密码子；-table 11参数指定细菌、古菌与植物质体标准遗传密码表。需要说明的是，EMBOSS规范中-minsize与-maxsize参数的长度单位为核苷酸而非氨基酸，因此15与150的取值实际对应5至50个氨基酸的多肽区间，该范围与抗菌肽的经典长度分布相符，亦与同类宏基因组多肽挖掘研究所采用的参数设置一致。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 8,
+   "style": "Normal",
+   "text": "对全部代表基因组完成预测后，共获得219 305 235条原始sORF序列。各基因组的sORF产出量介于19 965条至425 113条之间，中位数为96 017条，跨基因组的最大与最小值相差约21.3倍，该差异主要由基因组大小与组装完整度决定。全部预测多肽经合并后，使用自编Perl脚本进行序列水平的精确去冗余：以氨基酸序列本身作为哈希键，对多行FASTA记录先行拼接为完整序列后再行哈希，剥离序列末端的终止符，对每一条唯一氨基酸序列仅保留首次观测到的序列头信息。本步骤未引入任何外部抗菌肽数据库进行过滤，亦未使用机器学习分类器，以确保所构建的多肽库为无偏的从头预测序列空间。去冗余后最终获得包含91 392 612条序列的非冗余sORF多肽库。",
+   "runs": [
+    {
+     "text": "对全部代表基因组完成预测后，共获得219 305 235条原始sORF序列。各基因组的sORF产出量介于19 965条至425 113条之间，中位数为96 017条，跨基因组的最大与最小值相差约21.3倍，该差异主要由基因组大小与组装完整度决定。全部预测多肽经合并后，使用自编Perl脚本进行序列水平的精确去冗余：以氨基酸序列本身作为哈希键，对多行FASTA记录先行拼接为完整序列后再行哈希，剥离序列末端的终止符，对每一条唯一氨基酸序列仅保留首次观测到的序列头信息。本步骤未引入任何外部抗菌肽数据库进行过滤，亦未使用机器学习分类器，以确保所构建的多肽库为无偏的从头预测序列空间。去冗余后最终获得包含91 392 612条序列的非冗余sORF多肽库。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 9,
+   "style": "Normal",
+   "text": "每条多肽的序列头均保留溯源信息，格式为>sORF_<MAG_ID>_<序号> [MAG=<MAG_ID>]，其中MAG标识符遵循<样本编号>__bin.<编号>的命名规则，从而使每一条多肽均可回溯至其来源代表基因组，并进一步追溯至该基因组最初所组装自的临床样本。",
+   "runs": [
+    {
+     "text": "每条多肽的序列头均保留溯源信息，格式为"
+    },
+    {
+     "text": ">sORF_<MAG_ID>_<序号> [MAG=<MAG_ID>]",
+     "font": "Consolas"
+    },
+    {
+     "text": "，其中MAG标识符遵循"
+    },
+    {
+     "text": "<样本编号>__bin.<编号>",
+     "font": "Consolas"
+    },
+    {
+     "text": "的命名规则，从而使每一条多肽均可回溯至其来源代表基因组，并进一步追溯至该基因组最初所组装自的临床样本。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": true,
+   "num_runs": 5
+  },
+  {
+   "index": 10,
+   "style": "Heading 2",
+   "text": "队列分层与四维度比较设计",
+   "runs": [
+    {
+     "text": "队列分层与四维度比较设计",
+     "size_pt": 16.0,
+     "bold": true
+    }
+   ],
+   "first_line_indent_pt": 0.0,
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 11,
+   "style": "Normal",
+   "text": "宿主年龄与性别是肠道宏基因组研究中公认的强混杂因素。为区分多肽水平的差异究竟源于认知衰退病程本身，抑或源于增龄效应与组间样本量不均衡，本研究在全队列之外，另行构建了严格匹配的分层亚队列。",
+   "runs": [
+    {
+     "text": "宿主年龄与性别是肠道宏基因组研究中公认的强混杂因素。为区分多肽水平的差异究竟源于认知衰退病程本身，抑或源于增龄效应与组间样本量不均衡，本研究在全队列之外，另行构建了严格匹配的分层亚队列。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 12,
+   "style": "Normal",
+   "text": "将476例受试者按五个诊断阶段（认知正常NC、主观认知症状SCS、主观认知下降SCD、轻度认知障碍MCI、阿尔茨海默病AD）、两种性别与三个年龄段（60至69岁、70至79岁、80岁及以上）交叉划分为30个分层单元。在每一个性别与年龄交叉分层内，各诊断阶段的抽样例数统一设定为该分层中五个阶段例数的最小值，即采用以最短板为约束的分层抽样策略。据此获得包含265例受试者的匹配亚队列，各诊断阶段例数严格相等（每组53例），各组性别构成完全一致（每组35例女性、18例男性），各组平均年龄高度接近（NC组68.4岁、SCS组68.2岁、SCD组69.1岁、MCI组68.8岁、AD组70.0岁，组间最大差值为1.8岁）。",
+   "runs": [
+    {
+     "text": "将476例受试者按五个诊断阶段（认知正常NC、主观认知症状SCS、主观认知下降SCD、轻度认知障碍MCI、阿尔茨海默病AD）、两种性别与三个年龄段（60至69岁、70至79岁、80岁及以上）交叉划分为30个分层单元。在每一个性别与年龄交叉分层内，各诊断阶段的抽样例数统一设定为该分层中五个阶段例数的最小值，即采用以最短板为约束的分层抽样策略。据此获得包含265例受试者的匹配亚队列，各诊断阶段例数严格相等（每组53例），各组性别构成完全一致（每组35例女性、18例男性），各组平均年龄高度接近（NC组68.4岁、SCS组68.2岁、SCD组69.1岁、MCI组68.8岁、AD组70.0岁，组间最大差值为1.8岁）。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 13,
+   "style": "Normal",
+   "text": "在此基础上，通过交叉样本范围与分组粒度，定义四个平行分析队列。队列一为匹配265例受试者的五阶段分层比较，用于在排除年龄与性别混杂的前提下，锁定随病程连续演变的多肽特征。队列二为匹配亚队列中两个极端组的二元比较（NC组与AD组），提供样本量完全均衡的对立检验。队列三为全部476例受试者的五阶段比较，以获得最大统计效能并提升对低丰度特征的检出敏感度。队列四为全队列中的二元比较，用于评估匹配队列所得结论在包含真实世界临床异质性的大样本中的稳健性。为维持匹配亚队列的均衡设计，二元比较中排除了中间诊断阶段的样本。",
+   "runs": [
+    {
+     "text": "在此基础上，通过交叉样本范围与分组粒度，定义四个平行分析队列。队列一为匹配265例受试者的五阶段分层比较，用于在排除年龄与性别混杂的前提下，锁定随病程连续演变的多肽特征。队列二为匹配亚队列中两个极端组的二元比较（NC组与AD组），提供样本量完全均衡的对立检验。队列三为全部476例受试者的五阶段比较，以获得最大统计效能并提升对低丰度特征的检出敏感度。队列四为全队列中的二元比较，用于评估匹配队列所得结论在包含真实世界临床异质性的大样本中的稳健性。为维持匹配亚队列的均衡设计，二元比较中排除了中间诊断阶段的样本。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 14,
+   "style": "Heading 2",
+   "text": "sORF数量的量化与统计分析",
+   "runs": [
+    {
+     "text": "sORF数量的量化与统计分析",
+     "size_pt": 16.0,
+     "bold": true
+    }
+   ],
+   "first_line_indent_pt": 0.0,
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 15,
+   "style": "Normal",
+   "text": "对1 971个代表基因组，分别统计其getorf输出文件中的FASTA记录数，即为该基因组的sORF条数。随后依据基因组文件名中编码的MAG与样本对应关系，将计数汇总至受试者层面，得到每例受试者的三项指标：该受试者贡献至去冗余代表集的基因组数（N_MAG）、上述基因组的sORF总数（Total_sORF），以及单位基因组的sORF平均数（sORF_per_MAG，由Total_sORF除以N_MAG计算）。",
+   "runs": [
+    {
+     "text": "对1 971个代表基因组，分别统计其getorf输出文件中的FASTA记录数，即为该基因组的sORF条数。随后依据基因组文件名中编码的MAG与样本对应关系，将计数汇总至受试者层面，得到每例受试者的三项指标：该受试者贡献至去冗余代表集的基因组数（N_MAG）、上述基因组的sORF总数（Total_sORF），以及单位基因组的sORF平均数（sORF_per_MAG，由Total_sORF除以N_MAG计算）。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 16,
+   "style": "Normal",
+   "text": "由于dRep执行的是跨样本去冗余，在每一物种簇内仅保留打分最高的基因组，因此某一受试者贡献的代表基因组数所反映的是该受试者所得bins在同物种竞争中的相对组装质量，而非其肠道菌群的真实物种丰富度。Total_sORF与N_MAG成正比，因而同样易受组装质量偏倚的影响。基于上述考虑，本研究将sORF_per_MAG设定为主要结局指标，该指标已对贡献基因组数进行归一化，反映单位基因组的sORF编码密度；Total_sORF与N_MAG则分别作为次要指标与偏倚诊断指标一并报告。若某一组间差异仅体现于Total_sORF而未在sORF_per_MAG中得到一致体现，则判定该差异源于基因组数量偏倚而非生物学效应。未贡献任何代表基因组的17例受试者不纳入相应分析，故四个队列的实际有效样本量分别为255例、102例、459例与178例。",
+   "runs": [
+    {
+     "text": "由于dRep执行的是跨样本去冗余，在每一物种簇内仅保留打分最高的基因组，因此某一受试者贡献的代表基因组数所反映的是该受试者所得bins在同物种竞争中的相对组装质量，而非其肠道菌群的真实物种丰富度。Total_sORF与N_MAG成正比，因而同样易受组装质量偏倚的影响。基于上述考虑，本研究将sORF_per_MAG设定为主要结局指标，该指标已对贡献基因组数进行归一化，反映单位基因组的sORF编码密度；Total_sORF与N_MAG则分别作为次要指标与偏倚诊断指标一并报告。若某一组间差异仅体现于Total_sORF而未在sORF_per_MAG中得到一致体现，则判定该差异源于基因组数量偏倚而非生物学效应。未贡献任何代表基因组的17例受试者不纳入相应分析，故四个队列的实际有效样本量分别为255例、102例、459例与178例。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 17,
+   "style": "Normal",
+   "text": "鉴于sORF计数分布呈右偏且存在零膨胀现象，不满足正态性假设，全部组间比较均采用非参数检验方法。对五阶段队列（队列一与队列三），采用Kruskal-Wallis H检验评估组间差异；对NC与AD二元对立队列（队列二与队列四），采用双尾Mann-Whitney U秩和检验。上述三项指标在每个队列中均独立检验。若某一指标在特定队列内所有受试者中取值无变异，则不予检验。描述性统计量以均值±标准差及中位数形式报告。双尾P值小于0.05视为差异具有统计学意义。",
+   "runs": [
+    {
+     "text": "鉴于sORF计数分布呈右偏且存在零膨胀现象，不满足正态性假设，全部组间比较均采用非参数检验方法。对五阶段队列（队列一与队列三），采用Kruskal-Wallis H检验评估组间差异；对NC与AD二元对立队列（队列二与队列四），采用双尾Mann-Whitney U秩和检验。上述三项指标在每个队列中均独立检验。若某一指标在特定队列内所有受试者中取值无变异，则不予检验。描述性统计量以均值±标准差及中位数形式报告。双尾P值小于0.05视为差异具有统计学意义。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 18,
+   "style": "Heading 2",
+   "text": "结果",
+   "runs": [
+    {
+     "text": "结果",
+     "size_pt": 16.0,
+     "bold": true
+    }
+   ],
+   "first_line_indent_pt": 0.0,
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 19,
+   "style": "Heading 3",
+   "text": "各队列sORF数量的描述性统计",
+   "runs": [
+    {
+     "text": "各队列sORF数量的描述性统计",
+     "size_pt": 14.0,
+     "bold": true
+    }
+   ],
+   "first_line_indent_pt": 0.0,
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 20,
+   "style": "Normal",
+   "text": "四个分析队列中各诊断组的sORF数量描述性统计结果见表1。在匹配265例队列的五阶段比较中，各组单位基因组sORF数（sORF_per_MAG）介于104 693.8至114 555.0之间，组间极差为9 861，相对差异为9.4%。在全476例队列中，该指标介于108 545.9至114 529.3之间，组间极差进一步缩小至5 983，相对差异为5.5%。作为对照，单个代表基因组之间的sORF产出量相差达21.3倍，远超任何组间差异的幅度。",
+   "runs": [
+    {
+     "text": "四个分析队列中各诊断组的sORF数量描述性统计结果见表1。在匹配265例队列的五阶段比较中，各组单位基因组sORF数（sORF_per_MAG）介于104 693.8至114 555.0之间，组间极差为9 861，相对差异为9.4%。在全476例队列中，该指标介于108 545.9至114 529.3之间，组间极差进一步缩小至5 983，相对差异为5.5%。作为对照，单个代表基因组之间的sORF产出量相差达21.3倍，远超任何组间差异的幅度。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 21,
+   "style": "Normal",
+   "text": "",
+   "runs": [
+    {
+     "text": "",
+     "font": "Times New Roman",
+     "font_eastasia": "黑体",
+     "size_pt": 10.5
+    }
+   ],
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 22,
+   "style": "Normal",
+   "text": "表1  四个分析队列中各诊断组sORF数量的描述性统计",
+   "runs": [
+    {
+     "text": "表1  四个分析队列中各诊断组sORF数量的描述性统计",
+     "font": "Times New Roman",
+     "font_eastasia": "黑体",
+     "size_pt": 10.5
+    }
+   ],
+   "align": "CENTER (1)",
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 23,
+   "type": "table",
+   "n_rows": 15,
+   "n_cols": 6,
+   "rows": [
+    [
+     {
+      "row": 0,
+      "col": 0,
+      "text": "队列",
+      "paragraphs": [
+       {
+        "text": "队列",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "队列",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 1,
+      "text": "诊断组",
+      "paragraphs": [
+       {
+        "text": "诊断组",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "诊断组",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 2,
+      "text": "例数",
+      "paragraphs": [
+       {
+        "text": "例数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "例数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 3,
+      "text": "代表基因组数",
+      "paragraphs": [
+       {
+        "text": "代表基因组数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "代表基因组数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 4,
+      "text": "sORF总数（均值±标准差）",
+      "paragraphs": [
+       {
+        "text": "sORF总数（均值±标准差）",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "sORF总数（均值±标准差）",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 5,
+      "text": "单位基因组sORF数（均值±标准差）",
+      "paragraphs": [
+       {
+        "text": "单位基因组sORF数（均值±标准差）",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "单位基因组sORF数（均值±标准差）",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 1,
+      "col": 0,
+      "text": "队列一 匹配265例",
+      "paragraphs": [
+       {
+        "text": "队列一 匹配265例",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "队列一 匹配265例",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 1,
+      "text": "NC",
+      "paragraphs": [
+       {
+        "text": "NC",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "NC",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 2,
+      "text": "51",
+      "paragraphs": [
+       {
+        "text": "51",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "51",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 3,
+      "text": "214",
+      "paragraphs": [
+       {
+        "text": "214",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "214",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 4,
+      "text": "499113.4 ± 349679.5",
+      "paragraphs": [
+       {
+        "text": "499113.4 ± 349679.5",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "499113.4 ± 349679.5",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 5,
+      "text": "113306.7 ± 39216.8",
+      "paragraphs": [
+       {
+        "text": "113306.7 ± 39216.8",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "113306.7 ± 39216.8",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 2,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 1,
+      "text": "SCS",
+      "paragraphs": [
+       {
+        "text": "SCS",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "SCS",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 2,
+      "text": "50",
+      "paragraphs": [
+       {
+        "text": "50",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "50",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 3,
+      "text": "220",
+      "paragraphs": [
+       {
+        "text": "220",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "220",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 4,
+      "text": "486297.6 ± 356202.7",
+      "paragraphs": [
+       {
+        "text": "486297.6 ± 356202.7",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "486297.6 ± 356202.7",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 5,
+      "text": "113214.0 ± 46391.6",
+      "paragraphs": [
+       {
+        "text": "113214.0 ± 46391.6",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "113214.0 ± 46391.6",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 3,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 1,
+      "text": "SCD",
+      "paragraphs": [
+       {
+        "text": "SCD",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "SCD",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 2,
+      "text": "52",
+      "paragraphs": [
+       {
+        "text": "52",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "52",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 3,
+      "text": "237",
+      "paragraphs": [
+       {
+        "text": "237",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "237",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 4,
+      "text": "504676.5 ± 458839.8",
+      "paragraphs": [
+       {
+        "text": "504676.5 ± 458839.8",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "504676.5 ± 458839.8",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 5,
+      "text": "104693.8 ± 40532.0",
+      "paragraphs": [
+       {
+        "text": "104693.8 ± 40532.0",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "104693.8 ± 40532.0",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 4,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 1,
+      "text": "MCI",
+      "paragraphs": [
+       {
+        "text": "MCI",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "MCI",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 2,
+      "text": "51",
+      "paragraphs": [
+       {
+        "text": "51",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "51",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 3,
+      "text": "181",
+      "paragraphs": [
+       {
+        "text": "181",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "181",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 4,
+      "text": "391241.5 ± 279788.4",
+      "paragraphs": [
+       {
+        "text": "391241.5 ± 279788.4",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "391241.5 ± 279788.4",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 5,
+      "text": "108738.2 ± 35670.7",
+      "paragraphs": [
+       {
+        "text": "108738.2 ± 35670.7",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "108738.2 ± 35670.7",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 5,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 1,
+      "text": "AD",
+      "paragraphs": [
+       {
+        "text": "AD",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "AD",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 2,
+      "text": "51",
+      "paragraphs": [
+       {
+        "text": "51",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "51",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 3,
+      "text": "242",
+      "paragraphs": [
+       {
+        "text": "242",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "242",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 4,
+      "text": "524193.2 ± 395902.1",
+      "paragraphs": [
+       {
+        "text": "524193.2 ± 395902.1",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "524193.2 ± 395902.1",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 5,
+      "text": "114555.0 ± 51117.8",
+      "paragraphs": [
+       {
+        "text": "114555.0 ± 51117.8",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "114555.0 ± 51117.8",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 6,
+      "col": 0,
+      "text": "队列二 匹配265例",
+      "paragraphs": [
+       {
+        "text": "队列二 匹配265例",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "队列二 匹配265例",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 1,
+      "text": "NC",
+      "paragraphs": [
+       {
+        "text": "NC",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "NC",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 2,
+      "text": "51",
+      "paragraphs": [
+       {
+        "text": "51",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "51",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 3,
+      "text": "214",
+      "paragraphs": [
+       {
+        "text": "214",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "214",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 4,
+      "text": "499113.4 ± 349679.5",
+      "paragraphs": [
+       {
+        "text": "499113.4 ± 349679.5",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "499113.4 ± 349679.5",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 5,
+      "text": "113306.7 ± 39216.8",
+      "paragraphs": [
+       {
+        "text": "113306.7 ± 39216.8",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "113306.7 ± 39216.8",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 7,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 1,
+      "text": "AD",
+      "paragraphs": [
+       {
+        "text": "AD",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "AD",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 2,
+      "text": "51",
+      "paragraphs": [
+       {
+        "text": "51",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "51",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 3,
+      "text": "242",
+      "paragraphs": [
+       {
+        "text": "242",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "242",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 4,
+      "text": "524193.2 ± 395902.1",
+      "paragraphs": [
+       {
+        "text": "524193.2 ± 395902.1",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "524193.2 ± 395902.1",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 5,
+      "text": "114555.0 ± 51117.8",
+      "paragraphs": [
+       {
+        "text": "114555.0 ± 51117.8",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "114555.0 ± 51117.8",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 8,
+      "col": 0,
+      "text": "队列三 全476例",
+      "paragraphs": [
+       {
+        "text": "队列三 全476例",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "队列三 全476例",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 1,
+      "text": "NC",
+      "paragraphs": [
+       {
+        "text": "NC",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "NC",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 2,
+      "text": "61",
+      "paragraphs": [
+       {
+        "text": "61",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "61",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 3,
+      "text": "252",
+      "paragraphs": [
+       {
+        "text": "252",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "252",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 4,
+      "text": "494483.2 ± 351913.4",
+      "paragraphs": [
+       {
+        "text": "494483.2 ± 351913.4",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "494483.2 ± 351913.4",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 5,
+      "text": "114529.3 ± 44832.6",
+      "paragraphs": [
+       {
+        "text": "114529.3 ± 44832.6",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "114529.3 ± 44832.6",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 9,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 1,
+      "text": "SCS",
+      "paragraphs": [
+       {
+        "text": "SCS",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "SCS",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 2,
+      "text": "78",
+      "paragraphs": [
+       {
+        "text": "78",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "78",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 3,
+      "text": "343",
+      "paragraphs": [
+       {
+        "text": "343",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "343",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 4,
+      "text": "475821.4 ± 342579.7",
+      "paragraphs": [
+       {
+        "text": "475821.4 ± 342579.7",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "475821.4 ± 342579.7",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 5,
+      "text": "110000.2 ± 41944.1",
+      "paragraphs": [
+       {
+        "text": "110000.2 ± 41944.1",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "110000.2 ± 41944.1",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 10,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 1,
+      "text": "SCD",
+      "paragraphs": [
+       {
+        "text": "SCD",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "SCD",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 2,
+      "text": "89",
+      "paragraphs": [
+       {
+        "text": "89",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "89",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 3,
+      "text": "380",
+      "paragraphs": [
+       {
+        "text": "380",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "380",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 4,
+      "text": "473542.4 ± 386729.5",
+      "paragraphs": [
+       {
+        "text": "473542.4 ± 386729.5",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "473542.4 ± 386729.5",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 5,
+      "text": "108545.9 ± 41447.3",
+      "paragraphs": [
+       {
+        "text": "108545.9 ± 41447.3",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "108545.9 ± 41447.3",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 11,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 1,
+      "text": "MCI",
+      "paragraphs": [
+       {
+        "text": "MCI",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "MCI",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 2,
+      "text": "114",
+      "paragraphs": [
+       {
+        "text": "114",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "114",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 3,
+      "text": "447",
+      "paragraphs": [
+       {
+        "text": "447",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "447",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 4,
+      "text": "430833.2 ± 283543.2",
+      "paragraphs": [
+       {
+        "text": "430833.2 ± 283543.2",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "430833.2 ± 283543.2",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 5,
+      "text": "114283.5 ± 48208.6",
+      "paragraphs": [
+       {
+        "text": "114283.5 ± 48208.6",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "114283.5 ± 48208.6",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 12,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 1,
+      "text": "AD",
+      "paragraphs": [
+       {
+        "text": "AD",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "AD",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 2,
+      "text": "117",
+      "paragraphs": [
+       {
+        "text": "117",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "117",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 3,
+      "text": "549",
+      "paragraphs": [
+       {
+        "text": "549",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "549",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 4,
+      "text": "519379.7 ± 370034.3",
+      "paragraphs": [
+       {
+        "text": "519379.7 ± 370034.3",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "519379.7 ± 370034.3",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 5,
+      "text": "111582.5 ± 45370.1",
+      "paragraphs": [
+       {
+        "text": "111582.5 ± 45370.1",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "111582.5 ± 45370.1",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 13,
+      "col": 0,
+      "text": "队列四 全476例",
+      "paragraphs": [
+       {
+        "text": "队列四 全476例",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "队列四 全476例",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 13,
+      "col": 1,
+      "text": "NC",
+      "paragraphs": [
+       {
+        "text": "NC",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "NC",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 13,
+      "col": 2,
+      "text": "61",
+      "paragraphs": [
+       {
+        "text": "61",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "61",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 13,
+      "col": 3,
+      "text": "252",
+      "paragraphs": [
+       {
+        "text": "252",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "252",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 13,
+      "col": 4,
+      "text": "494483.2 ± 351913.4",
+      "paragraphs": [
+       {
+        "text": "494483.2 ± 351913.4",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "494483.2 ± 351913.4",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 13,
+      "col": 5,
+      "text": "114529.3 ± 44832.6",
+      "paragraphs": [
+       {
+        "text": "114529.3 ± 44832.6",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "114529.3 ± 44832.6",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 14,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 14,
+      "col": 1,
+      "text": "AD",
+      "paragraphs": [
+       {
+        "text": "AD",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "AD",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 14,
+      "col": 2,
+      "text": "117",
+      "paragraphs": [
+       {
+        "text": "117",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "117",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 14,
+      "col": 3,
+      "text": "549",
+      "paragraphs": [
+       {
+        "text": "549",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "549",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 14,
+      "col": 4,
+      "text": "519379.7 ± 370034.3",
+      "paragraphs": [
+       {
+        "text": "519379.7 ± 370034.3",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "519379.7 ± 370034.3",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 14,
+      "col": 5,
+      "text": "111582.5 ± 45370.1",
+      "paragraphs": [
+       {
+        "text": "111582.5 ± 45370.1",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "111582.5 ± 45370.1",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "index": 24,
+   "style": "Normal",
+   "text": "各组sORF总数（Total_sORF）的组间波动相对较大，匹配队列中MCI组均值最低（391 241.5），AD组最高（524 193.2）。然而该指标与各组贡献的代表基因组数（N_MAG）呈同向变化：MCI组贡献基因组数亦为最低（均值3.5），AD组最高（均值4.7）。这一同步性提示Total_sORF的组间波动主要由代表基因组数量差异所驱动，而非单位基因组编码密度的真实改变。",
+   "runs": [
+    {
+     "text": "各组sORF总数（Total_sORF）的组间波动相对较大，匹配队列中MCI组均值最低（391 241.5），AD组最高（524 193.2）。然而该指标与各组贡献的代表基因组数（N_MAG）呈同向变化：MCI组贡献基因组数亦为最低（均值3.5），AD组最高（均值4.7）。这一同步性提示Total_sORF的组间波动主要由代表基因组数量差异所驱动，而非单位基因组编码密度的真实改变。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 25,
+   "style": "Heading 3",
+   "text": "组间差异的统计学检验",
+   "runs": [
+    {
+     "text": "组间差异的统计学检验",
+     "size_pt": 14.0,
+     "bold": true
+    }
+   ],
+   "first_line_indent_pt": 0.0,
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 26,
+   "style": "Normal",
+   "text": "四个队列中三项指标的非参数检验结果见表2。在全部12项检验中，均未观察到具有统计学意义的组间差异（P值介于0.4291至0.9786之间，均大于0.05）。",
+   "runs": [
+    {
+     "text": "四个队列中三项指标的非参数检验结果见表2。在全部12项检验中，均未观察到具有统计学意义的组间差异（P值介于0.4291至0.9786之间，均大于0.05）。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 27,
+   "style": "Normal",
+   "text": "",
+   "runs": [
+    {
+     "text": "",
+     "font": "Times New Roman",
+     "font_eastasia": "黑体",
+     "size_pt": 10.5
+    }
+   ],
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 28,
+   "style": "Normal",
+   "text": "表2  四个队列中sORF数量指标的非参数检验结果",
+   "runs": [
+    {
+     "text": "表2  四个队列中sORF数量指标的非参数检验结果",
+     "font": "Times New Roman",
+     "font_eastasia": "黑体",
+     "size_pt": 10.5
+    }
+   ],
+   "align": "CENTER (1)",
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 29,
+   "type": "table",
+   "n_rows": 13,
+   "n_cols": 6,
+   "rows": [
+    [
+     {
+      "row": 0,
+      "col": 0,
+      "text": "队列",
+      "paragraphs": [
+       {
+        "text": "队列",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "队列",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 1,
+      "text": "比较设计",
+      "paragraphs": [
+       {
+        "text": "比较设计",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "比较设计",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 2,
+      "text": "检验方法",
+      "paragraphs": [
+       {
+        "text": "检验方法",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检验方法",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 3,
+      "text": "统计指标",
+      "paragraphs": [
+       {
+        "text": "统计指标",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "统计指标",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 4,
+      "text": "统计量",
+      "paragraphs": [
+       {
+        "text": "统计量",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "统计量",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 5,
+      "text": "P值",
+      "paragraphs": [
+       {
+        "text": "P值",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "P值",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5,
+          "bold": true
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 1,
+      "col": 0,
+      "text": "队列一 匹配265例",
+      "paragraphs": [
+       {
+        "text": "队列一 匹配265例",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "队列一 匹配265例",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 1,
+      "text": "五阶段",
+      "paragraphs": [
+       {
+        "text": "五阶段",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "五阶段",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 2,
+      "text": "Kruskal-Wallis H",
+      "paragraphs": [
+       {
+        "text": "Kruskal-Wallis H",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Kruskal-Wallis H",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 3,
+      "text": "sORF总数",
+      "paragraphs": [
+       {
+        "text": "sORF总数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "sORF总数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 4,
+      "text": "2.93",
+      "paragraphs": [
+       {
+        "text": "2.93",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2.93",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 5,
+      "text": "0.5689",
+      "paragraphs": [
+       {
+        "text": "0.5689",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.5689",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 2,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 1,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 3,
+      "text": "单位基因组sORF数",
+      "paragraphs": [
+       {
+        "text": "单位基因组sORF数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "单位基因组sORF数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 4,
+      "text": "2.01",
+      "paragraphs": [
+       {
+        "text": "2.01",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2.01",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 5,
+      "text": "0.7344",
+      "paragraphs": [
+       {
+        "text": "0.7344",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.7344",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 3,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 1,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 3,
+      "text": "代表基因组数",
+      "paragraphs": [
+       {
+        "text": "代表基因组数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "代表基因组数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 4,
+      "text": "2.99",
+      "paragraphs": [
+       {
+        "text": "2.99",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2.99",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 5,
+      "text": "0.5591",
+      "paragraphs": [
+       {
+        "text": "0.5591",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.5591",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 4,
+      "col": 0,
+      "text": "队列二 匹配265例",
+      "paragraphs": [
+       {
+        "text": "队列二 匹配265例",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "队列二 匹配265例",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 1,
+      "text": "NC对AD",
+      "paragraphs": [
+       {
+        "text": "NC对AD",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "NC对AD",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 2,
+      "text": "Mann-Whitney U",
+      "paragraphs": [
+       {
+        "text": "Mann-Whitney U",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Mann-Whitney U",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 3,
+      "text": "sORF总数",
+      "paragraphs": [
+       {
+        "text": "sORF总数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "sORF总数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 4,
+      "text": "1305.00",
+      "paragraphs": [
+       {
+        "text": "1305.00",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1305.00",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 5,
+      "text": "0.9786",
+      "paragraphs": [
+       {
+        "text": "0.9786",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.9786",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 5,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 1,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 3,
+      "text": "单位基因组sORF数",
+      "paragraphs": [
+       {
+        "text": "单位基因组sORF数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "单位基因组sORF数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 4,
+      "text": "1226.00",
+      "paragraphs": [
+       {
+        "text": "1226.00",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1226.00",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 5,
+      "text": "0.6204",
+      "paragraphs": [
+       {
+        "text": "0.6204",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.6204",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 6,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 1,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 3,
+      "text": "代表基因组数",
+      "paragraphs": [
+       {
+        "text": "代表基因组数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "代表基因组数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 4,
+      "text": "1321.50",
+      "paragraphs": [
+       {
+        "text": "1321.50",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1321.50",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 5,
+      "text": "0.8895",
+      "paragraphs": [
+       {
+        "text": "0.8895",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.8895",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 7,
+      "col": 0,
+      "text": "队列三 全476例",
+      "paragraphs": [
+       {
+        "text": "队列三 全476例",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "队列三 全476例",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 1,
+      "text": "五阶段",
+      "paragraphs": [
+       {
+        "text": "五阶段",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "五阶段",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 2,
+      "text": "Kruskal-Wallis H",
+      "paragraphs": [
+       {
+        "text": "Kruskal-Wallis H",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Kruskal-Wallis H",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 3,
+      "text": "sORF总数",
+      "paragraphs": [
+       {
+        "text": "sORF总数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "sORF总数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 4,
+      "text": "2.27",
+      "paragraphs": [
+       {
+        "text": "2.27",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2.27",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 5,
+      "text": "0.6860",
+      "paragraphs": [
+       {
+        "text": "0.6860",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.6860",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 8,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 1,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 3,
+      "text": "单位基因组sORF数",
+      "paragraphs": [
+       {
+        "text": "单位基因组sORF数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "单位基因组sORF数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 4,
+      "text": "1.45",
+      "paragraphs": [
+       {
+        "text": "1.45",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1.45",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 5,
+      "text": "0.8359",
+      "paragraphs": [
+       {
+        "text": "0.8359",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.8359",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 9,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 1,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 3,
+      "text": "代表基因组数",
+      "paragraphs": [
+       {
+        "text": "代表基因组数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "代表基因组数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 4,
+      "text": "3.00",
+      "paragraphs": [
+       {
+        "text": "3.00",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "3.00",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 5,
+      "text": "0.5585",
+      "paragraphs": [
+       {
+        "text": "0.5585",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.5585",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 10,
+      "col": 0,
+      "text": "队列四 全476例",
+      "paragraphs": [
+       {
+        "text": "队列四 全476例",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "队列四 全476例",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 1,
+      "text": "NC对AD",
+      "paragraphs": [
+       {
+        "text": "NC对AD",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "NC对AD",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 2,
+      "text": "Mann-Whitney U",
+      "paragraphs": [
+       {
+        "text": "Mann-Whitney U",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Mann-Whitney U",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 3,
+      "text": "sORF总数",
+      "paragraphs": [
+       {
+        "text": "sORF总数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "sORF总数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 4,
+      "text": "3666.00",
+      "paragraphs": [
+       {
+        "text": "3666.00",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "3666.00",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 5,
+      "text": "0.7662",
+      "paragraphs": [
+       {
+        "text": "0.7662",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.7662",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 11,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 1,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 3,
+      "text": "单位基因组sORF数",
+      "paragraphs": [
+       {
+        "text": "单位基因组sORF数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "单位基因组sORF数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 4,
+      "text": "3310.00",
+      "paragraphs": [
+       {
+        "text": "3310.00",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "3310.00",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 5,
+      "text": "0.4291",
+      "paragraphs": [
+       {
+        "text": "0.4291",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.4291",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 12,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 1,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 3,
+      "text": "代表基因组数",
+      "paragraphs": [
+       {
+        "text": "代表基因组数",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "代表基因组数",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 4,
+      "text": "3808.00",
+      "paragraphs": [
+       {
+        "text": "3808.00",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "3808.00",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 5,
+      "text": "0.4590",
+      "paragraphs": [
+       {
+        "text": "0.4590",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "0.4590",
+          "font": "Times New Roman",
+          "font_eastasia": "宋体",
+          "size_pt": 10.5
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "index": 30,
+   "style": "Normal",
+   "text": "在匹配265例五阶段队列中，Total_sORF、sORF_per_MAG与N_MAG的Kruskal-Wallis检验P值分别为0.5689、0.7344与0.5591。在匹配265例NC与AD二元比较中，对应的Mann-Whitney U检验P值分别为0.9786、0.6204与0.8895。在全476例五阶段队列中，P值分别为0.6860、0.8359与0.5585。在全476例NC与AD二元比较中，P值分别为0.7662、0.4291与0.4590。",
+   "runs": [
+    {
+     "text": "在匹配265例五阶段队列中，Total_sORF、sORF_per_MAG与N_MAG的Kruskal-Wallis检验P值分别为0.5689、0.7344与0.5591。在匹配265例NC与AD二元比较中，对应的Mann-Whitney U检验P值分别为0.9786、0.6204与0.8895。在全476例五阶段队列中，P值分别为0.6860、0.8359与0.5585。在全476例NC与AD二元比较中，P值分别为0.7662、0.4291与0.4590。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 31,
+   "style": "Normal",
+   "text": "值得注意的是，主要结局指标sORF_per_MAG在四个队列中的P值均处于较高水平（0.4291至0.8359），且效应方向在不同队列间不一致：在匹配队列的二元比较中AD组略高于NC组（114 555.0对113 306.7），而在全队列的二元比较中则呈相反趋势（111 582.5对114 529.3）。该方向性的不一致进一步支持组间无真实差异的判断。",
+   "runs": [
+    {
+     "text": "值得注意的是，主要结局指标sORF_per_MAG在四个队列中的P值均处于较高水平（0.4291至0.8359），且效应方向在不同队列间不一致：在匹配队列的二元比较中AD组略高于NC组（114 555.0对113 306.7），而在全队列的二元比较中则呈相反趋势（111 582.5对114 529.3）。该方向性的不一致进一步支持组间无真实差异的判断。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 32,
+   "style": "Normal",
+   "text": "上述结果表明，在本研究队列中，肠道微生物组来源的sORF总体编码容量在认知正常至阿尔茨海默病的病程谱系中保持稳定，未随病程进展发生可检出的数量层面改变。该阴性结果同时在严格年龄性别匹配的亚队列与全样本队列中得到一致重现，提示其不太可能由混杂因素掩盖所致。",
+   "runs": [
+    {
+     "text": "上述结果表明，在本研究队列中，肠道微生物组来源的sORF总体编码容量在认知正常至阿尔茨海默病的病程谱系中保持稳定，未随病程进展发生可检出的数量层面改变。该阴性结果同时在严格年龄性别匹配的亚队列与全样本队列中得到一致重现，提示其不太可能由混杂因素掩盖所致。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 33,
+   "style": "Normal",
+   "text": "需要指出的是，本研究此阶段的分析针对的是sORF的总体数量特征，属于宏观层面的容量评估。sORF总数不变并不排除特定功能亚类多肽（例如抗菌肽）在丰度或组成上发生改变的可能性，亦不排除个别多肽序列存在显著的组间差异。针对候选抗菌肽的靶向预测与差异分析将在后续工作中开展。",
+   "runs": [
+    {
+     "text": "需要指出的是，本研究此阶段的分析针对的是sORF的总体数量特征，属于宏观层面的容量评估。sORF总数不变并不排除特定功能亚类多肽（例如抗菌肽）在丰度或组成上发生改变的可能性，亦不排除个别多肽序列存在显著的组间差异。针对候选抗菌肽的靶向预测与差异分析将在后续工作中开展。"
+    }
+   ],
+   "left_indent_pt": 0.0,
+   "is_placeholder": false,
+   "num_runs": 1
+  }
+ ]
+}

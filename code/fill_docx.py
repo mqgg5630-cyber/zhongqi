@@ -58,6 +58,7 @@ import sys
 from pathlib import Path
 
 from docx import Document
+from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
 from docx.table import Table
 from docx.text.paragraph import Paragraph
@@ -263,9 +264,102 @@ def op_delete_paragraph(doc, op):
     print(f"OK    delete_paragraph body[{idx}]")
 
 
+
+def _clean_run(rpr_el, text: str, bold: bool = False):
+    """Build a <w:r> with a copy of rpr_el (or none) and the given text."""
+    r = OxmlElement("w:r")
+    if rpr_el is not None:
+        rpr = copy.deepcopy(rpr_el)
+        if bold:
+            b = rpr.find(qn("w:b"))
+            if b is None:
+                b = OxmlElement("w:b")
+                rpr.insert(0, b)
+        r.append(rpr)
+    elif bold:
+        rpr = OxmlElement("w:rPr")
+        rpr.append(OxmlElement("w:b"))
+        r.append(rpr)
+    t = OxmlElement("w:t")
+    t.set(qn("xml:space"), "preserve")
+    t.text = text
+    r.append(t)
+    return r
+
+
+def _rpr_of_text_run(p_el):
+    """rPr of the first run of a paragraph that actually holds text (skips
+    form-field runs such as fldChar / instrText)."""
+    fallback = None
+    for r in p_el.findall(qn("w:r")):
+        rpr = r.find(qn("w:rPr"))
+        if r.find(qn("w:t")) is not None:
+            return rpr
+        if fallback is None:
+            fallback = rpr
+    return fallback
+
+
+def op_fill_cell(doc, op):
+    """Replace everything after the first `keep_before` paragraphs of a cell with
+    `texts`, keeping the template's paragraph format (indent / line spacing) and
+    run format (font / size) - including Word form fields being removed cleanly."""
+    cell = get_cell(doc, op["table"], op["row"], op["col"])
+    if cell is None:
+        warn(f"fill_cell: table {op['table']} r{op['row']}c{op['col']} does not exist")
+        return
+    texts = list(op["texts"])
+    keep = int(op.get("keep_before", 1))
+    bold_idx = set(int(i) for i in op.get("bold", []))
+
+    orig = list(cell.paragraphs)
+    if keep > len(orig):
+        warn(f"fill_cell: keep_before={keep} > {len(orig)} paragraphs")
+        return
+
+    # template paragraph = first placeholder paragraph after the kept ones
+    tmpl = None
+    for p in orig[keep:]:
+        if "FORMTEXT" in p._p.xml or p.text.strip("\u2002 ").strip() == "":
+            tmpl = p
+            break
+    if tmpl is None:
+        tmpl = orig[keep] if len(orig) > keep else orig[-1]
+
+    normal_rpr = _rpr_of_text_run(tmpl._p)
+    bold_rpr = _rpr_of_text_run(orig[0]._p) if orig else normal_rpr
+    if bold_rpr is None or bold_rpr.find(qn("w:b")) is None:
+        bold_rpr = None  # heading is not bold -> keep normal format
+
+    anchor = orig[keep - 1]._p if keep > 0 else tmpl._p.getprevious()
+    created = []
+    for i, text in enumerate(texts):
+        new_p = copy.deepcopy(tmpl._p)
+        for r in new_p.findall(qn("w:r")):
+            new_p.remove(r)
+        for extra in (qn("w:bookmarkStart"), qn("w:bookmarkEnd")):
+            for el in new_p.findall(extra):
+                new_p.remove(el)
+        use_bold = i in bold_idx and bold_rpr is not None
+        new_p.append(_clean_run(bold_rpr if use_bold else normal_rpr, text, bold=use_bold))
+        if anchor is not None:
+            anchor.addnext(new_p)
+        else:
+            cell._tc.insert(0, new_p) if False else None
+        anchor = new_p
+        created.append(new_p)
+
+    for p in orig[keep:]:
+        p._p.getparent().remove(p._p)
+
+    print(f"OK    fill_cell     table {op['table']} r{op['row']}c{op['col']} "
+          f"+{len(texts)} paragraphs ({len(bold_idx)} bold)")
+
+
 HANDLERS = {
     "replace_text": op_replace_text,
     "set_cell": op_set_cell,
+    "fill_cell": op_fill_cell,
     "insert_in_cell": op_insert_in_cell,
     "set_paragraph": op_set_paragraph,
     "insert_after": op_insert_after,

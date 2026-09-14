@@ -1,0 +1,6166 @@
+{
+ "file": "sources/中期.docx",
+ "n_body_elements": 24,
+ "n_paragraphs": 22,
+ "n_tables": 2,
+ "sections": [
+  {
+   "section": 0,
+   "orientation": "PORTRAIT (0)",
+   "page_w_pt": 595.3,
+   "page_h_pt": 841.9,
+   "header": [
+    ""
+   ],
+   "footer": [
+    "2020-11-28\t\t2"
+   ]
+  },
+  {
+   "section": 1,
+   "orientation": "PORTRAIT (0)",
+   "page_w_pt": 595.3,
+   "page_h_pt": 841.9,
+   "header": [
+    ""
+   ],
+   "footer": [
+    "2020-11-28\t\t2"
+   ]
+  },
+  {
+   "section": 2,
+   "orientation": "PORTRAIT (0)",
+   "page_w_pt": 595.3,
+   "page_h_pt": 841.9,
+   "header": [
+    ""
+   ],
+   "footer": [
+    "2020-11-28\t\t2"
+   ]
+  }
+ ],
+ "elements": [
+  {
+   "index": 0,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 1,
+   "style": "Normal",
+   "text": "",
+   "runs": [
+    {
+     "text": "",
+     "font": "宋体",
+     "color": "000000"
+    }
+   ],
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 2,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "align": "CENTER (1)",
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 3,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "align": "CENTER (1)",
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 4,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "align": "CENTER (1)",
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 5,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "align": "CENTER (1)",
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 6,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "align": "CENTER (1)",
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 7,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "align": "CENTER (1)",
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 8,
+   "style": "Normal",
+   "text": "研究生论文中期检查表",
+   "runs": [
+    {
+     "text": "研究生论文中期检查表",
+     "font": "宋体",
+     "size_pt": 32.0,
+     "bold": true,
+     "color": "000000"
+    }
+   ],
+   "align": "CENTER (1)",
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 9,
+   "style": "Normal",
+   "text": "（学术学位）",
+   "runs": [
+    {
+     "text": "（学术学位）",
+     "size_pt": 18.0,
+     "bold": true,
+     "color": "000000"
+    }
+   ],
+   "align": "CENTER (1)",
+   "is_placeholder": false,
+   "num_runs": 1
+  },
+  {
+   "index": 10,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "first_line_indent_pt": 100.05,
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 11,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "first_line_indent_pt": 100.05,
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 12,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "first_line_indent_pt": 100.05,
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 13,
+   "type": "table",
+   "n_rows": 7,
+   "n_cols": 2,
+   "rows": [
+    [
+     {
+      "row": 0,
+      "col": 0,
+      "text": "姓名",
+      "paragraphs": [
+       {
+        "text": "姓名",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "姓名",
+          "font": "宋体",
+          "size_pt": 14.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 1,
+      "col": 0,
+      "text": "学号",
+      "paragraphs": [
+       {
+        "text": "学号",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "学号",
+          "font": "宋体",
+          "size_pt": 14.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 2,
+      "col": 0,
+      "text": "研究生类型",
+      "paragraphs": [
+       {
+        "text": "研究生类型",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "研究生类型",
+          "font": "宋体",
+          "size_pt": 14.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 1,
+      "text": "",
+      "paragraphs": []
+     }
+    ],
+    [
+     {
+      "row": 3,
+      "col": 0,
+      "text": "培养单位",
+      "paragraphs": [
+       {
+        "text": "培养单位",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "培养单位",
+          "font": "宋体",
+          "size_pt": 14.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 4,
+      "col": 0,
+      "text": "学科专业",
+      "paragraphs": [
+       {
+        "text": "学科专业",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "学科",
+          "font": "宋体",
+          "size_pt": 14.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "专业",
+          "font": "宋体",
+          "size_pt": 14.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 5,
+      "col": 0,
+      "text": "研究方向",
+      "paragraphs": [
+       {
+        "text": "研究方向",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "研究方向",
+          "font": "宋体",
+          "size_pt": 14.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 1,
+      "text": "",
+      "paragraphs": []
+     }
+    ],
+    [
+     {
+      "row": 6,
+      "col": 0,
+      "text": "指导教师",
+      "paragraphs": [
+       {
+        "text": "指导教师",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "指导教师",
+          "font": "宋体",
+          "size_pt": 14.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "index": 14,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "align": "CENTER (1)",
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 15,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "align": "CENTER (1)",
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 16,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "align": "CENTER (1)",
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 17,
+   "style": "Normal",
+   "text": "填  表  说  明",
+   "runs": [
+    {
+     "text": "填",
+     "font": "宋体",
+     "size_pt": 15.0,
+     "bold": true,
+     "color": "000000"
+    },
+    {
+     "text": " ",
+     "font": "宋体",
+     "size_pt": 15.0,
+     "bold": true,
+     "color": "000000"
+    },
+    {
+     "text": " 表 ",
+     "font": "宋体",
+     "size_pt": 15.0,
+     "bold": true,
+     "color": "000000"
+    },
+    {
+     "text": " ",
+     "font": "宋体",
+     "size_pt": 15.0,
+     "bold": true,
+     "color": "000000"
+    },
+    {
+     "text": "说 ",
+     "font": "宋体",
+     "size_pt": 15.0,
+     "bold": true,
+     "color": "000000"
+    },
+    {
+     "text": " ",
+     "font": "宋体",
+     "size_pt": 15.0,
+     "bold": true,
+     "color": "000000"
+    },
+    {
+     "text": "明",
+     "font": "宋体",
+     "size_pt": 15.0,
+     "bold": true,
+     "color": "000000"
+    }
+   ],
+   "align": "CENTER (1)",
+   "line_spacing": 2.0,
+   "is_placeholder": false,
+   "num_runs": 7
+  },
+  {
+   "index": 18,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "line_spacing": 2.0,
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 19,
+   "style": "Normal",
+   "text": "1.\t本表除签名外需打印填写。",
+   "runs": [
+    {
+     "text": "1.",
+     "font": "宋体",
+     "size_pt": 12.0,
+     "color": "000000"
+    },
+    {
+     "text": "\t",
+     "font": "宋体",
+     "size_pt": 12.0,
+     "color": "000000"
+    },
+    {
+     "text": "本表除签名外需打印填写。",
+     "font": "宋体",
+     "size_pt": 12.0,
+     "color": "000000"
+    }
+   ],
+   "left_indent_pt": 30.0,
+   "line_spacing": 2.0,
+   "is_placeholder": false,
+   "num_runs": 3
+  },
+  {
+   "index": 20,
+   "style": "Normal",
+   "text": "2.\t本表A4纸型双面打印左侧装订，由学院保存，待研究生完成学业离校后归入学业档案，并提交学校档案室长期保存。",
+   "runs": [
+    {
+     "text": "2.",
+     "font": "宋体",
+     "size_pt": 12.0,
+     "color": "000000"
+    },
+    {
+     "text": "\t",
+     "font": "宋体",
+     "size_pt": 12.0,
+     "color": "000000"
+    },
+    {
+     "text": "本表A4纸型双面打印左侧装订，由学院保存，待研究生完成学业离校后归入学业档案，并提交学校档案室长期保存。",
+     "font": "宋体",
+     "size_pt": 12.0,
+     "color": "000000"
+    }
+   ],
+   "first_line_indent_pt": -33.7,
+   "left_indent_pt": 63.75,
+   "line_spacing": 2.0,
+   "is_placeholder": false,
+   "num_runs": 3
+  },
+  {
+   "index": 21,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "first_line_indent_pt": -33.7,
+   "left_indent_pt": 63.75,
+   "line_spacing": 2.0,
+   "is_placeholder": false,
+   "num_runs": 0
+  },
+  {
+   "index": 22,
+   "type": "table",
+   "n_rows": 19,
+   "n_cols": 7,
+   "rows": [
+    [
+     {
+      "row": 0,
+      "col": 0,
+      "text": "论文题目",
+      "paragraphs": [
+       {
+        "text": "论文题目",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "论文题目",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 1,
+      "text": "论文题目",
+      "paragraphs": [
+       {
+        "text": "论文题目",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "论文题目",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 2,
+      "text": "论文题目",
+      "paragraphs": [
+       {
+        "text": "论文题目",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "论文题目",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 3,
+      "text": "     ",
+      "paragraphs": [
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 4,
+      "text": "     ",
+      "paragraphs": [
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 5,
+      "text": "     ",
+      "paragraphs": [
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 0,
+      "col": 6,
+      "text": "     ",
+      "paragraphs": [
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 1,
+      "col": 0,
+      "text": "Ⅰ.论文研究情况",
+      "paragraphs": [
+       {
+        "text": "Ⅰ.论文研究情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅰ.论文研究情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 1,
+      "text": "Ⅰ.论文研究情况",
+      "paragraphs": [
+       {
+        "text": "Ⅰ.论文研究情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅰ.论文研究情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 2,
+      "text": "Ⅰ.论文研究情况",
+      "paragraphs": [
+       {
+        "text": "Ⅰ.论文研究情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅰ.论文研究情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 3,
+      "text": "Ⅰ.论文研究情况",
+      "paragraphs": [
+       {
+        "text": "Ⅰ.论文研究情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅰ.论文研究情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 4,
+      "text": "Ⅰ.论文研究情况",
+      "paragraphs": [
+       {
+        "text": "Ⅰ.论文研究情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅰ.论文研究情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 5,
+      "text": "Ⅰ.论文研究情况",
+      "paragraphs": [
+       {
+        "text": "Ⅰ.论文研究情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅰ.论文研究情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 1,
+      "col": 6,
+      "text": "Ⅰ.论文研究情况",
+      "paragraphs": [
+       {
+        "text": "Ⅰ.论文研究情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅰ.论文研究情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 2,
+      "col": 0,
+      "text": "1. 论文研究主要内容及工作进度：\n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文研究主要内容及工作进度：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. 论文研究主要内容及工作进度：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 1,
+      "text": "1. 论文研究主要内容及工作进度：\n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文研究主要内容及工作进度：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. 论文研究主要内容及工作进度：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 2,
+      "text": "1. 论文研究主要内容及工作进度：\n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文研究主要内容及工作进度：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. 论文研究主要内容及工作进度：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 3,
+      "text": "1. 论文研究主要内容及工作进度：\n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文研究主要内容及工作进度：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. 论文研究主要内容及工作进度：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 4,
+      "text": "1. 论文研究主要内容及工作进度：\n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文研究主要内容及工作进度：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. 论文研究主要内容及工作进度：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 5,
+      "text": "1. 论文研究主要内容及工作进度：\n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文研究主要内容及工作进度：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. 论文研究主要内容及工作进度：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 2,
+      "col": 6,
+      "text": "1. 论文研究主要内容及工作进度：\n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文研究主要内容及工作进度：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. 论文研究主要内容及工作进度：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 3,
+      "col": 0,
+      "text": "2. 阶段性成果：\n     ",
+      "paragraphs": [
+       {
+        "text": "2. 阶段性成果：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. 阶段性成果：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 1,
+      "text": "2. 阶段性成果：\n     ",
+      "paragraphs": [
+       {
+        "text": "2. 阶段性成果：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. 阶段性成果：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 2,
+      "text": "2. 阶段性成果：\n     ",
+      "paragraphs": [
+       {
+        "text": "2. 阶段性成果：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. 阶段性成果：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 3,
+      "text": "2. 阶段性成果：\n     ",
+      "paragraphs": [
+       {
+        "text": "2. 阶段性成果：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. 阶段性成果：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 4,
+      "text": "2. 阶段性成果：\n     ",
+      "paragraphs": [
+       {
+        "text": "2. 阶段性成果：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. 阶段性成果：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 5,
+      "text": "2. 阶段性成果：\n     ",
+      "paragraphs": [
+       {
+        "text": "2. 阶段性成果：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. 阶段性成果：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 3,
+      "col": 6,
+      "text": "2. 阶段性成果：\n     ",
+      "paragraphs": [
+       {
+        "text": "2. 阶段性成果：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. 阶段性成果：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 4,
+      "col": 0,
+      "text": "3. 公开发表学术论文情况：\n     ",
+      "paragraphs": [
+       {
+        "text": "3. 公开发表学术论文情况：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "3. 公开发表学术论文情况：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 1,
+      "text": "3. 公开发表学术论文情况：\n     ",
+      "paragraphs": [
+       {
+        "text": "3. 公开发表学术论文情况：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "3. 公开发表学术论文情况：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 2,
+      "text": "3. 公开发表学术论文情况：\n     ",
+      "paragraphs": [
+       {
+        "text": "3. 公开发表学术论文情况：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "3. 公开发表学术论文情况：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 3,
+      "text": "3. 公开发表学术论文情况：\n     ",
+      "paragraphs": [
+       {
+        "text": "3. 公开发表学术论文情况：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "3. 公开发表学术论文情况：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 4,
+      "text": "3. 公开发表学术论文情况：\n     ",
+      "paragraphs": [
+       {
+        "text": "3. 公开发表学术论文情况：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "3. 公开发表学术论文情况：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 5,
+      "text": "3. 公开发表学术论文情况：\n     ",
+      "paragraphs": [
+       {
+        "text": "3. 公开发表学术论文情况：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "3. 公开发表学术论文情况：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 4,
+      "col": 6,
+      "text": "3. 公开发表学术论文情况：\n     ",
+      "paragraphs": [
+       {
+        "text": "3. 公开发表学术论文情况：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "3. 公开发表学术论文情况：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 5,
+      "col": 0,
+      "text": "4. 尚需完成的研究工作（包括内容、方案）：\n     ",
+      "paragraphs": [
+       {
+        "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 1,
+      "text": "4. 尚需完成的研究工作（包括内容、方案）：\n     ",
+      "paragraphs": [
+       {
+        "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 2,
+      "text": "4. 尚需完成的研究工作（包括内容、方案）：\n     ",
+      "paragraphs": [
+       {
+        "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 3,
+      "text": "4. 尚需完成的研究工作（包括内容、方案）：\n     ",
+      "paragraphs": [
+       {
+        "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 4,
+      "text": "4. 尚需完成的研究工作（包括内容、方案）：\n     ",
+      "paragraphs": [
+       {
+        "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 5,
+      "text": "4. 尚需完成的研究工作（包括内容、方案）：\n     ",
+      "paragraphs": [
+       {
+        "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 5,
+      "col": 6,
+      "text": "4. 尚需完成的研究工作（包括内容、方案）：\n     ",
+      "paragraphs": [
+       {
+        "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "4. 尚需完成的研究工作（包括内容、方案）：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 6,
+      "col": 0,
+      "text": "Ⅱ.导师指导情况",
+      "paragraphs": [
+       {
+        "text": "Ⅱ.导师指导情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅱ.导师指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 1,
+      "text": "Ⅱ.导师指导情况",
+      "paragraphs": [
+       {
+        "text": "Ⅱ.导师指导情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅱ.导师指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 2,
+      "text": "Ⅱ.导师指导情况",
+      "paragraphs": [
+       {
+        "text": "Ⅱ.导师指导情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅱ.导师指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 3,
+      "text": "Ⅱ.导师指导情况",
+      "paragraphs": [
+       {
+        "text": "Ⅱ.导师指导情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅱ.导师指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 4,
+      "text": "Ⅱ.导师指导情况",
+      "paragraphs": [
+       {
+        "text": "Ⅱ.导师指导情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅱ.导师指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 5,
+      "text": "Ⅱ.导师指导情况",
+      "paragraphs": [
+       {
+        "text": "Ⅱ.导师指导情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅱ.导师指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 6,
+      "col": 6,
+      "text": "Ⅱ.导师指导情况",
+      "paragraphs": [
+       {
+        "text": "Ⅱ.导师指导情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅱ.导师指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 7,
+      "col": 0,
+      "text": "1. 论文指导情况： \n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文指导情况： ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "论文指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "： ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 1,
+      "text": "1. 论文指导情况： \n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文指导情况： ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "论文指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "： ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 2,
+      "text": "1. 论文指导情况： \n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文指导情况： ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "论文指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "： ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 3,
+      "text": "1. 论文指导情况： \n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文指导情况： ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "论文指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "： ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 4,
+      "text": "1. 论文指导情况： \n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文指导情况： ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "论文指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "： ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 5,
+      "text": "1. 论文指导情况： \n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文指导情况： ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "论文指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "： ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 7,
+      "col": 6,
+      "text": "1. 论文指导情况： \n     ",
+      "paragraphs": [
+       {
+        "text": "1. 论文指导情况： ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "1. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "论文指导情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "： ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "     ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "     ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 8,
+      "col": 0,
+      "text": "2. 导师综合评语：\n\n\n\n\n\n\n导师签字：                   ",
+      "paragraphs": [
+       {
+        "text": "2. 导师综合评语：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "导师综合评语",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "导师签字：                   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "导师签字：                   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 1,
+      "text": "2. 导师综合评语：\n\n\n\n\n\n\n导师签字：                   ",
+      "paragraphs": [
+       {
+        "text": "2. 导师综合评语：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "导师综合评语",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "导师签字：                   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "导师签字：                   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 2,
+      "text": "2. 导师综合评语：\n\n\n\n\n\n\n导师签字：                   ",
+      "paragraphs": [
+       {
+        "text": "2. 导师综合评语：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "导师综合评语",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "导师签字：                   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "导师签字：                   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 3,
+      "text": "2. 导师综合评语：\n\n\n\n\n\n\n导师签字：                   ",
+      "paragraphs": [
+       {
+        "text": "2. 导师综合评语：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "导师综合评语",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "导师签字：                   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "导师签字：                   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 4,
+      "text": "2. 导师综合评语：\n\n\n\n\n\n\n导师签字：                   ",
+      "paragraphs": [
+       {
+        "text": "2. 导师综合评语：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "导师综合评语",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "导师签字：                   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "导师签字：                   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 5,
+      "text": "2. 导师综合评语：\n\n\n\n\n\n\n导师签字：                   ",
+      "paragraphs": [
+       {
+        "text": "2. 导师综合评语：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "导师综合评语",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "导师签字：                   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "导师签字：                   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 8,
+      "col": 6,
+      "text": "2. 导师综合评语：\n\n\n\n\n\n\n导师签字：                   ",
+      "paragraphs": [
+       {
+        "text": "2. 导师综合评语：",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "2. ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": ""
+         },
+         {
+          "text": "导师综合评语",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       },
+       {
+        "text": "导师签字：                   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "导师签字：                   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 9,
+      "col": 0,
+      "text": "Ⅲ.评议情况",
+      "paragraphs": [
+       {
+        "text": "Ⅲ.评议情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅲ.评议情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 1,
+      "text": "Ⅲ.评议情况",
+      "paragraphs": [
+       {
+        "text": "Ⅲ.评议情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅲ.评议情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 2,
+      "text": "Ⅲ.评议情况",
+      "paragraphs": [
+       {
+        "text": "Ⅲ.评议情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅲ.评议情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 3,
+      "text": "Ⅲ.评议情况",
+      "paragraphs": [
+       {
+        "text": "Ⅲ.评议情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅲ.评议情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 4,
+      "text": "Ⅲ.评议情况",
+      "paragraphs": [
+       {
+        "text": "Ⅲ.评议情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅲ.评议情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 5,
+      "text": "Ⅲ.评议情况",
+      "paragraphs": [
+       {
+        "text": "Ⅲ.评议情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅲ.评议情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 9,
+      "col": 6,
+      "text": "Ⅲ.评议情况",
+      "paragraphs": [
+       {
+        "text": "Ⅲ.评议情况",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "Ⅲ.评议情况",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 10,
+      "col": 0,
+      "text": "检查小组成员",
+      "paragraphs": [
+       {
+        "text": "检查小组成员",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查小组成员",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 1,
+      "text": "—",
+      "paragraphs": [
+       {
+        "text": "—",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "—",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 2,
+      "text": "姓名",
+      "paragraphs": [
+       {
+        "text": "姓名",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "姓名",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 3,
+      "text": "姓名",
+      "paragraphs": [
+       {
+        "text": "姓名",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "姓名",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 4,
+      "text": "职称",
+      "paragraphs": [
+       {
+        "text": "职称",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "职称",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 5,
+      "text": "现从事专业",
+      "paragraphs": [
+       {
+        "text": "现从事专业",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "现从事专业",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 10,
+      "col": 6,
+      "text": "工作单位",
+      "paragraphs": [
+       {
+        "text": "工作单位",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "工作单位",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 11,
+      "col": 0,
+      "text": "检查小组成员",
+      "paragraphs": [
+       {
+        "text": "检查小组成员",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查小组成员",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 1,
+      "text": "组长",
+      "paragraphs": [
+       {
+        "text": "组长",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "组长",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 3,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 4,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 5,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 11,
+      "col": 6,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 12,
+      "col": 0,
+      "text": "检查小组成员",
+      "paragraphs": [
+       {
+        "text": "检查小组成员",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查小组成员",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 1,
+      "text": "组员",
+      "paragraphs": [
+       {
+        "text": "组员",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "组员",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 3,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 4,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 5,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 12,
+      "col": 6,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 13,
+      "col": 0,
+      "text": "检查小组成员",
+      "paragraphs": [
+       {
+        "text": "检查小组成员",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查小组成员",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 13,
+      "col": 1,
+      "text": "组员",
+      "paragraphs": [
+       {
+        "text": "组员",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "组员",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 13,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 13,
+      "col": 3,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 13,
+      "col": 4,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 13,
+      "col": 5,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 13,
+      "col": 6,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 14,
+      "col": 0,
+      "text": "检查小组成员",
+      "paragraphs": [
+       {
+        "text": "检查小组成员",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查小组成员",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 14,
+      "col": 1,
+      "text": "组员",
+      "paragraphs": [
+       {
+        "text": "组员",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "组员",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 14,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 14,
+      "col": 3,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 14,
+      "col": 4,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 14,
+      "col": 5,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 14,
+      "col": 6,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 15,
+      "col": 0,
+      "text": "检查小组成员",
+      "paragraphs": [
+       {
+        "text": "检查小组成员",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查小组成员",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 15,
+      "col": 1,
+      "text": "组员",
+      "paragraphs": [
+       {
+        "text": "组员",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "组员",
+          "font": "宋体",
+          "size_pt": 11.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 15,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 15,
+      "col": 3,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 15,
+      "col": 4,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 15,
+      "col": 5,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 15,
+      "col": 6,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 16,
+      "col": 0,
+      "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）\n",
+      "paragraphs": [
+       {
+        "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "中期检查意见：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 16,
+      "col": 1,
+      "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）\n",
+      "paragraphs": [
+       {
+        "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "中期检查意见：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 16,
+      "col": 2,
+      "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）\n",
+      "paragraphs": [
+       {
+        "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "中期检查意见：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 16,
+      "col": 3,
+      "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）\n",
+      "paragraphs": [
+       {
+        "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "中期检查意见：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 16,
+      "col": 4,
+      "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）\n",
+      "paragraphs": [
+       {
+        "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "中期检查意见：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 16,
+      "col": 5,
+      "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）\n",
+      "paragraphs": [
+       {
+        "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "中期检查意见：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 16,
+      "col": 6,
+      "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）\n",
+      "paragraphs": [
+       {
+        "text": "中期检查意见：（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "中期检查意见：",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "bold": true,
+          "color": "000000"
+         },
+         {
+          "text": "（若论文工作进展不顺利，请对论文存在的问题做出详尽说明）",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 17,
+      "col": 0,
+      "text": "是否同意该生参加论文预答辩：      \n检查组长（签字）：              培养单位盖章            \n   ",
+      "paragraphs": [
+       {
+        "text": "是否同意该生参加论文预答辩：      ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "是否",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "同意该生",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "参加",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "论文",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "预答辩",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "：  ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "    ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "检查组长（签字）：              培养单位盖章            ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查组长（签字）：              ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "培养单位",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "盖章            ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 17,
+      "col": 1,
+      "text": "是否同意该生参加论文预答辩：      \n检查组长（签字）：              培养单位盖章            \n   ",
+      "paragraphs": [
+       {
+        "text": "是否同意该生参加论文预答辩：      ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "是否",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "同意该生",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "参加",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "论文",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "预答辩",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "：  ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "    ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "检查组长（签字）：              培养单位盖章            ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查组长（签字）：              ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "培养单位",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "盖章            ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 17,
+      "col": 2,
+      "text": "是否同意该生参加论文预答辩：      \n检查组长（签字）：              培养单位盖章            \n   ",
+      "paragraphs": [
+       {
+        "text": "是否同意该生参加论文预答辩：      ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "是否",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "同意该生",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "参加",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "论文",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "预答辩",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "：  ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "    ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "检查组长（签字）：              培养单位盖章            ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查组长（签字）：              ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "培养单位",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "盖章            ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 17,
+      "col": 3,
+      "text": "是否同意该生参加论文预答辩：      \n检查组长（签字）：              培养单位盖章            \n   ",
+      "paragraphs": [
+       {
+        "text": "是否同意该生参加论文预答辩：      ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "是否",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "同意该生",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "参加",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "论文",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "预答辩",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "：  ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "    ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "检查组长（签字）：              培养单位盖章            ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查组长（签字）：              ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "培养单位",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "盖章            ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 17,
+      "col": 4,
+      "text": "是否同意该生参加论文预答辩：      \n检查组长（签字）：              培养单位盖章            \n   ",
+      "paragraphs": [
+       {
+        "text": "是否同意该生参加论文预答辩：      ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "是否",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "同意该生",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "参加",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "论文",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "预答辩",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "：  ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "    ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "检查组长（签字）：              培养单位盖章            ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查组长（签字）：              ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "培养单位",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "盖章            ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 17,
+      "col": 5,
+      "text": "是否同意该生参加论文预答辩：      \n检查组长（签字）：              培养单位盖章            \n   ",
+      "paragraphs": [
+       {
+        "text": "是否同意该生参加论文预答辩：      ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "是否",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "同意该生",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "参加",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "论文",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "预答辩",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "：  ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "    ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "检查组长（签字）：              培养单位盖章            ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查组长（签字）：              ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "培养单位",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "盖章            ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     },
+     {
+      "row": 17,
+      "col": 6,
+      "text": "是否同意该生参加论文预答辩：      \n检查组长（签字）：              培养单位盖章            \n   ",
+      "paragraphs": [
+       {
+        "text": "是否同意该生参加论文预答辩：      ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "是否",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "同意该生",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "参加",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "论文",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "预答辩",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "：  ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "    ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "检查组长（签字）：              培养单位盖章            ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "检查组长（签字）：              ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "培养单位",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         },
+         {
+          "text": "盖章            ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       },
+       {
+        "text": "   ",
+        "style": "Normal",
+        "runs": [
+         {
+          "text": "   ",
+          "font": "宋体",
+          "size_pt": 12.0,
+          "color": "000000"
+         }
+        ]
+       }
+      ]
+     }
+    ],
+    [
+     {
+      "row": 18,
+      "col": 0,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 18,
+      "col": 1,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 18,
+      "col": 2,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 18,
+      "col": 3,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 18,
+      "col": 4,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 18,
+      "col": 5,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     },
+     {
+      "row": 18,
+      "col": 6,
+      "text": "",
+      "paragraphs": [
+       {
+        "text": "",
+        "style": "Normal",
+        "runs": []
+       }
+      ]
+     }
+    ]
+   ]
+  },
+  {
+   "index": 23,
+   "style": "Normal",
+   "text": "",
+   "runs": [],
+   "is_placeholder": false,
+   "num_runs": 0
+  }
+ ]
+}

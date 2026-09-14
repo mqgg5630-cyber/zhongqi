@@ -1,0 +1,17 @@
+5.论文开题前查新（文献数据库检索）：
+①依据数据库：PubMed, ScienceDirect, Web of Science
+②关键词及检索策略：Alzheimer’s disease, Antimicrobial peptides (AMPs), Metagenomics, Deep learning, Gut microbiota
+③查新时限：至
+④检索结果概述：通过在 PubMed 数据库的系统检索，检索到与“AD的GM宏基因组分析”直接相关的文献约 88 篇，与“AMPs及深度学习预测”相关的研究 183 篇。综合分析结果如下：
+（1）AD与GM研究进展
+自 2015 年以来，肠-脑轴理论逐渐成为AD发病机制研究的重要方向。多项宏基因组分析表明，AD患者肠道菌群的多样性显著降低，炎症相关菌属（如Escherichia, Enterobacteriaceae）丰度增加，而短链脂肪酸产生菌（如 Faecalibacterium prausnitzii）减少。
+这些改变与神经炎症、β-淀粉样蛋白沉积及认知功能下降密切相关。
+（2）AMPs与神经疾病关联
+AMPs作为宿主防御系统的重要组成部分，不仅具有抗微生物活性，还能调节免疫与神经炎症通路。
+研究发现部分AMPs（如 LL-37, β-defensin-2）可穿越血脑屏障并影响中枢神经系统炎症反应，与AD的免疫病理过程相关。然而，目前尚缺乏系统的宏基因组学层面AMPs差异分析。
+（3）基于DL的肽类功能预测研究
+近年来，随着蛋白质语言模型（如ESM、ProtBERT）的发展，DL已成为生物肽挖掘的重要工具。已有研究利用Transformer模型从宏基因组中发现潜在抗菌或抗癌肽，但针对AD患者群体的AMPs差异预测研究仍为空白。
+（4）研究空白与创新点
+目前尚无研究结合DL + GM宏基因组学探索AD患者与健康人群的AMPs的差异；
+现有AMPs模型多基于通用训练集，缺乏疾病特异性微生物组背景；
+本研究首次尝试通过DL驱动的宏基因组分析框架（DeepMetaAMP），揭示AD与健康人群间GM的AMPs的功能分布与关联差异。因此，本课题具有显著的创新性与可行性，符合“多组学+人工智能”在神经疾病领域的前沿趋势。

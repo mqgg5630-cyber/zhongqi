@@ -23,3 +23,6 @@ desktop.ini
 build/
 dist/
 *.log
+
+# 会话中间产物（可重新生成）
+build/
