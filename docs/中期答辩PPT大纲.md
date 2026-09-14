@@ -1,5 +1,10 @@
 # 中期答辩 PPT —— 成稿结构、导师意见落实与答辩准备
 
+> 📎 配套文件：**机器可读大纲** `docs/ppt_outline.json` → **人读版大纲** `docs/PPT大纲.md`（自动生成，含配色字号规范与提示词）；
+> 成品三版：`deliverable/中期答辩.pptx`（A 学术蓝）、`deliverable/versions/中期答辩_B_极简线框.pptx`、`deliverable/versions/中期答辩_C_卡片色块.pptx`；
+> 想换工具重做，见 `docs/PPT生成Skill选择.md`（ppt-master 54.1k★ / presenton 10.2k★）。
+
+
 成品：`deliverable/中期答辩.pptx`（16 页，16:9，全篇最小字号 15 pt）
 页图预览：`results/ppt_preview/预览_第1-4页.png` 等 4 张（无需 PowerPoint 即可核对版式）
 

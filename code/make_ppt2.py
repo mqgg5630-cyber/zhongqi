@@ -101,7 +101,7 @@ def build() -> Presentation:
 
     # 3 ─ 研究思路总览 -----------------------------------------------------
     s = prs.slides.add_slide(prs.slide_layouts[6])
-    add_title(s, "研究思路：八步走，前三步与预测已完成", "研究思路")
+    add_title(s, "研究思路：八步走的整体框架与完成进度", "研究思路")
     place_figure(s, "figA_研究思路总览.png", max_h=CONTENT_BOTTOM - CONTENT_TOP)
     add_takeaway(s, "思路主线：数据资源 → 短肽库 → 三模型预测 → 分阶段差异 → 去重定特有种 → 机制关联与验证")
     slides.append(s)

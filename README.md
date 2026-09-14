@@ -9,15 +9,33 @@
 
 | 文件 | 说明 |
 |---|---|
-| `deliverable/中期答辩.pptx` | **16 页中期答辩 PPT**，16:9，全篇最小字号 **15 pt**（含图内文字按投影缩放核算） |
+| `deliverable/中期答辩.pptx` | **16 页中期答辩 PPT（A 版·学术蓝）**，16:9，全篇最小字号 **15 pt**（含图内文字按投影缩放核算） |
+| `deliverable/versions/中期答辩_B_极简线框.pptx` | **另两版可编辑 PPT（B 版）**：白底细线风格，投影最干净，推荐首选 |
+| `deliverable/versions/中期答辩_C_卡片色块.pptx` | **另两版可编辑 PPT（C 版）**：顶部色带 + 左侧竖条 + 卡片色块，设计感更强 |
+| `docs/ppt_outline.json` | **PPT 大纲（机器可读）**：16 页逐页标题/正文/卡片/结论条/演讲备注/配图，换任何 PPT skill 都能直接喂 |
+| `docs/PPT大纲.md` | **PPT 大纲（人读版）**，由上面那份 JSON 自动生成，含配色字号规范与现成提示词 |
+| `docs/PPT生成Skill选择.md` | **两个高 star PPT skill 推荐**（ppt-master 54.1k★ / presenton 10.2k★）：安装、用法、怎么配合本大纲 |
 | `deliverable/中期.docx` | **填好的中期检查表**，在学校空白模板上就地填写，格式与模板完全一致（已脚本校验） |
 | `deliverable/中期检查表_填写内容.md` | 报告正文草稿（纯文本，最方便改；改完一键重生成 docx） |
-| `results/ppt_preview/预览_第*-*页.png` | 4 张 PPT 版式预览图，不用装 Office 也能核对 |
+| `results/ppt_preview/预览_第*-*页.png` | A 版 4 张版式预览图；`B版_*` / `C版_*` 为另两版预览，不用装 Office 也能核对 |
 | `results/figures/figA—figG*.png` | 本版 7 张流程示意图（研究思路、三模型预测、分阶段差异、宏蛋白组去重、机制关联、抑菌实验、进度） |
 | `docs/中期答辩PPT大纲.md` | **导师意见逐条落实对照表** + 逐页清单 + 7 个答辩预判问答 |
 
 > 需要你补充：中期检查表封面（姓名、学号、研究生类型、培养单位、学科专业、研究方向、指导教师）与 PPT 封面的【姓名】【学号】【导师】。
 > 填表说明要求"除签名外需打印填写"，因此未代填。
+
+---
+
+## 〇、三版 PPT 与通用大纲（每次都会同步）
+
+- **三版可编辑 PPT**：A 版 `deliverable/中期答辩.pptx`（学术蓝）、B 版 `deliverable/versions/中期答辩_B_极简线框.pptx`、
+  C 版 `deliverable/versions/中期答辩_C_卡片色块.pptx`。三版**内容完全一致**，都是**原生形状+文本框**（可直接改字改色、不是图片），
+  全篇最小 **15 pt**，且**每页都写入了演讲备注**（口播稿）。挑一个用即可，改法见 `deliverable/versions/README.md`。
+- **每次都附一份大纲**：`docs/ppt_outline.json`（机器可读，16 页逐页要素）+ `docs/PPT大纲.md`（人读版，含配色字号规范与提示词模板）。
+  若想换工具重做，把这两个文件加 `results/figures/` 交给对方即可。
+- **两个高 star PPT skill 推荐**：`docs/PPT生成Skill选择.md` ——
+  [ppt-master](https://github.com/hugohe3/ppt-master)（54.1k★，MIT，原生 DrawingML，跑在 AI IDE 里，可给现成 pptx 填内容）
+  与 [presenton](https://github.com/presenton/presenton)（10.2k★，Apache-2.0，自托管服务 + API/MCP，导出可编辑 PPTX）。
 
 ---
 
@@ -45,7 +63,8 @@
 
 ## 二、PPT 是怎么做的
 
-- 16 页，逐页大纲与**答辩预判问题应答要点**见 `docs/中期答辩PPT大纲.md`。
+- 16 页，逐页大纲与**答辩预判问题应答要点**见 `docs/中期答辩PPT大纲.md`；通用大纲见 `docs/PPT大纲.md` / `docs/ppt_outline.json`。
+- **A / B / C 三版**分别由 `code/make_ppt2.py` 与 `code/make_ppt_variants.py` 生成（B、C 共用一个风格表 `STYLES`，改色改版式只需改几行）。
 - 中文字体统一**微软雅黑**，并在 XML 中显式写入东亚字体类型，避免在别人电脑上字体回退。
 - 三重自检（脚本可复跑）：
   - `code/make_figures.py`：检查图内文字是否越出方框、并折算"图片缩放到幻灯片后的最小有效字号"（8 张图 15.0—18.4 pt）；
@@ -96,11 +115,12 @@ git add -A; git commit -m "加入本地文件"; git push origin arena/01a09d79-z
 
 ```
 zhongqi\
-├── deliverable\            成品：中期.docx、中期答辩.pptx、正文草稿 md
+├── deliverable\            成品：中期.docx、中期答辩.pptx（A 版）、正文草稿 md
+│   └── versions\           另两版可编辑 PPT（B 极简线框 / C 卡片色块）
 ├── sources\                你的原件：开题.docx、中期.docx（模板）、已完成1.docx、1.md
 ├── code\                   脚本：填表/校验/画图/出 PPT/版式检查（详见 code\README.md）
 ├── results\figures\        8 张插图；results\ppt_preview\ PPT 版式预览图
-├── docs\                   开题要点、数据台账、PPT 大纲、模板结构解析（docs\_template\）
+├── docs\                   开题要点、数据台账、PPT 大纲（json+md）、PPT skill 推荐、模板结构解析（docs\_template\）
 ├── sync.ps1 / upload.ps1 / push.ps1   一键拉取 / 上传 / 推送
 └── build\                  中间产物（可重新生成，已 gitignore）
 ```
