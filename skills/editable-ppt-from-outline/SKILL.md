@@ -20,6 +20,8 @@ description: 用一份 JSON 大纲批量生成「原生可编辑」的 PowerPoin
 | `docs/PPT大纲.md` | 由 JSON 生成的人读版大纲（含配色规范和现成提示词） |
 | `code/make_ppt2.py` | 生成 **A 版**（学术蓝）→ `deliverable/中期答辩_A_学术蓝.pptx` |
 | `code/make_ppt_variants.py` | 生成 **B / C / D / E 四版**（白底细线 · 卡片色块 · 双栏杂志风 · 深色标题区）→ `deliverable/中期答辩_{B..E}_*.pptx` |
+| `code/make_ppt_svg.py` | **路线二**：把同一份 JSON 渲染成 16 页 SVG，再调 ppt-master 原生导出 **F 深色科技风 / G 学术期刊风** → `deliverable/中期答辩_{F,G}_*.pptx` |
+| `code/fetch_ppt_master.py` | 按需下载 ppt-master（54k★，MIT）到 `build/ppt-master/`（约 125 MB，不入库），供上面那条路线调用 |
 | `code/outline_to_md.py` | JSON → 人读版大纲 |
 | `code/add_notes.py` | 把大纲里的 `note` 写进任意 pptx 的备注区（按页序） |
 | `code/check_ppt.py` | 独立校验：最小字号 / 越界 / 图文重叠 |
@@ -87,6 +89,19 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 ```
 
 `make_ppt2.py` / `make_ppt_variants.py` 自己也会打印 `slides / runs / smallest font` 并做一遍自检；`check_ppt.py` 是**独立**复查（用真实中文字体估算换行高度），两者都要过。
+
+## 两条生产线（什么时候用哪条）
+
+| | 路线一（`make_ppt2.py` / `make_ppt_variants.py`） | 路线二（`make_ppt_svg.py` + ppt-master） |
+|---|---|---|
+| 原理 | python-pptx 直接摆形状，坐标写死在脚本里 | 每页写成 SVG（绝对坐标）→ ppt-master 编译成原生 DrawingML |
+| 版式自由度 | 中（改一处常牵动几处） | 高（页内任意排版，字号层级/网格/色带都可自定义） |
+| 换风格像不像"换了版" | 同一套排版的换肤 | 版式结构本身不同，观感差异最大 |
+| 依赖 | python-pptx | ppt-master（首跑 `fetch_ppt_master.py` 下载一次） |
+| 适用 | 需要快速多版对比、内容还会微调 | 定稿前要"真正换风格"、或要用别人的成品模板观感 |
+
+路线二的两个硬约束：**SVG 里 `<path>` 必须显式 `fill="none"`**（否则导出后在 PowerPoint 里会被填成黑色盖住整页）；
+**页内文字 ≥ 20 px**（1280 px 画布 ≈ 幻灯片 15 pt）。`make_ppt_svg.py` 已内置这两条的自检。
 
 ## 换风格、换配色
 

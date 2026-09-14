@@ -24,10 +24,11 @@ docs/PPT大纲.md                              ← 人读版大纲（含配色�
 
 ```
 results/figures/*.png                        ← 由 make_figures2.py 生成（含字号自检）
-        │  make_ppt2.py           → A 版 学术蓝       deliverable/中期答辩_A_学术蓝.pptx
-        │  make_ppt_variants.py   → B/C/D/E 四种风格  deliverable/中期答辩_B..E_*.pptx
-        ▼
-五版原生可编辑 pptx（最小 15 pt，每页带演讲备注）
+        │  make_ppt2.py           → A 版 学术蓝        deliverable/中期答辩_A_学术蓝.pptx
+        │  make_ppt_variants.py   → B/C/D/E 四种风格   deliverable/中期答辩_B..E_*.pptx
+        │  make_ppt_svg.py        → F/G 两版（SVG 排版 + ppt-master 原生导出）
+        ▼                              deliverable/中期答辩_F_深色科技风.pptx 等
+七版原生可编辑 pptx（最小 15 pt，每页带演讲备注）
         │  check_ppt.py + preview_ppt.py
         ▼
 版式校验 + 逐页 PNG 预览（build/ppt_preview、results/ppt_preview）
@@ -47,6 +48,8 @@ python code/make_ppt.py                  # 出旧版（细节版）PPT（含字�
 python code/make_ppt2.py                 # 出 A 版 PPT -> deliverable/中期答辩_A_学术蓝.pptx
 python code/outline_to_md.py             # PPT 大纲 json -> docs/PPT大纲.md
 python code/make_ppt_variants.py         # 出 B / C / D / E 四版 PPT -> deliverable/（--style D 只出一版）
+python code/fetch_ppt_master.py          # 首次：下载 ppt-master 到 build/（约 125 MB，不入库）
+python code/make_ppt_svg.py              # 出 F 深色科技风 / G 学术期刊风（SVG -> 原生 DrawingML）
 python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"   # 给 A 版补演讲备注（大纲 -> 备注区）
 python code/check_ppt.py "deliverable/中期答辩_B_白底细线.pptx" # 独立版式检查
 python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/prevA
@@ -66,9 +69,11 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 | `make_ppt2.py` | 生成 **A 版**答辩 PPT（按导师意见：只讲思路与完成度，三模型预测与宏蛋白组去重按已完成呈现） |
 | `make_ppt_variants.py` | 由 `docs/ppt_outline.json` 生成 **B 白底细线 / C 卡片色块 / D 双栏杂志风 / E 深色标题区** 四版 PPT，可选 `--style D`；版式差异集中在文件顶部 `STYLES` 风格表（`header_style` / `takeaway_style` / `body_style`）与 `header()` / `takeaway()` / `bullets_two_col()` / `cards_row()` |
 | `outline_to_md.py` | 把 `docs/ppt_outline.json` 转成 `docs/PPT大纲.md`（人读版 + 提示词模板），供 ppt-master / presenton 等工具使用 |
-| `add_notes.py` | 把大纲里的演讲备注（口播稿）按页序写进任意 pptx（A 版补备注即用它），五版备注口径一致 |
+| `make_ppt_svg.py` | 把 `docs/ppt_outline.json` 渲染成 16 页 SVG（遵守 ppt-master 的 SVG 规范：绝对坐标、`fill="none"`、字号 ≥ 20 px），再调 ppt-master 的 `svg_to_pptx.py` 导出 **F 深色科技风 / G 学术期刊风** 两版原生 DrawingML pptx；风格表 `STYLES` 与版式函数（`cover()` / `figure_page()` / `toc_page()`…）都在文件里 |
+| `fetch_ppt_master.py` | 按需下载 ppt-master（54k★，MIT）到 `build/ppt-master/` 供 `make_ppt_svg.py` 调用；不在仓库里存 125 MB 的第三方源码 |
+| `add_notes.py` | 把大纲里的演讲备注（口播稿）按页序写进任意 pptx（A 版补备注即用它），七版备注口径一致 |
 | `check_ppt.py` | 独立的 PPT 版式检查（用真实 CJK 字体估算换行高度） |
-| `preview_ppt.py` | 无 PowerPoint 环境下的逐页 PNG 预览（用于核版式） |
+| `preview_ppt.py` | 无 PowerPoint 环境下的逐页 PNG 预览（用于核版式）；支持读取 `p:bg` 幻灯片背景色，深色版式不会预览成白底 |
 | `get_cjk_font.py` | 从 PyPI 的 `noto-cjk-sans-otc` 抽出思源黑体 SC 单字体，供 matplotlib/PIL 使用 |
 | `check_ps1.py` | 校验 .ps1 脚本为纯 ASCII（避免 Windows PowerShell 5.1 按 GBK 解码导致的解析错误） |
 | `1.py` | 你的原始脚本：全队列 476 样本 MAGs 成果校验与统计（bash/SLURM 流程） |

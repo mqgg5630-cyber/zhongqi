@@ -11,25 +11,30 @@
 - `中期检查表_填写内容.md`：正文草稿（纯文本，改这个文件最省事；开头 `# 封面信息` 段就是封面 7 栏），改完执行
   `python code/build_ops.py && python code/fill_docx.py --ops build/ops_中期.json` 即可重出 `中期.docx`。
 
-## 2. 中期答辩 PPT（**五个**可编辑版本，挑一个用）
+## 2. 中期答辩 PPT（**七个**可编辑版本，挑一个用）
 
-五版**文字内容一致**（同一份大纲 `docs/ppt_outline.json`），都是**原生可编辑 pptx**、全篇最小 **15 pt**、每页带演讲备注。
+七版**文字内容一致**（同一份大纲 `docs/ppt_outline.json`），都是**原生可编辑 pptx**、全篇最小 **15 pt**、每页带演讲备注。
 
 | 版本 | 文件 | 风格 |
 |---|---|---|
+| **F 深色科技风** | `中期答辩_F_深色科技风.pptx` | 近黑底 + 青色强调 + 网格底纹 + 深色结论条（**推荐首选**） |
+| **G 学术期刊风** | `中期答辩_G_学术期刊风.pptx` | 白底纸面 + 期刊红 + 细线分隔 + 衬线标题（**推荐次选**） |
 | A 学术蓝 | `中期答辩_A_学术蓝.pptx` | 深蓝 + 青绿标签块，信息密度高 |
-| B 白底细线 | `中期答辩_B_白底细线.pptx` | 白底细线卡片、短下划线标题（**推荐首选**，投影最干净） |
+| B 白底细线 | `中期答辩_B_白底细线.pptx` | 白底细线卡片、短下划线标题 |
 | C 卡片色块 | `中期答辩_C_卡片色块.pptx` | 顶部色带 + 左侧竖条 + 卡片底色块 |
 | D 双栏杂志风 | `中期答辩_D_双栏杂志风.pptx` | 正文两栏 + 细分隔线 + 右上角页码 |
 | E 深色标题区 | `中期答辩_E_深色标题区.pptx` | 深色标题带 + 深色结论条 + 橙色强调 |
 
-挑选建议与改法见 `PPT版本选择.md`；五版一眼对比图 `../results/ppt_preview/五版对比_封面与第10页.png`，
-逐页预览 `../results/ppt_preview/A版_*.png` … `E版_*.png`。
+挑选建议与改法见 `PPT版本选择.md`；主推四版对比图 `../results/ppt_preview/四版主推对比_封面与第10页.png`，
+逐页预览 `../results/ppt_preview/A版_*.png` … `G版_*.png`。
+
+> F / G 两版**换了生产线**：排版先用 SVG 画好，再经 [ppt-master](https://github.com/hugohe3/ppt-master) 编译成原生 DrawingML，
+> 因此版式层级与配色跟 A—E 完全不同；A—E 是同一套排版的换肤。
 
 ## 3. 拿到新版后
 
 ```powershell
 .\sync.ps1
 copy .\deliverable\中期.docx  E:\0zhongqi\                                  # 或复制到你想要的位置
-copy .\deliverable\中期答辩_B_白底细线.pptx  E:\0zhongqi\                   # 推荐首选那一版
+copy .\deliverable\中期答辩_F_深色科技风.pptx  E:\0zhongqi\                # 推荐首选那一版
 ```

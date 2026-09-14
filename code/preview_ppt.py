@@ -25,11 +25,35 @@ DPI = 110
 
 
 def font_for(size_pt: float, bold: bool = False):
-    cands = sorted(glob.glob("/tmp/fonts/*CJK*.otf"))
+    cands = sorted(glob.glob("/tmp/fonts/*CJK*.otf")) + \
+            sorted(glob.glob("/tmp/fonts/*.otf"))
     px = max(8, int(round(size_pt * DPI / 72)))
     if cands:
         return ImageFont.truetype(cands[0], px)
     return ImageFont.load_default()
+
+
+def page_bg(slide):
+    """Read the slide's own <p:bg> fill, falling back to layout and master.
+
+    ppt-master's native export promotes a full-canvas rect to the slide
+    background, so a dark deck would otherwise preview as white.
+    """
+    from pptx.oxml.ns import qn
+
+    def srgb(el):
+        if el is None:
+            return None
+        clr = el.find(".//" + qn("a:srgbClr"))
+        return clr.get("val") if clr is not None else None
+
+    for node in (slide._element, slide.slide_layout._element,
+                 slide.slide_layout.slide_master._element):
+        bg = node.find(".//" + qn("p:bg"))
+        v = srgb(bg)
+        if v:
+            return tuple(int(v[i:i + 2], 16) for i in (0, 2, 4))
+    return None
 
 
 def pt2px(v) -> float:
@@ -102,7 +126,7 @@ def main(argv=None) -> int:
     out.mkdir(parents=True, exist_ok=True)
 
     for idx, slide in enumerate(prs.slides, 1):
-        img = Image.new("RGB", (W, H), "white")
+        img = Image.new("RGB", (W, H), page_bg(slide) or "white")
         d = ImageDraw.Draw(img)
         for sh in slide.shapes:
             if sh.shape_type == MSO_SHAPE_TYPE.PICTURE:
