@@ -1,9 +1,13 @@
-# push.ps1 —— 把你本地新增/修改的文件提交并推送到 Arena 工作分支
-# 用法（在仓库目录下）：
-#     .\push.ps1                     # 自动生成提交信息
-#     .\push.ps1 "增加中期答辩PPT"    # 自定义提交信息
-# 如果提示“禁止运行脚本”，先执行一次：
-#     Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+# push.ps1 - commit your local files and push them to the Arena working branch.
+#
+# Usage (inside the repo folder):
+#     .\push.ps1                      # auto commit message
+#     .\push.ps1 "add midterm files"  # custom commit message
+#
+# The first push will pop up a GitHub login window (your own account). After
+# that Windows remembers the credential and later pushes are silent.
+#
+# NOTE: this file is intentionally ASCII-only (see sync.ps1 for the reason).
 
 param(
     [string]$Message = ''
@@ -12,36 +16,57 @@ param(
 $ErrorActionPreference = 'Stop'
 $Branch = 'arena/01a09d79-zhongqi'
 
-Set-Location -Path $PSScriptRoot
-Write-Host "== 仓库目录: $PWD" -ForegroundColor Cyan
+$repo = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
+Set-Location -LiteralPath $repo
 
-# 首次使用时 git 若未配置身份，commit 会失败，这里自动补上（只写本仓库的配置）
+if (-not (Test-Path (Join-Path $repo '.git'))) {
+    Write-Host "[ERROR] Not a git repository: $repo" -ForegroundColor Red
+    exit 1
+}
+
+# git refuses to commit without an identity; set a local one if missing
 if (-not (git config user.name)) {
     git config user.name  'mqgg5630-cyber'
     git config user.email 'mqgg5630-cyber@users.noreply.github.com'
-    Write-Host "== 已为本仓库设置默认 git 身份，可用 git config user.name/user.email 修改" -ForegroundColor Yellow
+    Write-Host "== set a default git identity for this repo (change it with git config user.name)" -ForegroundColor Yellow
 }
 
-# 先拉最新，避免和 Arena 的提交分叉
+Write-Host "== repo  : $repo" -ForegroundColor Cyan
+Write-Host "== branch: $Branch" -ForegroundColor Cyan
+
+# Get the server side first so the push cannot be rejected as non-fast-forward
 git fetch origin
 git checkout $Branch
 git pull --ff-only origin $Branch
 
 git add -A
 if (-not (git status --porcelain)) {
-    Write-Host "`n== 本地没有新变化，无需提交。" -ForegroundColor Green
+    Write-Host ""
+    Write-Host "== nothing new to commit. done." -ForegroundColor Green
     exit 0
 }
 
 if ([string]::IsNullOrWhiteSpace($Message)) {
-    $Message = "sync: 本地更新 $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+    $Message = "sync: local update " + (Get-Date -Format 'yyyy-MM-dd HH:mm')
 }
 
-Write-Host "`n== 以下文件将被提交：" -ForegroundColor Cyan
+Write-Host ""
+Write-Host "== files to be committed:" -ForegroundColor Cyan
 git status --short
 
 git commit -m $Message
-git push origin $Branch
+if ($LASTEXITCODE -ne 0) { Write-Host "[ERROR] commit failed." -ForegroundColor Red; exit 1 }
 
-Write-Host "`n== 已推送到 $Branch：" -ForegroundColor Green
+git push origin $Branch
+if ($LASTEXITCODE -ne 0) {
+    Write-Host ""
+    Write-Host "[ERROR] push failed." -ForegroundColor Red
+    Write-Host "  * If it asks for a password: GitHub needs a token, not your password." -ForegroundColor Yellow
+    Write-Host "    Install/run GitHub Desktop or 'gh auth login', then push again." -ForegroundColor Yellow
+    Write-Host "  * If it says 'rejected': the remote branch moved. Run .\sync.ps1 first." -ForegroundColor Yellow
+    exit 1
+}
+
+Write-Host ""
+Write-Host "== pushed to $Branch :" -ForegroundColor Green
 git log -1 --oneline --decorate
