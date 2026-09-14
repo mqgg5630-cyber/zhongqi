@@ -57,8 +57,11 @@ python code/make_ppt_svg.py              # 出 F 深色科技风 / G 学术期�
 python code/fetch_nature_skills.py       # 首次：下载 nature-skills 到 build/（不入库）
 python code/make_ppt_nature.py --audit   # 出 H nature 风 + 跑 skill 自带审计
 python code/check_consistency.py         # docx 与八版 PPT 口径 / 禁用词核对
-python code/make_mid_content.py          # 中间版 docx 草稿（保留清单在脚本内）-> docs/中间版_填写内容.md
-python code/make_ppt_mid.py              # 中间版 PPT（8 页，复用 H 版版式）-> 中间版/
+python code/make_mid_content.py          # 中间版 1 docx 草稿（保留清单在脚本内）-> docs/中间版_填写内容.md
+python code/make_mid2_content.py         # 中间版 2 docx 草稿（保留清单 + 半程进度口径）-> docs/中间版2_填写内容.md
+python code/make_mid2_figures.py         # 中间版 2 专用图：半程进度路线图
+python code/make_ppt_mid.py              # 中间版 1 PPT（8 页，复用 H 版版式）-> 中间版/
+python code/make_ppt_mid.py --half       # 中间版 2 PPT（8 页，进度减半）-> 中间版2/
 bash code/check_all.sh                   # 三份 docx 格式 + 九份 PPT 版式 + 口径核对，一次跑完
 python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"   # 给 A 版补演讲备注（大纲 -> 备注区）
 python code/check_ppt.py "deliverable/中期答辩_B_白底细线.pptx" # 独立版式检查

@@ -77,9 +77,11 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     decks = ([Path(p) for p in a.pptx] if a.pptx
              else sorted((ROOT / "deliverable").glob("中期答辩_*.pptx"))
-             + sorted((ROOT / "中间版").glob("*.pptx")))
+             + sorted((ROOT / "中间版").glob("*.pptx"))
+             + sorted((ROOT / "中间版2").glob("*.pptx")))
     docs = ([Path(p) for p in a.docx] if a.docx else
-            [ROOT / "deliverable" / "中期.docx", ROOT / "中间版" / "中期.docx"])
+            [ROOT / "deliverable" / "中期.docx", ROOT / "中间版" / "中期.docx",
+             ROOT / "中间版2" / "中期.docx"])
     dtexts = {d: docx_text(d) for d in docs}
     problems = 0
 
