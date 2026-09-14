@@ -72,12 +72,64 @@ SLIDE_CONTENT_IN = 12.09      # 13.333 in slide - 2 x 0.62 in margins
 SLIDE_TEXT_WIDTH_IN = 12.0
 
 
-def box(ax, x, y, w, h, text, fc=LIGHT, ec=BLUE, fs=12, bold=False, tc=INK, radius=0.02):
+def box(ax, x, y, w, h, text, fc=LIGHT, ec=BLUE, fs=12, bold=False, tc=INK, radius=0.02,
+        pad_pt=8.0):
     ax.add_patch(FancyBboxPatch((x, y), w, h, boxstyle=f"round,pad=0.005,rounding_size={radius}",
                                 linewidth=1.4, edgecolor=ec, facecolor=fc, zorder=2))
-    t = ax.text(x + w / 2, y + h / 2, text, ha="center", va="center", fontsize=fs,
+    wrapped = wrap_to_width(text, w * _axes_w_pt(ax) - pad_pt, fs)   # 自动折行，避免溢出边框
+    t = ax.text(x + w / 2, y + h / 2, wrapped, ha="center", va="center", fontsize=fs,
                 color=tc, zorder=3, weight="bold" if bold else "normal", linespacing=1.35)
-    _check_overflow(t, x, y, w, h, fs, text)
+    _check_overflow(t, x, y, w, h, fs, wrapped)
+
+
+_MEAS_FIG = None
+
+
+def _axes_size_pt(ax):
+    """(width, height) of the axes box in points.
+
+    box() coordinates are fractions of the AXES, not of the figure, so all the
+    overflow maths must use the axes box - using the figure width made the
+    checker too permissive (height was never checked at all).
+    """
+    bb = ax.get_window_extent()
+    dpi = ax.figure.dpi
+    return bb.width * 72.0 / dpi, bb.height * 72.0 / dpi
+
+
+def _axes_w_pt(ax) -> float:
+    return _axes_size_pt(ax)[0]
+
+
+def _meas_width_pt(text: str, fs: float) -> float:
+    """Width of a text in points, measured with the real CJK font."""
+    global _MEAS_FIG
+    if _MEAS_FIG is None:
+        _MEAS_FIG = plt.figure(figsize=(20, 1), dpi=72)   # 1 px == 1 pt
+    t = _MEAS_FIG.text(0, 0, text, fontsize=fs)
+    _MEAS_FIG.canvas.draw()
+    w = t.get_window_extent(_MEAS_FIG.canvas.get_renderer()).width
+    t.remove()
+    return w
+
+
+def wrap_to_width(text: str, width_pt: float, fs: float) -> str:
+    """Greedy wrap: keep the explicit newlines, then break long lines to fit."""
+    out_lines = []
+    for line in text.split("\n"):
+        if _meas_width_pt(line, fs) <= width_pt or len(line) <= 1:
+            out_lines.append(line)
+            continue
+        cur = ""
+        for ch in line:
+            if cur and _meas_width_pt(cur + ch, fs) >= width_pt - 0.5:
+                out_lines.append(cur)
+                cur = ch
+            else:
+                cur += ch
+        if cur:
+            out_lines.append(cur)
+    return "\n".join(out_lines)
 
 
 def _min_font(fig) -> float:
@@ -124,9 +176,9 @@ def _check_overflow(text_artist, x, y, w, h, fs, text):
         fig.canvas.draw()
         r = fig.canvas.get_renderer()
         bbox = text_artist.get_window_extent(renderer=r)
-        fig_w_pt = fig.get_size_inches()[0] * 72
-        box_w_pt = w * fig_w_pt
-        box_h_pt = h * fig_w_pt
+        ax_w_pt, ax_h_pt = _axes_size_pt(text_artist.axes)
+        box_w_pt = w * ax_w_pt
+        box_h_pt = h * ax_h_pt
         # get_window_extent returns display pixels -> convert to points
         tw = bbox.width * 72.0 / fig.dpi
         th = bbox.height * 72.0 / fig.dpi

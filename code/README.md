@@ -46,8 +46,10 @@ python code/preview_ppt.py deliverable/中期答辩.pptx -o build/ppt_preview
 | `fill_docx.py` | 就地填 docx：`replace_text` / `set_cell` / `fill_cell` / `insert_in_cell` / `set_paragraph` / `insert_after` / `insert_after_text` / `delete_paragraph`，全部基于模板原有段落格式 |
 | `verify_docx.py` | 校验成品是否保持模板格式（页面设置、页眉页脚、表格属性、非目标单元格逐字节一致、目标单元格段落/字体格式一致） |
 | `build_ops.py` | 把 `deliverable/中期检查表_填写内容.md` 编译成 `fill_docx.py` 的 ops |
-| `make_figures.py` | 生成 8 张图；自检：文本是否超出方框、缩放到幻灯片后最小有效字号是否 ≥15 pt |
-| `make_ppt.py` | 生成 16 页答辩 PPT；自检：每个 run ≥15 pt、形状不越界、文字不压图 |
+| `make_figures.py` | 生成 fig1—fig8（**细节版**，供学位论文用）；含折行与溢出测量工具函数；自检：文本是否超出方框、缩放到幻灯片后最小有效字号是否 ≥15 pt |
+| `make_figures2.py` | 生成 figA—figG（**思路版**，中期答辩用：研究思路、三模型预测、分阶段差异、宏蛋白组去重、机制关联、抑菌实验、进度） |
+| `make_ppt.py` | 生成第一版 16 页答辩 PPT（细节版）；自检：每个 run ≥15 pt、形状不越界、文字不压图 |
+| `make_ppt2.py` | 生成**当前**答辩 PPT（按导师意见：只讲思路与完成度，三模型预测与宏蛋白组去重按已完成呈现） |
 | `check_ppt.py` | 独立的 PPT 版式检查（用真实 CJK 字体估算换行高度） |
 | `preview_ppt.py` | 无 PowerPoint 环境下的逐页 PNG 预览（用于核版式） |
 | `get_cjk_font.py` | 从 PyPI 的 `noto-cjk-sans-otc` 抽出思源黑体 SC 单字体，供 matplotlib/PIL 使用 |
