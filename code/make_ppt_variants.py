@@ -213,8 +213,11 @@ def render(slide, s, style, idx, total, meta):
              align=PP_ALIGN.CENTER, before=0, after=8, spacing=1.15)
         para(tf, s.get("title2", ""), size=30, bold=True, color=style["ink"],
              align=PP_ALIGN.CENTER, before=0, after=0, spacing=1.15)
-        _, tf = tb(slide, MARGIN, Inches(4.72), CONTENT_W, Inches(1.6))
-        for line in (meta["presenter"], meta["advisor"], f"汇报日期：{meta['date']}"):
+        _, tf = tb(slide, MARGIN, Inches(4.62), CONTENT_W, Inches(1.9))
+        for line in (meta["presenter"], meta["advisor"], meta.get("major", ""),
+                     f"汇报日期：{meta['date']}"):
+            if not line:
+                continue
             para(tf, line, size=17, color=style["ink"], align=PP_ALIGN.CENTER,
                  before=(0 if line is meta["presenter"] else 10), after=0)
         if style["side_bar"] is not None:

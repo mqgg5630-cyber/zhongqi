@@ -300,14 +300,102 @@ def _rpr_of_text_run(p_el):
     return fallback
 
 
+class _RawCell:
+    """Minimal stand-in for docx.table._Cell, built from a <w:tc> element that
+    python-docx cannot reach (cells wrapped in a content control <w:sdt>)."""
+
+    def __init__(self, tc):
+        self._tc = tc
+
+    @property
+    def paragraphs(self):
+        return [Paragraph(p, None) for p in self._tc.findall(qn("w:p"))]
+
+
+def get_row_children(doc, t_idx: int, r: int, tag: str):
+    """Children of a raw table row: tag='w:tc' or 'w:sdt'."""
+    els = body_elements(doc)
+    if t_idx >= len(els) or els[t_idx][0] != "tbl":
+        return None
+    trs = els[t_idx][1]._tbl.findall(qn("w:tr"))
+    if r >= len(trs):
+        return None
+    return trs[r].findall(qn(tag))
+
+
 def op_fill_cell(doc, op):
-    """Replace everything after the first `keep_before` paragraphs of a cell with
-    `texts`, keeping the template's paragraph format (indent / line spacing) and
-    run format (font / size) - including Word form fields being removed cleanly."""
     cell = get_cell(doc, op["table"], op["row"], op["col"])
     if cell is None:
         warn(f"fill_cell: table {op['table']} r{op['row']}c{op['col']} does not exist")
         return
+    _apply_fill(cell, f"table {op['table']} r{op['row']}c{op['col']}", op)
+
+
+def op_fill_tc(doc, op):
+    """fill_cell by RAW row index and RAW <w:tc> index - needed for tables whose
+    rows mix plain cells with content-control cells (python-docx's grid mapping
+    is wrong there)."""
+    tcs = get_row_children(doc, op["table"], op["row"], "w:tc")
+    if tcs is None or op["col"] >= len(tcs):
+        warn(f"fill_tc: table {op['table']} r{op['row']} cell#{op['col']} does not exist")
+        return
+    _apply_fill(_RawCell(tcs[op["col"]]),
+                f"table {op['table']} r{op['row']} tc#{op['col']} (raw)", op)
+
+
+def get_row_sdts(doc, t_idx: int, r: int):
+    """Every <w:sdt> inside a table row, in document order - covers both the
+    row-level content controls (cover table rows 0/1/3/4/6) and the ones nested
+    inside a plain cell (rows 2/5)."""
+    els = body_elements(doc)
+    if t_idx >= len(els) or els[t_idx][0] != "tbl":
+        return None
+    trs = els[t_idx][1]._tbl.findall(qn("w:tr"))
+    if r >= len(trs):
+        return None
+    return list(trs[r].iter(qn("w:sdt")))
+
+
+def op_fill_sdt(doc, op):
+    """Write into a Word content-control cell (<w:sdt>, possibly nested in <w:tc>)."""
+    sdts = get_row_sdts(doc, op["table"], op["row"])
+    nth = int(op.get("nth", 0))
+    if sdts is None or nth >= len(sdts):
+        warn(f"fill_sdt: table {op['table']} r{op['row']} sdt#{nth} does not exist")
+        return
+    sdt = sdts[nth]
+    content = sdt.find(qn("w:sdtContent"))
+    # the control either wraps a whole table cell (row-level sdt) or sits inside
+    # a normal cell and wraps only the paragraph (dropdown / plain-text control)
+    ps = list(content.iter(qn("w:p"))) if content is not None else []
+    if not ps:
+        warn(f"fill_sdt: table {op['table']} r{op['row']} sdt#{nth} has no paragraph")
+        return
+    # drop the "showing placeholder" flag so Word treats our text as content
+    for flag in sdt.findall(qn("w:sdtPr") + "/" + qn("w:showingPlcHdr")):
+        flag.getparent().remove(flag)
+    text = op["text"]
+    runs = ps[0].findall(qn("w:r"))
+    text_runs = [r for r in runs if r.find(qn("w:t")) is not None]
+    if not text_runs:
+        warn(f"fill_sdt: table {op['table']} r{op['row']} sdt#{nth} has no text run")
+        return
+    keep = text_runs[0]
+    for extra in text_runs[1:]:
+        extra.getparent().remove(extra)
+    for t in keep.findall(qn("w:t")):
+        keep.remove(t)
+    t = OxmlElement("w:t")
+    t.set(qn("xml:space"), "preserve")
+    t.text = text
+    keep.append(t)
+    print(f"OK    fill_sdt      table {op['table']} r{op['row']} sdt#{nth} <- {text!r}")
+
+
+def _apply_fill(cell, label: str, op):
+    """Replace everything after the first `keep_before` paragraphs of a cell with
+    `texts`, keeping the template's paragraph format (indent / line spacing) and
+    run format (font / size) - including Word form fields being removed cleanly."""
     texts = list(op["texts"])
     keep = int(op.get("keep_before", 1))
     bold_idx = set(int(i) for i in op.get("bold", []))
@@ -352,7 +440,7 @@ def op_fill_cell(doc, op):
     for p in orig[keep:]:
         p._p.getparent().remove(p._p)
 
-    print(f"OK    fill_cell     table {op['table']} r{op['row']}c{op['col']} "
+    print(f"OK    fill_cell     {label} "
           f"+{len(texts)} paragraphs ({len(bold_idx)} bold)")
 
 
@@ -360,6 +448,8 @@ HANDLERS = {
     "replace_text": op_replace_text,
     "set_cell": op_set_cell,
     "fill_cell": op_fill_cell,
+    "fill_tc": op_fill_tc,
+    "fill_sdt": op_fill_sdt,
     "insert_in_cell": op_insert_in_cell,
     "set_paragraph": op_set_paragraph,
     "insert_after": op_insert_after,

@@ -5,6 +5,15 @@ the ops.json that fill_docx.py applies to the school template.
 
 Draft format
 ------------
+    # 封面信息
+    姓名：文绍华                     <- written into the cover table (table 13)
+    学号：2024110316
+    研究生类型：学术学位硕士研究生
+    培养单位：生命科学学院
+    学科专业：生物学
+    研究方向：生物化学与分子生物学
+    指导教师：申亮
+
     # 论文题目
     基于深度学习的……            <- one line, goes into the 论文题目 cell
 
@@ -41,18 +50,43 @@ SECTION_MAP = {
     "4": (22, 5, 0),
 }
 TITLE_CELL = (22, 0, 3)      # 论文题目 fill-in cell
+COVER_TABLE = 13             # 封面表（7x2，body 元素序号）
+
+# 封面栏目 -> (op, 定位)：rows 0/1/3/4/6 的值格是 Word 内容控件（w:sdt 包着 w:tc），
+# python-docx 看不到，必须用 fill_sdt；rows 2/5 是普通单元格，但整张表的网格被内容
+# 控件打乱，python-docx 的 table.cell(r,c) 会错位，因此用 raw 定位的 fill_tc。
+COVER_MAP = {
+    # 行号 -> 该行里第几个 w:sdt（封面 7 行每行都是 1 个内容控件）
+    "姓名":      (0, 0),
+    "学号":      (1, 0),
+    "研究生类型": (2, 0),
+    "培养单位":   (3, 0),
+    "学科专业":   (4, 0),
+    "研究方向":   (5, 0),
+    "指导教师":   (6, 0),
+}
 TEMPLATE = "sources/中期.docx"
 OUTPUT = "deliverable/中期.docx"
 
 
 def parse(md_path: Path):
     title = None
+    cover: list[tuple[str, str]] = []
     sections: dict[str, list[tuple[str, bool]]] = {}
     cur = None
+    in_cover = False
     for raw in md_path.read_text(encoding="utf-8").splitlines():
         line = raw.rstrip()
         if not line.strip():
             continue
+        if line.startswith("# 封面信息"):
+            cur, in_cover = None, True
+            continue
+        if in_cover and "：" in line and not line.startswith("#"):
+            k, v = line.split("：", 1)
+            cover.append((k.strip(), v.strip()))
+            continue
+        in_cover = False
         if line.startswith("## "):
             head = line[3:].strip()
             m = re.match(r"(\d)", head)
@@ -76,6 +110,14 @@ def parse(md_path: Path):
         sections[cur].append((text, bold))
 
     ops = []
+    for key, value in cover:
+        spec = COVER_MAP.get(key)
+        if spec is None:
+            print(f"[warn] unknown cover field: {key!r}", file=sys.stderr)
+            continue
+        row, nth = spec
+        ops.append({"op": "fill_sdt", "table": COVER_TABLE, "row": row,
+                    "nth": nth, "text": value})
     if title:
         ops.append({
             "op": "fill_cell", "table": TITLE_CELL[0], "row": TITLE_CELL[1],
@@ -112,11 +154,14 @@ def main(argv=None) -> int:
     dst.parent.mkdir(parents=True, exist_ok=True)
     dst.write_text(json.dumps(spec, ensure_ascii=False, indent=1), encoding="utf-8")
 
-    total = sum(len(o["texts"]) for o in spec["ops"])
+    total = sum(len(o["texts"]) for o in spec["ops"] if "texts" in o)
     print(f"wrote {dst}: {len(spec['ops'])} ops, {total} paragraphs")
     for o in spec["ops"]:
-        print(f"  table {o['table']} r{o['row']}c{o['col']}: {len(o['texts'])} paragraphs, "
-              f"{len(o.get('bold', []))} bold")
+        if o["op"] == "fill_sdt":
+            print(f"  cover {o['table']} r{o['row']} sdt#{o['nth']}: {o['text']!r}")
+        else:
+            print(f"  table {o['table']} r{o['row']}c{o['col']}: {len(o['texts'])} paragraphs, "
+                  f"{len(o.get('bold', []))} bold")
     return 0
 
 

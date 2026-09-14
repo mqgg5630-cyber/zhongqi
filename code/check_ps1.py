@@ -128,7 +128,8 @@ def check(path: Path) -> list:
 def main(argv) -> int:
     files = [Path(a) for a in (argv or sys.argv[1:])]
     if not files:
-        files = sorted(Path(".").glob("*.ps1"))
+        # every .ps1 in the repo, so helper scripts added later are covered too
+        files = sorted(set(Path(".").glob("*.ps1")) | set(Path(".").glob("**/*.ps1")))
     bad = 0
     for f in files:
         issues = check(f)

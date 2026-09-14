@@ -2,10 +2,12 @@
 
 > 📎 配套文件：**机器可读大纲** `docs/ppt_outline.json` → **人读版大纲** `docs/PPT大纲.md`（自动生成，含配色字号规范与提示词）；
 > 成品三版：`deliverable/中期答辩.pptx`（A 学术蓝）、`deliverable/versions/中期答辩_B_极简线框.pptx`、`deliverable/versions/中期答辩_C_卡片色块.pptx`；
-> 想换工具重做，见 `docs/PPT生成Skill选择.md`（ppt-master 54.1k★ / presenton 10.2k★）。
+> 想换工具重做，见 `docs/PPT生成Skill选择.md`（ppt-master 54.1k★ / presenton 10.2k★）；
+> 想把"大纲 → 多版可编辑 PPT"这套流程复用到别的汇报，见 `skills/editable-ppt-from-outline/`。
+> 封面信息（文绍华 / 2024110316 / 生命科学学院 / 生物学）取自 `sources/开题.docx`。
 
 
-成品：`deliverable/中期答辩.pptx`（16 页，16:9，全篇最小字号 15 pt）
+成品：`deliverable/中期答辩.pptx`（A 版，16 页，16:9，全篇最小字号 15 pt）；另两版见 `deliverable/versions/`（B 极简线框 / C 卡片色块）
 页图预览：`results/ppt_preview/预览_第1-4页.png` 等 4 张（无需 PowerPoint 即可核对版式）
 
 ## 一、导师意见的落实

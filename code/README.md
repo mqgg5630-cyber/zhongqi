@@ -39,7 +39,9 @@ results/figures/*.png                        ← 由 make_figures.py 生成（�
 python code/build_ops.py                 # 草稿 md -> ops json
 python code/fill_docx.py --ops build/ops_中期.json      # 填表
 python code/verify_docx.py --base sources/中期.docx --filled deliverable/中期.docx \
-       --cells 22:0:3 22:2:0 22:3:0 22:4:0 22:5:0       # 格式校验
+       --cells 22:0:3 22:2:0 22:3:0 22:4:0 22:5:0 \
+       --tc-skip 22:0:1 22:2:0 22:3:0 22:4:0 22:5:0 \
+       --sdt-cells 13:0:0 13:1:0 13:2:0 13:3:0 13:4:0 13:5:0 13:6:0   # 格式校验（含封面）
 python code/make_figures.py              # 画图（含框内文字溢出检查 + 投影字号核算）
 python code/make_ppt.py                  # 出旧版（细节版）PPT（含字号/越界/图文重叠检查）
 python code/make_ppt2.py                 # 出 A 版（当前）PPT -> deliverable/中期答辩.pptx
@@ -55,9 +57,9 @@ python code/preview_ppt.py deliverable/中期答辩.pptx -o build/ppt_preview
 | 脚本 | 作用 |
 |---|---|
 | `inspect_docx.py` | 解析 docx 结构：段落样式、字体（含东亚字体）、字号、缩进、表格逐格内容、Word 表单域，输出 txt + json |
-| `fill_docx.py` | 就地填 docx：`replace_text` / `set_cell` / `fill_cell` / `insert_in_cell` / `set_paragraph` / `insert_after` / `insert_after_text` / `delete_paragraph`，全部基于模板原有段落格式 |
-| `verify_docx.py` | 校验成品是否保持模板格式（页面设置、页眉页脚、表格属性、非目标单元格逐字节一致、目标单元格段落/字体格式一致） |
-| `build_ops.py` | 把 `deliverable/中期检查表_填写内容.md` 编译成 `fill_docx.py` 的 ops |
+| `fill_docx.py` | 就地填 docx：`replace_text` / `set_cell` / `fill_cell` / `fill_tc`（按原始行/格定位）/ `fill_sdt`（Word 内容控件，封面用）/ `insert_in_cell` / `set_paragraph` / `insert_after` / `insert_after_text` / `delete_paragraph`，全部基于模板原有段落格式 |
+| `verify_docx.py` | 校验成品是否保持模板格式（页面设置、页眉页脚、表格属性、非目标单元格逐字节一致、目标单元格段落/字体格式一致）；新增 `--sdt-cells` / `--tc-cells` / `--tc-skip` 三个参数，覆盖封面内容控件与"整格重建"的正文格 |
+| `build_ops.py` | 把 `deliverable/中期检查表_填写内容.md` 编译成 `fill_docx.py` 的 ops；`# 封面信息` 段 → 封面表（body 序号 13）7 栏，`## n.` 段 → 正文单元格 |
 | `make_figures.py` | 生成 fig1—fig8（**细节版**，供学位论文用）；含折行与溢出测量工具函数；自检：文本是否超出方框、缩放到幻灯片后最小有效字号是否 ≥15 pt |
 | `make_figures2.py` | 生成 figA—figG（**思路版**，中期答辩用：研究思路、三模型预测、分阶段差异、宏蛋白组去重、机制关联、抑菌实验、进度） |
 | `make_ppt.py` | 生成第一版 16 页答辩 PPT（细节版）；自检：每个 run ≥15 pt、形状不越界、文字不压图 |

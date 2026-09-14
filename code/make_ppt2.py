@@ -73,9 +73,10 @@ def build() -> Presentation:
              line_spacing=1.15)
     add_para(tf, "肠道微生物组中抗菌肽的差异性研究", size=30, bold=True, color=INK,
              align=PP_ALIGN.CENTER, space_before=0, space_after=0, line_spacing=1.15)
-    tb, tf = textbox(s, MARGIN, Inches(4.7), CONTENT_W, Inches(1.8))
-    for line in ["汇报人：【姓名】　　学号：【学号】",
-                 "指导教师：【导师姓名】　　培养单位：【学院】",
+    tb, tf = textbox(s, MARGIN, Inches(4.62), CONTENT_W, Inches(1.9))
+    for line in ["汇报人：文绍华　　学号：2024110316",
+                 "指导教师：申亮　　培养单位：生命科学学院",
+                 "学科专业：生物学（生物化学与分子生物学）",
                  "汇报日期：2026 年 9 月"]:
         add_para(tf, line, size=17, color=INK, align=PP_ALIGN.CENTER, space_before=10,
                  space_after=0)
@@ -308,7 +309,7 @@ def build() -> Presentation:
     add_para(tf, "谢谢！", size=22, color=BLUE, align=PP_ALIGN.CENTER, space_before=0,
              space_after=0)
     tb, tf = textbox(s, MARGIN, Inches(4.6), CONTENT_W, Inches(0.8))
-    add_para(tf, "汇报人：【姓名】　指导教师：【导师姓名】", size=16, color=GREY, first=True,
+    add_para(tf, "汇报人：文绍华　指导教师：申亮", size=16, color=GREY, first=True,
              align=PP_ALIGN.CENTER, space_before=0, space_after=0)
     slides.append(s)
 
