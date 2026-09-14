@@ -1,0 +1,12 @@
+# Office 文档按二进制处理，避免 git 尝试做文本 diff / 行尾转换
+*.docx  binary
+*.doc   binary
+*.pptx  binary
+*.ppt   binary
+*.xlsx  binary
+*.xls   binary
+*.pdf   binary
+
+# 二进制大文件走 LFS（可选，需要本机安装 git-lfs；不装也不影响使用）
+# *.docx filter=lfs diff=lfs merge=lfs -text
+# *.pptx filter=lfs diff=lfs merge=lfs -text
