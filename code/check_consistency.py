@@ -72,18 +72,21 @@ def pptx_text(path: Path) -> str:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--docx", default=str(ROOT / "deliverable" / "中期.docx"))
+    ap.add_argument("--docx", nargs="*", default=None)
     ap.add_argument("--pptx", nargs="*", default=None)
     a = ap.parse_args(argv)
     decks = ([Path(p) for p in a.pptx] if a.pptx
-             else sorted((ROOT / "deliverable").glob("中期答辩_*.pptx")))
-    docx = Path(a.docx)
-    dtext = docx_text(docx)
+             else sorted((ROOT / "deliverable").glob("中期答辩_*.pptx"))
+             + sorted((ROOT / "中间版").glob("*.pptx")))
+    docs = ([Path(p) for p in a.docx] if a.docx else
+            [ROOT / "deliverable" / "中期.docx", ROOT / "中间版" / "中期.docx"])
+    dtexts = {d: docx_text(d) for d in docs}
     problems = 0
 
-    print(f"docx: {docx.name}  |  对比 {len(decks)} 份 PPT\n")
+    print(f"docx: {len(docs)} 份（{'、'.join(d.parent.name + '/' + d.name for d in docs)}）"
+          f"  |  对比 {len(decks)} 份 PPT\n")
     for label, dneedles, pneedles in RULES:
-        d_ok = any(n in dtext for n in dneedles)
+        d_ok = all(any(n in dtexts[d] for n in dneedles) for d in docs)
         ppt_missing = [p.stem.replace("中期答辩_", "")
                        for p in decks
                        if not any(n in pptx_text(p) for n in pneedles)]
@@ -93,15 +96,18 @@ def main(argv=None) -> int:
         problems += 1
         detail = ""
         if not d_ok:
-            detail += f" docx 缺「{' / '.join(dneedles[:2])}」"
+            missing = [d.name if d.parent.name == "中间版" else d.name
+                       for d in docs if not any(n in dtexts[d] for n in dneedles)]
+            detail += f" docx 缺「{' / '.join(dneedles[:2])}」: {', '.join(missing)}"
         if ppt_missing:
             detail += f" PPT 缺「{' / '.join(pneedles[:2])}」: {', '.join(ppt_missing)}"
         print(f"  FAIL {label:<12} {detail}")
 
     for word in BANNED:
         hits = []
-        if word in dtext:
-            hits.append("docx")
+        for d in docs:
+            if word in dtexts[d]:
+                hits.append(d.parent.name + "/" + d.name)
         for p in decks:
             if word in pptx_text(p):
                 hits.append(p.stem.replace("中期答辩_", ""))
