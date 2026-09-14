@@ -19,7 +19,7 @@ description: 用一份 JSON 大纲批量生成「原生可编辑」的 PowerPoin
 | `docs/ppt_outline.json` | **唯一内容源**：meta + 逐页要素（含演讲备注） |
 | `docs/PPT大纲.md` | 由 JSON 生成的人读版大纲（含配色规范和现成提示词） |
 | `code/make_ppt2.py` | 生成 **A 版**（学术蓝）→ `deliverable/中期答辩_A_学术蓝.pptx` |
-| `code/make_ppt_variants.py` | 生成 **B / C / D / E 四版**（极简线框 · 卡片色块 · 双栏杂志风 · 深色标题区）→ `deliverable/中期答辩_{B..E}_*.pptx` |
+| `code/make_ppt_variants.py` | 生成 **B / C / D / E 四版**（白底细线 · 卡片色块 · 双栏杂志风 · 深色标题区）→ `deliverable/中期答辩_{B..E}_*.pptx` |
 | `code/outline_to_md.py` | JSON → 人读版大纲 |
 | `code/add_notes.py` | 把大纲里的 `note` 写进任意 pptx 的备注区（按页序） |
 | `code/check_ppt.py` | 独立校验：最小字号 / 越界 / 图文重叠 |
@@ -81,7 +81,7 @@ python code/make_ppt_variants.py            # 或 --style D 只出一版；--sty
 python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"
 # 5) 质量门：必须全绿
 python code/check_ppt.py "deliverable/中期答辩_A_学术蓝.pptx"
-python code/check_ppt.py "deliverable/中期答辩_B_极简线框.pptx"
+python code/check_ppt.py "deliverable/中期答辩_B_白底细线.pptx"
 # 6) 目视核对（无需 Office）：4 页一张联系图
 python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/prevA
 ```

@@ -19,7 +19,7 @@ skills/editable-ppt-from-outline/
 | 脚本 | 作用 |
 |---|---|
 | `code/make_ppt2.py` | A 版（学术蓝） |
-| `code/make_ppt_variants.py` | B 极简线框 / C 卡片色块 / D 双栏杂志风 / E 深色标题区，配色与版式都在 `STYLES` 里 |
+| `code/make_ppt_variants.py` | B 白底细线 / C 卡片色块 / D 双栏杂志风 / E 深色标题区，配色与版式都在 `STYLES` 里 |
 | `code/outline_to_md.py` | JSON → 人读版大纲（含提示词模板） |
 | `code/add_notes.py` | 大纲里的 `note` → PowerPoint 备注区（按页序） |
 | `code/check_ppt.py` | 独立校验：最小字号 ≥ 15 pt、不越界、文字不压图 |

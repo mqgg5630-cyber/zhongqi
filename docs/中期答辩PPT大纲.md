@@ -1,7 +1,7 @@
 # 中期答辩 PPT —— 成稿结构、导师意见落实与答辩准备
 
 > 📎 配套文件：**机器可读大纲** `docs/ppt_outline.json` → **人读版大纲** `docs/PPT大纲.md`（自动生成，含配色字号规范与提示词）；
-> 成品五版（都在 `deliverable/`）：`中期答辩_A_学术蓝.pptx`、`中期答辩_B_极简线框.pptx`（推荐）、`中期答辩_C_卡片色块.pptx`、`中期答辩_D_双栏杂志风.pptx`、`中期答辩_E_深色标题区.pptx`；
+> 成品五版（都在 `deliverable/`）：`中期答辩_A_学术蓝.pptx`、`中期答辩_B_白底细线.pptx`（推荐）、`中期答辩_C_卡片色块.pptx`、`中期答辩_D_双栏杂志风.pptx`、`中期答辩_E_深色标题区.pptx`；
 > 想换工具重做，见 `docs/PPT生成Skill选择.md`（ppt-master 54.1k★ / presenton 10.2k★）；
 > 想把"大纲 → 多版可编辑 PPT"这套流程复用到别的汇报，见 `skills/editable-ppt-from-outline/`。
 > 封面信息（文绍华 / 2024110316 / 生命科学学院 / 生物学）取自 `sources/开题.docx`。

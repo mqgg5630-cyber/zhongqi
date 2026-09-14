@@ -6,7 +6,7 @@
 | 版本 | 文件 | 风格 | 适合场合 |
 |---|---|---|---|
 | A 学术蓝 | `中期答辩_A_学术蓝.pptx` | 深蓝 + 青绿标签块、圆角色块卡片 | 想要"信息最全、最像工作汇报"的观感 |
-| B 极简线框 | `中期答辩_B_极简线框.pptx` | 白底、细线卡片、标题下短横线 | **推荐首选**：投影仪上最干净，打印也清楚 |
+| B 白底细线 | `中期答辩_B_白底细线.pptx` | 白底、细线卡片、标题下短横线 | **推荐首选**：投影仪上最干净，打印也清楚 |
 | C 卡片色块 | `中期答辩_C_卡片色块.pptx` | 顶部色带 + 左侧竖条 + 卡片底色块 | 想要设计感更强、页面更"饱满" |
 | D 双栏杂志风 | `中期答辩_D_双栏杂志风.pptx` | 正文两栏 + 砖红编号 + 右上角页码 | 内容多、想让单页信息密度更高（像期刊内页） |
 | E 深色标题区 | `中期答辩_E_深色标题区.pptx` | 深色标题带 + 深色结论条 + 橙色强调 | 大教室投影、需要强对比时才用（打印略费墨） |
@@ -37,7 +37,7 @@ python code/make_ppt2.py                           # A 版
 python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"   # A 版补演讲备注
 python code/make_ppt_variants.py                   # B / C / D / E 四版（可加 --style D 只出一版）
 python code/check_ppt.py "deliverable/中期答辩_A_学术蓝.pptx"   # 版式自检（≥15 pt、不越界）
-python code/preview_ppt.py "deliverable/中期答辩_B_极简线框.pptx" -o build/prevB  # 出预览图
+python code/preview_ppt.py "deliverable/中期答辩_B_白底细线.pptx" -o build/prevB  # 出预览图
 ```
 
 ## 内容口径（五版共用的硬约束）

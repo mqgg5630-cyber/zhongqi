@@ -48,7 +48,7 @@ python code/make_ppt2.py                 # 出 A 版 PPT -> deliverable/中期�
 python code/outline_to_md.py             # PPT 大纲 json -> docs/PPT大纲.md
 python code/make_ppt_variants.py         # 出 B / C / D / E 四版 PPT -> deliverable/（--style D 只出一版）
 python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"   # 给 A 版补演讲备注（大纲 -> 备注区）
-python code/check_ppt.py "deliverable/中期答辩_B_极简线框.pptx" # 独立版式检查
+python code/check_ppt.py "deliverable/中期答辩_B_白底细线.pptx" # 独立版式检查
 python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/prevA
 ```
 
@@ -64,7 +64,7 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 | `make_figures2.py` | 生成 figA—figG（**思路版**，中期答辩用：研究思路、三模型预测、分阶段差异、宏蛋白组去重、机制关联、抑菌实验验证、进度） |
 | `make_ppt.py` | 生成第一版 16 页答辩 PPT（细节版）；自检：每个 run ≥15 pt、形状不越界、文字不压图 |
 | `make_ppt2.py` | 生成 **A 版**答辩 PPT（按导师意见：只讲思路与完成度，三模型预测与宏蛋白组去重按已完成呈现） |
-| `make_ppt_variants.py` | 由 `docs/ppt_outline.json` 生成 **B 极简线框 / C 卡片色块 / D 双栏杂志风 / E 深色标题区** 四版 PPT，可选 `--style D`；版式差异集中在文件顶部 `STYLES` 风格表（`header_style` / `takeaway_style` / `body_style`）与 `header()` / `takeaway()` / `bullets_two_col()` / `cards_row()` |
+| `make_ppt_variants.py` | 由 `docs/ppt_outline.json` 生成 **B 白底细线 / C 卡片色块 / D 双栏杂志风 / E 深色标题区** 四版 PPT，可选 `--style D`；版式差异集中在文件顶部 `STYLES` 风格表（`header_style` / `takeaway_style` / `body_style`）与 `header()` / `takeaway()` / `bullets_two_col()` / `cards_row()` |
 | `outline_to_md.py` | 把 `docs/ppt_outline.json` 转成 `docs/PPT大纲.md`（人读版 + 提示词模板），供 ppt-master / presenton 等工具使用 |
 | `add_notes.py` | 把大纲里的演讲备注（口播稿）按页序写进任意 pptx（A 版补备注即用它），五版备注口径一致 |
 | `check_ppt.py` | 独立的 PPT 版式检查（用真实 CJK 字体估算换行高度） |

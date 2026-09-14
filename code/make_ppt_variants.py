@@ -5,7 +5,7 @@
 三版并列供选择（都是原生可编辑 pptx，真实文本框/形状，非图片化）：
 
   A  学术蓝（现有）      deliverable/中期答辩_A_学术蓝.pptx
-  B  极简线框（本脚本）  deliverable/中期答辩_B_极简线框.pptx
+  B  白底细线（本脚本）  deliverable/中期答辩_B_白底细线.pptx
   C  卡片色块（本脚本）  deliverable/中期答辩_C_卡片色块.pptx
   D  双栏杂志风（本脚本）deliverable/中期答辩_D_双栏杂志风.pptx
   E  深色标题区（本脚本）deliverable/中期答辩_E_深色标题区.pptx
@@ -53,7 +53,7 @@ WHITE = RGBColor(0xFF, 0xFF, 0xFF)
 # ----------------------------------------------------------------- 主题定义
 STYLES = {
     "B": {
-        "name": "极简线框",
+        "name": "白底细线",
         "accent": RGBColor(0x0F, 0x4C, 0x5C),      # 深青
         "accent2": RGBColor(0x2F, 0x9E, 0x8F),
         "rule": RGBColor(0xD5, 0xDE, 0xE5),
