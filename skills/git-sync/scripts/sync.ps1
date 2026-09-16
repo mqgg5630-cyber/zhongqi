@@ -160,7 +160,13 @@ if ($fetch.code -ne 0) {
 }
 
 $null = Git @('checkout', $Branch) -Show
-$pull = Git @('pull', '--ff-only', $Remote, $Branch) -Show
+# v2.7.5: 'git pull --ff-only' re-reads FETCH_HEAD for the merge candidate and
+# dies with "Cannot fast-forward to multiple branches." when a concurrent
+# fetch (the watcher loop, an IDE auto-fetch) rewrites FETCH_HEAD between the
+# fetch and that check (known git behavior; field report 2026-09-16). Merging
+# the explicit remote-tracking ref never looks at FETCH_HEAD, so it is immune
+# to that race. The full fetch above already updated $remoteRef.
+$pull = Git @('merge', '--ff-only', $remoteRef) -Show
 if ($pull.code -ne 0) {
     Write-Host "[ERROR] pull failed. Your branch has local commits that conflict." -ForegroundColor Red
     Write-Host "        Diagnose: git status ; git stash list ; git log --oneline -5" -ForegroundColor Yellow

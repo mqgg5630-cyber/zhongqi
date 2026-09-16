@@ -100,9 +100,11 @@ if ($LASTEXITCODE -ne 0) { Write-Host "[ERROR] git fetch failed (network?)" -For
 git checkout $Branch
 if ($LASTEXITCODE -ne 0) { Write-Host "[ERROR] cannot check out $Branch" -ForegroundColor Red; exit 1 }
 
-git pull --ff-only $Remote $Branch
+# v2.7.5: merge the explicit ref instead of 'pull --ff-only' (the fetch above
+# already updated $Remote/$Branch; merge never reads FETCH_HEAD)
+git merge --ff-only "$Remote/$Branch"
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "[ERROR] pull --ff-only failed - you have local commits that diverged." -ForegroundColor Red
+    Write-Host "[ERROR] fast-forward failed - you have local commits that diverged." -ForegroundColor Red
     Write-Host "        Inspect with: git status" -ForegroundColor Yellow
     exit 1
 }

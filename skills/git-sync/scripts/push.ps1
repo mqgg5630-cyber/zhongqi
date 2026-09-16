@@ -196,7 +196,10 @@ $rc = GitRun @('fetch', $Remote)
 if ($rc -ne 0) { Write-Host "[ERROR] git fetch failed (network? see .\doctor.ps1)" -ForegroundColor Red; exit 3 }
 $rc = GitRun @('checkout', $Branch)
 if ($rc -ne 0) { Write-Host "[ERROR] git checkout $Branch failed (unknown branch in this clone?)" -ForegroundColor Red; exit 3 }
-$pullOut = GitOut @('pull', '--ff-only', $Remote, $Branch)
+# v2.7.5: merge the explicit ref instead of 'pull --ff-only' - the full fetch
+# above already updated $Remote/$Branch, and merge never reads FETCH_HEAD
+# (immune to the "Cannot fast-forward to multiple branches." race)
+$pullOut = GitOut @('merge', '--ff-only', "$Remote/$Branch")
 if ($pullOut.text) { Write-Host $pullOut.text }
 if ($pullOut.code -ne 0) {
     # A failed push leaves this repo's own "verdict" commits behind, and the
@@ -219,7 +222,8 @@ if ($pullOut.code -ne 0) {
         $null = GitRun @('reset', '--mixed', "$Remote/$Branch")
         $deleted = @(((GitOut @('ls-files', '-d')).text) -split "`r?`n" | Where-Object { $_ -match '\S' })
         foreach ($d in $deleted) { if ($d) { $null = GitRun @('checkout', '--', $d) } }
-        $pullOut = GitOut @('pull', '--ff-only', $Remote, $Branch)
+        $null = GitRun @('fetch', $Remote, $Branch)
+        $pullOut = GitOut @('merge', '--ff-only', "$Remote/$Branch")
         if ($pullOut.text) { Write-Host $pullOut.text }
     }
 }

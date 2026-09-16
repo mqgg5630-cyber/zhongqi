@@ -298,7 +298,9 @@ if ($Fix) {
         Write-Host "   already on the configured branch"
     }
     if ($wantBranch) {
-        git pull --ff-only $remoteName $wantBranch
+        # v2.7.5: fetch+merge instead of 'pull --ff-only' (FETCH_HEAD race)
+        git fetch $remoteName $wantBranch
+        git merge --ff-only "$remoteName/$wantBranch"
         if ($LASTEXITCODE -eq 0) { Write-Host "   pulled the latest" }
         else { Write-Host "   [ERROR] pull failed - see the message above" -ForegroundColor Red }
     }
