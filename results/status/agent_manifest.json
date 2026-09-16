@@ -1,0 +1,385 @@
+{
+  "round": "1",
+  "generated_at_utc": "2026-09-16 09:12:04 UTC",
+  "branch": "arena/01a0a95e-zhongqi",
+  "base_commit": "c5dbc94",
+  "generator": "code/build_deliverables.py",
+  "toolchain": {
+    "python": "3.11.2",
+    "python_docx": "1.2.0",
+    "python_pptx": "1.0.2"
+  },
+  "only": "all",
+  "rebuilt": true,
+  "verdict": "pass",
+  "steps": [
+    {
+      "step": "ops:中期",
+      "cmd": "/usr/bin/python3 code/build_ops.py",
+      "exit": 0,
+      "tail": "  set cell table 22 r15c1 <- '组员' |   set cell table 22 r16c1 <- '组员'"
+    },
+    {
+      "step": "docx:中期",
+      "cmd": "/usr/bin/python3 code/fill_docx.py --ops build/ops_中期.json",
+      "exit": 0,
+      "tail": "OK    fill_cell     table 22 r16c6 +1 paragraphs (0 bold) | saved -> deliverable/中期.docx  (45 ops, 0 failed)"
+    },
+    {
+      "step": "docx:中期新",
+      "cmd": "/usr/bin/python3 code/fill_docx.py --ops build/ops_中期.json --out deliverable/中期新.docx",
+      "exit": 0,
+      "tail": "OK    fill_cell     table 22 r16c6 +1 paragraphs (0 bold) | saved -> deliverable/中期新.docx  (45 ops, 0 failed)"
+    },
+    {
+      "step": "docx:机制说明",
+      "cmd": "/usr/bin/python3 code/make_mech_doc.py",
+      "exit": 0,
+      "tail": "wrote deliverable/抗菌肽与AD关联机制说明.docx |   paragraphs: 59 | tables: 2 | inline shapes: 2 | chars: 6534"
+    },
+    {
+      "step": "md:中间版草稿",
+      "cmd": "/usr/bin/python3 code/make_mid_content.py",
+      "exit": 0,
+      "tail": "  全部行（含小节标题）47/78 = 60% |   字数 4236/8253 = 51%"
+    },
+    {
+      "step": "ops:中间版",
+      "cmd": "/usr/bin/python3 code/build_ops.py --in docs/中间版_填写内容.md --out build/ops_中间版.json",
+      "exit": 0,
+      "tail": "  set cell table 22 r15c1 <- '组员' |   set cell table 22 r16c1 <- '组员'"
+    },
+    {
+      "step": "docx:中间版",
+      "cmd": "/usr/bin/python3 code/fill_docx.py --ops build/ops_中间版.json --out 中间版/中期.docx",
+      "exit": 0,
+      "tail": "OK    fill_cell     table 22 r16c6 +1 paragraphs (0 bold) | saved -> 中间版/中期.docx  (45 ops, 0 failed)"
+    },
+    {
+      "step": "md:中间版2草稿",
+      "cmd": "/usr/bin/python3 code/make_mid2_content.py",
+      "exit": 0,
+      "tail": "  正文段落 31/60 = 52% |   字数 4097/7982 = 51%"
+    },
+    {
+      "step": "ops:中间版2",
+      "cmd": "/usr/bin/python3 code/build_ops.py --in docs/中间版2_填写内容.md --out build/ops_中间版2.json",
+      "exit": 0,
+      "tail": "  set cell table 22 r15c1 <- '组员' |   set cell table 22 r16c1 <- '组员'"
+    },
+    {
+      "step": "docx:中间版2",
+      "cmd": "/usr/bin/python3 code/fill_docx.py --ops build/ops_中间版2.json --out 中间版2/中期.docx",
+      "exit": 0,
+      "tail": "OK    fill_cell     table 22 r16c6 +1 paragraphs (0 bold) | saved -> 中间版2/中期.docx  (45 ops, 0 failed)"
+    },
+    {
+      "step": "pptx:H(20页)",
+      "cmd": "/usr/bin/python3 code/make_ppt_nature.py --mechanism",
+      "exit": 0,
+      "tail": "wrote deliverable/中期答辩_H_nature风.pptx | slides: 20 | runs: 137"
+    },
+    {
+      "step": "pptx:中间版(12页)",
+      "cmd": "/usr/bin/python3 code/make_ppt_mid.py",
+      "exit": 0,
+      "tail": "wrote 中间版/中期答辩_H_nature风.pptx | slides: 12 (完整版 16 页) | runs: 73"
+    },
+    {
+      "step": "pptx:中间版2(12页)",
+      "cmd": "/usr/bin/python3 code/make_ppt_mid.py --half",
+      "exit": 0,
+      "tail": "wrote 中间版2/中期答辩_H_nature风.pptx | slides: 12 (完整版 16 页) | runs: 75 | 进度口径：前四项已完成、其余下一阶段"
+    }
+  ],
+  "qa": {
+    "gate_exit": 0,
+    "gate_tail": "RESULT: template format fully preserved\n=== deliverable/中期新.docx\nRESULT: template format fully preserved\n=== 中间版/中期.docx\nRESULT: template format fully preserved\n=== 中间版2/中期.docx\nRESULT: template format fully preserved\n=== 口径核对（docx 为准，核对全部 PPT）\nRESULT: docx 与全部 PPT 口径一致\n=== PPT 版式（真实 CJK 字体估算换行高度）\ndeliverable/中期答辩_A_学术蓝.pptx      RESULT: OK (0 soft warning(s))\ndeliverable/中期答辩_B_白底细线.pptx   RESULT: OK (0 soft warning(s))\ndeliverable/中期答辩_C_卡片色块.pptx   RESULT: OK (0 soft warning(s))\ndeliverable/中期答辩_D_双栏杂志风.pptx RESULT: OK (0 soft warning(s))\ndeliverable/中期答辩_E_深色标题区.pptx RESULT: OK (0 soft warning(s))\ndeliverable/中期答辩_F_深色科技风.pptx RESULT: OK (0 soft warning(s))\ndeliverable/中期答辩_G_学术期刊风.pptx RESULT: OK (0 soft warning(s))\ndeliverable/中期答辩_H_nature风.pptx      RESULT: OK (0 soft warning(s))\n中间版/中期答辩_H_nature风.pptx        RESULT: OK (0 soft warning(s))\n中间版2/中期答辩_H_nature风.pptx       RESULT: OK (0 soft warning(s))\n=== PowerPoint 脚本 ASCII / 引号 / 括号检查\n\n31/31 file(s) passed\n\n(rc=0)",
+    "assert_fails": [],
+    "promoted": [],
+    "restored_identical": [
+      "deliverable/中期.docx",
+      "deliverable/中期新.docx",
+      "deliverable/抗菌肽与AD关联机制说明.docx",
+      "deliverable/中期答辩_H_nature风.pptx",
+      "中间版/中期.docx",
+      "中间版/中期答辩_H_nature风.pptx",
+      "中间版2/中期.docx",
+      "中间版2/中期答辩_H_nature风.pptx"
+    ]
+  },
+  "files": [
+    {
+      "path": "deliverable/中期检查表_填写内容.md",
+      "kind": "md",
+      "scope": "source",
+      "min_bytes": 20000,
+      "note": "报告正文草稿（改这里，docx 跟着变）",
+      "bytes": 26219,
+      "sha256": "ef088124f7eefdfdfcc5fc28d2d72de38fce3ea87a4d044cd552ce6ca348be4f",
+      "metrics": {
+        "paragraphs": 100
+      },
+      "assert_fails": [],
+      "status": "ok"
+    },
+    {
+      "path": "deliverable/中期.docx",
+      "kind": "docx",
+      "scope": "loop",
+      "min_bytes": 50000,
+      "note": "填好的中期检查表（学校模板格式零改动）",
+      "bytes": 60887,
+      "sha256": "3542d8a05a1480995a26cf99b99937e92b87255cdb11b939131fbe4db85cbc40",
+      "metrics": {
+        "paragraphs": 181,
+        "tables": 2,
+        "sdt_controls": 10,
+        "media_files": 3,
+        "chars": 65799
+      },
+      "assert_fails": [],
+      "status": "ok",
+      "reproducibility": "identical-to-HEAD"
+    },
+    {
+      "path": "deliverable/中期新.docx",
+      "kind": "docx",
+      "scope": "loop",
+      "min_bytes": 50000,
+      "note": "同一内容的第二个文件名（\"两版中期\"）",
+      "bytes": 60887,
+      "sha256": "3542d8a05a1480995a26cf99b99937e92b87255cdb11b939131fbe4db85cbc40",
+      "metrics": {
+        "paragraphs": 181,
+        "tables": 2,
+        "sdt_controls": 10,
+        "media_files": 3,
+        "chars": 65799
+      },
+      "assert_fails": [],
+      "status": "ok",
+      "reproducibility": "identical-to-HEAD"
+    },
+    {
+      "path": "deliverable/抗菌肽与AD关联机制说明.docx",
+      "kind": "docx",
+      "scope": "loop",
+      "min_bytes": 500000,
+      "note": "机制解释补充材料（老师问机制后新增）",
+      "bytes": 622205,
+      "sha256": "c0814ba2a9810100dbaf677305589f2fcf7c36299381610c78812d3d3ab304c9",
+      "metrics": {
+        "paragraphs": 104,
+        "tables": 2,
+        "sdt_controls": 0,
+        "media_files": 2,
+        "chars": 18515
+      },
+      "assert_fails": [],
+      "status": "ok",
+      "reproducibility": "identical-to-HEAD"
+    },
+    {
+      "path": "deliverable/中期答辩_H_nature风.pptx",
+      "kind": "pptx",
+      "scope": "loop",
+      "min_bytes": 1400000,
+      "note": "H 版 nature 风 16 页 + 4 页机制补充（答辩首选）",
+      "bytes": 1752849,
+      "sha256": "16fde1fbc5f86dd1626922ad9ee9898bb950115e910e21f67f091beea03c80f5",
+      "metrics": {
+        "slides": 20,
+        "shapes_with_text_runs": 172
+      },
+      "assert_fails": [],
+      "status": "ok",
+      "reproducibility": "identical-to-HEAD"
+    },
+    {
+      "path": "中间版/中期.docx",
+      "kind": "docx",
+      "scope": "loop",
+      "min_bytes": 45000,
+      "note": "中间版 1（正文减半，进度口径同完整版）",
+      "bytes": 55588,
+      "sha256": "0c547edd938da2e2b76e8a47a72d51b3a3baf28e9acffaabc944454653eeb7a1",
+      "metrics": {
+        "paragraphs": 150,
+        "tables": 2,
+        "sdt_controls": 10,
+        "media_files": 3,
+        "chars": 61452
+      },
+      "assert_fails": [],
+      "status": "ok",
+      "reproducibility": "identical-to-HEAD"
+    },
+    {
+      "path": "中间版/中期答辩_H_nature风.pptx",
+      "kind": "pptx",
+      "scope": "loop",
+      "min_bytes": 1000000,
+      "note": "中间版 1 PPT（8 页 + 4 页机制补充）",
+      "bytes": 1305981,
+      "sha256": "2f91da381dee7f3f6300e268ed4392151e049ef55cda0821867f97f7174872c1",
+      "metrics": {
+        "slides": 12,
+        "shapes_with_text_runs": 89
+      },
+      "assert_fails": [],
+      "status": "ok",
+      "reproducibility": "identical-to-HEAD"
+    },
+    {
+      "path": "中间版2/中期.docx",
+      "kind": "docx",
+      "scope": "loop",
+      "min_bytes": 45000,
+      "note": "中间版 2（正文减半 + 进度减半）",
+      "bytes": 55194,
+      "sha256": "b02cdc8165107110176fb35a12f0f30c0f1b7f3dc51e2910af9978a4f4fe5a8f",
+      "metrics": {
+        "paragraphs": 148,
+        "tables": 2,
+        "sdt_controls": 10,
+        "media_files": 3,
+        "chars": 61312
+      },
+      "assert_fails": [],
+      "status": "ok",
+      "reproducibility": "identical-to-HEAD"
+    },
+    {
+      "path": "中间版2/中期答辩_H_nature风.pptx",
+      "kind": "pptx",
+      "scope": "loop",
+      "min_bytes": 1000000,
+      "note": "中间版 2 PPT（进度口径减半）",
+      "bytes": 1285517,
+      "sha256": "929834d1e17a1cbf1586d5ff1aa813376b6bdb316d6c1858d1e467a0adc413c5",
+      "metrics": {
+        "slides": 12,
+        "shapes_with_text_runs": 91
+      },
+      "assert_fails": [],
+      "status": "ok",
+      "reproducibility": "identical-to-HEAD"
+    },
+    {
+      "path": "deliverable/中期答辩_A_学术蓝.pptx",
+      "kind": "pptx",
+      "scope": "fixed",
+      "min_bytes": 950000,
+      "note": "A 版·学术蓝",
+      "bytes": 1163395,
+      "sha256": "c6927950f0f62a118eff344944cac7e97571240b777679122bc736d99801f695",
+      "metrics": {
+        "slides": 16,
+        "shapes_with_text_runs": 125
+      },
+      "assert_fails": [],
+      "status": "ok"
+    },
+    {
+      "path": "deliverable/中期答辩_B_白底细线.pptx",
+      "kind": "pptx",
+      "scope": "fixed",
+      "min_bytes": 950000,
+      "note": "B 版·白底细线",
+      "bytes": 1163751,
+      "sha256": "730f3c9f9519b262728b69ab527df024fe26d325f05391d91a1ba4f264382562",
+      "metrics": {
+        "slides": 16,
+        "shapes_with_text_runs": 151
+      },
+      "assert_fails": [],
+      "status": "ok"
+    },
+    {
+      "path": "deliverable/中期答辩_C_卡片色块.pptx",
+      "kind": "pptx",
+      "scope": "fixed",
+      "min_bytes": 950000,
+      "note": "C 版·卡片色块",
+      "bytes": 1164676,
+      "sha256": "6b1d728a952c10ea24cb0831604e85a09a88ec2100e176a2df4f939a795eede1",
+      "metrics": {
+        "slides": 16,
+        "shapes_with_text_runs": 154
+      },
+      "assert_fails": [],
+      "status": "ok"
+    },
+    {
+      "path": "deliverable/中期答辩_D_双栏杂志风.pptx",
+      "kind": "pptx",
+      "scope": "fixed",
+      "min_bytes": 950000,
+      "note": "D 版·双栏杂志风",
+      "bytes": 1164748,
+      "sha256": "37c236318d1a90fb3dc994a44242de756bcfe08f03e47c9884fef1bf32caa3ca",
+      "metrics": {
+        "slides": 16,
+        "shapes_with_text_runs": 173
+      },
+      "assert_fails": [],
+      "status": "ok"
+    },
+    {
+      "path": "deliverable/中期答辩_E_深色标题区.pptx",
+      "kind": "pptx",
+      "scope": "fixed",
+      "min_bytes": 950000,
+      "note": "E 版·深色标题区",
+      "bytes": 1164334,
+      "sha256": "513fc374ee5c0e0e8f6d6f2431eec898ab903380b6dd37d6563a930591f203e2",
+      "metrics": {
+        "slides": 16,
+        "shapes_with_text_runs": 170
+      },
+      "assert_fails": [],
+      "status": "ok"
+    },
+    {
+      "path": "deliverable/中期答辩_F_深色科技风.pptx",
+      "kind": "pptx",
+      "scope": "fixed",
+      "min_bytes": 950000,
+      "note": "F 版·深色科技风（SVG → ppt-master 原生导出）",
+      "bytes": 1156228,
+      "sha256": "05aa4c1f9e61f32709efe2d71b8705be7c1d7ed5dd00312cb94c1338ea5d6c2f",
+      "metrics": {
+        "slides": 16,
+        "shapes_with_text_runs": 255
+      },
+      "assert_fails": [],
+      "status": "ok"
+    },
+    {
+      "path": "deliverable/中期答辩_G_学术期刊风.pptx",
+      "kind": "pptx",
+      "scope": "fixed",
+      "min_bytes": 950000,
+      "note": "G 版·学术期刊风（同上）",
+      "bytes": 1156330,
+      "sha256": "027c1b35eb4e8e8ab3895f436c28f428c5e54f0453cbcd3060909f099260724f",
+      "metrics": {
+        "slides": 16,
+        "shapes_with_text_runs": 253
+      },
+      "assert_fails": [],
+      "status": "ok"
+    },
+    {
+      "path": "results/status/agent_manifest.json",
+      "kind": "manifest",
+      "scope": "loop",
+      "min_bytes": 200,
+      "note": "本轮 agent 侧产物清单（路径 / 字节 / sha256 / QA 结论）；本机按它逐个核对哈希",
+      "status": "self-reference",
+      "bytes": 13658
+    }
+  ],
+  "_read_me": "本机值守 code/local_check.ps1 会逐个核对 files[].sha256 —— 哈希对上就说明这一轮的 docx/pptx 完整地回到了本机。"
+}

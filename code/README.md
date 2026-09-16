@@ -57,9 +57,18 @@ python code/make_ppt_svg.py              # 出 F 深色科技风 / G 学术期�
 python code/fetch_nature_skills.py       # 首次：下载 nature-skills 到 build/（不入库）
 python code/make_ppt_nature.py --audit   # 出 H nature 风 + 跑 skill 自带审计
 python code/check_consistency.py         # docx 与八版 PPT 口径 / 禁用词核对
-# --- 本地 ↔ Agent 同步（skill: skills/git-sync/） ---------------------------------
-bash skills/git-sync/scripts/agent-sync.sh "feat: ..."   # 助手侧一键：守卫+自检+提交+推送
+# --- 自循环：生成 docx/pptx -> 推分支 -> 本机核验 -> 结论推回 -> 收工/再来一轮 -------
+python code/build_deliverables.py                # 一轮 agent 侧：重生成 + 断言 + 闸门 + 写 sha256 清单
+python code/build_deliverables.py --only docx    # 只重生成 docx（--no-build 只自检；--keep 保留新字节）
+bash   code/loop_deliverables.sh                 # 完整闭环（最多 5 轮）；退出码 0 收工 / 2 本机判失败 / 3 本机未连通
+bash   code/loop_deliverables.sh --agent-only    # 本机值守还没起来时：只跑 agent 侧并推送
+bash   code/loop_deliverables.sh --status        # 看握手状态 + 最近一次本机结论
+# --- 本地 ↔ Agent 同步（skill: skills/git-sync/ v2.7.4）-----------------------------
+bash skills/git-sync/scripts/agent-sync.sh "feat: ..."   # 助手侧一键：守卫+自检+提交+推送+回执
 bash skills/git-sync/scripts/agent-sync.sh --status      # 只看状态（HEAD / 远端 / 未提交 / stash）
+bash skills/git-sync/scripts/agent-handsfree.sh --sync "feat: ..." --request "verify: ..." --timeout auto
+bash skills/git-sync/scripts/agent-check.sh --read       # 读本机结论（0 passed / 2 failed / 3 pending）
+bash skills/git-sync/scripts/agent-criteria.sh           # 只核 results/status/success_criteria.json
 bash skills/git-sync/scripts/agent-recover.sh            # 沙箱 .git 被重置回基线提交后的恢复
 
 python code/make_mech_figures.py         # 机制补充图：七环逻辑链 / AChE-Aβ 机制与 H1-H3
@@ -70,7 +79,7 @@ python code/make_mid2_content.py         # 中间版 2 docx 草稿（保留清�
 python code/make_mid2_figures.py         # 中间版 2 专用图：半程进度路线图
 python code/make_ppt_mid.py              # 中间版 1 PPT（8 页，复用 H 版版式）-> 中间版/
 python code/make_ppt_mid.py --half       # 中间版 2 PPT（8 页，进度减半）-> 中间版2/
-bash code/check_all.sh                   # 三份 docx 格式 + 九份 PPT 版式 + 口径核对，一次跑完
+bash code/check_all.sh                   # 闸门：A 通用(.ps1 ASCII/分支守卫/脚本一致) + B 交付物在场与体积 + C 文档格式/口径/PPT 版式
 python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"   # 给 A 版补演讲备注（大纲 -> 备注区）
 python code/check_ppt.py "deliverable/中期答辩_B_白底细线.pptx" # 独立版式检查
 python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/prevA
@@ -100,6 +109,15 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 | `preview_ppt.py` | 无 PowerPoint 环境下的逐页 PNG 预览（用于核版式）；支持读取 `p:bg` 幻灯片背景色，深色版式不会预览成白底 |
 | `get_cjk_font.py` | 从 PyPI 的 `noto-cjk-sans-otc` 抽出思源黑体 SC 单字体，供 matplotlib/PIL 使用 |
 | `check_ps1.py` | 校验 .ps1 脚本为纯 ASCII（避免 Windows PowerShell 5.1 按 GBK 解码导致的解析错误） |
+| `deliverables.tsv` | **自循环交付物清单（唯一事实源）**：路径 / 类型 / 体积下限 / 断言（`slides=20`、`paras>=150`、`has=文绍华`…）/ 是否每轮重生成（`loop` / `fixed` / `source`）。改内容请改草稿或大纲，然后跑一轮 `build_deliverables.py`，别直接改二进制成品 |
+| `build_deliverables.py` | 一轮的 agent 侧工作：按 tsv 重生成 docx/pptx（复用上面的生成脚本）→ 逐个断言 → 与 HEAD 比**内容指纹**（一致就 `git checkout --` 还原原字节，避免 zip 时间戳造成的二进制 churn）→ 跑闸门 → 写 `results/status/agent_manifest.json`（含每个文件 sha256 与页数/段落数）→ 由同一份 tsv 编译 `results/status/success_criteria.json` → 追加 `results/status/LOOP_LOG.md` |
+| `loop_deliverables.sh` | 循环驱动器：`build_deliverables.py` → `agent-handsfree.sh --sync --request --timeout auto`（推送 + 请本机核验 + 等结论 + 核验收标准 + accept）→ 按退出码决定收工（0）/ 打印本机失败详情再来一轮（2）/ 本机值守不在线就停（3）。`--agent-only` 只跑 agent 侧；`--status` 看握手 |
+| `check_all.sh` | 提交前闸门（`agent-sync.sh` 每次 push 前跑，本机 `local_check.ps1` 也跑）：A 段调 `check_gate.sh`，B 段按 tsv 查在场与体积（纯 bash），C 段跑文档/PPT 质量核对（缺 python-docx/pptx/pillow 时**大声 SKIP**，不阻断本机回执） |
+| `check_gate.sh` | 上游 skill 闸门原样副本：`.ps1` 全 ASCII / `sync.config.json` 分支守卫 / 根目录脚本与 `skills/git-sync/scripts` 逐字节一致 / `$var:` 驱动器写法 / `watch.ps1` 每条退出路径都有收尾行 / `.ps1` 能被 PowerShell 解析 |
+| `local_check.ps1` | **本机每轮跑什么**（值守 `check_cmd`）：闸门 + 免点击推送自检（`auth.ps1 -Verify`）+ 值守零窗口形态自检 + `check_deliverables.ps1` + `success_criteria.json` 逐条核对；退出 0 = passed，非 0 = failed（值守据此把结论推回分支） |
+| `check_deliverables.ps1` | **本机侧产物完整性核验**：按 `agent_manifest.json` 逐个查在场 / 体积 / **sha256 与 agent 生成的一致** / OOXML 包结构（`word/document.xml`、`ppt/presentation.xml`）/ 页数与段落数在本机独立复核；`-Com` 再加一层让真 Word / PowerPoint 打开（默认关，PowerPoint COM 会闪窗） |
+| `check_loop_summary.py` / `.ps1` | 闸门助手：静态证明 `watch.ps1` 每条 poll 退出路径都写了收尾行（否则值守看着像"卡住"） |
+| `scan_ps_var_colon.py` | 闸门助手：抓 `.ps1` 里的 `"$var:"` 驱动器写法（一个就能让整个脚本解析失败、静默不跑） |
 | `1.py` | 你的原始脚本：全队列 476 样本 MAGs 成果校验与统计（bash/SLURM 流程） |
 
 ## 依赖
@@ -108,6 +126,10 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 pip install python-docx python-pptx matplotlib numpy pillow fonttools noto-cjk-sans-otc
 python code/get_cjk_font.py     # 抽出 /tmp/fonts/NotoSansCJKsc-Regular.otf
 ```
+
+自循环那一套（`build_deliverables.py` / `check_all.sh` C 段）只需要
+`python-docx python-pptx pillow lxml`；缺依赖时闸门会**大声 SKIP** 而不是判失败
+（本机没装 python 也能把核验回执推回来）。
 
 ## 注意
 

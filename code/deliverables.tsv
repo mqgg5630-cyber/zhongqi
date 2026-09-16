@@ -1,0 +1,39 @@
+# deliverables.tsv —— 自循环任务的交付物清单（唯一事实源）
+#
+# 谁读它：
+#   code/build_deliverables.py   每轮重生成 scope=loop 的文件，逐个断言 expect 列，
+#                                并把本表编译成 results/status/success_criteria.json
+#   code/check_all.sh            提交前闸门 B 段：在场 + 体积下限（纯 bash，不需要 python）
+#   code/local_check.ps1         本机值守：在场 + 体积 + OOXML 结构 + sha256 与 agent
+#                                清单一致（证明"这一轮的产物真的回到了本机、且没坏"）
+#
+# 列（TAB 分隔，# 开头为注释）：
+#   path       仓库内相对路径（正斜杠）
+#   kind       docx | pptx | md | manifest（manifest 缺席只告警，不判失败）
+#   min_bytes  体积下限（字节）——低于它就判失败（文件被截断 / 生成失败的信号）
+#   expect     额外断言，分号分隔：slides=20 / paras>=150 / tables>=2 / has=某段文字
+#   scope      loop  = 每轮由 build_deliverables.py 重新生成
+#              fixed = 只校验不重生成（A—G 版要 matplotlib / ppt-master 等重依赖）
+#              source= 内容源（人改它，loop 负责把它变成 docx / pptx）
+#   note       人读说明
+#
+# 改内容请改 deliverable/中期检查表_填写内容.md 或 docs/ppt_outline.json，
+# 不要直接改二进制成品；改完跑一轮 python code/build_deliverables.py 即可。
+path	kind	min_bytes	expect	scope	note
+deliverable/中期检查表_填写内容.md	md	20000	has=文绍华;has=2024110316;paras>=80	source	报告正文草稿（改这里，docx 跟着变）
+deliverable/中期.docx	docx	50000	has=基于深度学习的阿尔茨海默症患者与健康人群肠道微生物组中抗菌肽的差异性研究;has=文绍华;has=2024110316;has=生命科学学院;has=申亮;has=乙酰胆碱酯酶;has=纸片扩散法;paras>=150;tables>=2	loop	填好的中期检查表（学校模板格式零改动）
+deliverable/中期新.docx	docx	50000	has=基于深度学习的阿尔茨海默症患者与健康人群肠道微生物组中抗菌肽的差异性研究;has=文绍华;has=2024110316;has=申亮;paras>=150	loop	同一内容的第二个文件名（"两版中期"）
+deliverable/抗菌肽与AD关联机制说明.docx	docx	500000	has=乙酰胆碱酯酶;has=AChE;has=抗菌肽;paras>=80;tables>=2	loop	机制解释补充材料（老师问机制后新增）
+deliverable/中期答辩_H_nature风.pptx	pptx	1400000	slides=20;has=文绍华;has=三模型共识预测;has=宏蛋白组二次去重	loop	H 版 nature 风 16 页 + 4 页机制补充（答辩首选）
+中间版/中期.docx	docx	45000	has=基于深度学习的阿尔茨海默症患者与健康人群肠道微生物组中抗菌肽的差异性研究;has=文绍华;has=2024110316;paras>=120	loop	中间版 1（正文减半，进度口径同完整版）
+中间版/中期答辩_H_nature风.pptx	pptx	1000000	slides=12;has=文绍华;has=三模型共识预测	loop	中间版 1 PPT（8 页 + 4 页机制补充）
+中间版2/中期.docx	docx	45000	has=基于深度学习的阿尔茨海默症患者与健康人群肠道微生物组中抗菌肽的差异性研究;has=文绍华;has=2024110316;has=宏蛋白组二次去重;paras>=120	loop	中间版 2（正文减半 + 进度减半）
+中间版2/中期答辩_H_nature风.pptx	pptx	1000000	slides=12;has=文绍华;has=三模型共识预测	loop	中间版 2 PPT（进度口径减半）
+deliverable/中期答辩_A_学术蓝.pptx	pptx	950000	slides=16;has=文绍华	fixed	A 版·学术蓝
+deliverable/中期答辩_B_白底细线.pptx	pptx	950000	slides=16;has=文绍华	fixed	B 版·白底细线
+deliverable/中期答辩_C_卡片色块.pptx	pptx	950000	slides=16;has=文绍华	fixed	C 版·卡片色块
+deliverable/中期答辩_D_双栏杂志风.pptx	pptx	950000	slides=16;has=文绍华	fixed	D 版·双栏杂志风
+deliverable/中期答辩_E_深色标题区.pptx	pptx	950000	slides=16;has=文绍华	fixed	E 版·深色标题区
+deliverable/中期答辩_F_深色科技风.pptx	pptx	950000	slides=16;has=文绍华	fixed	F 版·深色科技风（SVG → ppt-master 原生导出）
+deliverable/中期答辩_G_学术期刊风.pptx	pptx	950000	slides=16;has=文绍华	fixed	G 版·学术期刊风（同上）
+results/status/agent_manifest.json	manifest	200	has=sha256	loop	本轮 agent 侧产物清单（路径 / 字节 / sha256 / QA 结论）；本机按它逐个核对哈希

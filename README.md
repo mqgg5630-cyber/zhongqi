@@ -32,6 +32,7 @@
 | `results/ppt_preview/A版_*-*页.png` … `E版_*` | 五个版本各 4 张版式预览图（A/B/C/D/E），不用装 Office 也能核对 |
 | `results/figures/figA—figG*.png` | 本版 7 张流程示意图（研究思路、三模型预测、分阶段差异、宏蛋白组去重、机制关联、抑菌实验、进度） |
 | `docs/中期答辩PPT大纲.md` | **汇报重点与落实方式对照表** + 逐页清单 + 7 个答辩预判问答 |
+| `docs/自循环任务.md` | **自循环协议全文**：docx/pptx 生成 → 推分支 → 本机值守核验（sha256 + OOXML 结构）→ 结论推回 → 收工/再来一轮；含本机一次性打通命令、退出码语义、关键文件表、卡住怎么办 |
 
 > 封面信息已从 `sources/开题.docx`（封面表）读取并填入：**文绍华 / 2024110316 / 学术学位硕士研究生 / 生命科学学院 /
 > 生物学 / 生物化学与分子生物学 / 指导教师 申亮** —— 中期检查表封面 7 栏 + 八版 PPT 封面全部同步填入，无占位符。
@@ -125,41 +126,82 @@
 
 ---
 
-## 五、协作方式（取 / 传 / 下载 / 打包）
+## 五、协作方式（值守自动 / 手动取传 / 下载 / 打包）
 
-唯一需要记的两条：
+**本会话工作分支：`arena/01a0a95e-zhongqi`**（`skills\git-sync\sync.config.json` 里的 `branch`）。
+
+### 5.1 一次性打通（之后你什么都不用敲）
 
 ```powershell
 cd E:\0zhongqi\zhongqi
-.\sync.ps1        # ① 拿我推送的最新成果（本地有改动会自动 stash）
-.\upload.ps1      # ② 把你的新文件传上来（按扩展名归位后自动 commit + push）
+git fetch origin; git checkout arena/01a0a95e-zhongqi
+git pull --ff-only origin arena/01a0a95e-zhongqi
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+.\bootstrap.ps1 -Auto      # 身份 + 切分支 + 免点击推送(auth.ps1) + 注册值守(watch.ps1，零窗口)
+.\doctor.ps1               # 体检：branch / ahead-behind / watcher / heartbeat / auth
+.\watch.ps1 -Status        # 值守活着吗：模式 / 上次运行 / 心跳 / 最近一轮结论
 ```
 
-另外几个按需用：
+值守（`hands_free=true`）每 2 分钟自动做三件事：**① 拉我的更新** → **② 你改了什么就静默推回去**
+（`local: auto <时间>`）→ **③ 我请求核验时跑 `code\local_check.ps1` 并把 passed/failed 推回分支**。
+`bootstrap.ps1 -Auto` 会暂停其他会话的 `git-sync-watch-*`（任务保留）；回旧会话：`.\watch.ps1 -Focus`。
+
+### 5.2 想手动来也可以
 
 ```powershell
-.\download.ps1 -List          # 看有哪些下载集合
-.\download.ps1 -Set final     # ③ 把 deliverable\ 中间版\ 中间版2\ 复制到本机（robocopy 镜像）
-.\pack.ps1 -Set final         # ④ 打成 _export\<日期>_final.zip，方便直接交材料
-.\doctor.ps1                  # ⑤ "哪里不对劲"先跑它：分支/远端/落后领先/未提交/stash 一次看清
-.\bootstrap.ps1               # ⑥ 换电脑或重装后的首次准备（执行策略 + 身份 + 切分支 + 首拉）
+.\sync.ps1                  # ① 拿我推送的最新成果（本地有改动会自动 stash）
+.\upload.ps1                # ② 把你的新文件传上来（按扩展名归位后自动 commit + push）
+.\download.ps1 -List        # 看有哪些下载集合
+.\download.ps1 -Set final   # ③ 把 deliverable\ 中间版\ 中间版2\ 复制到本机（robocopy 镜像）
+.\pack.ps1 -Set final       # ④ 打成 _export\<日期>_final.zip，方便直接交材料
+.\auth.ps1 -Setup -Verify   # ⑤ 推送还要点确认时跑一次（配好当场实跑证明）
+.\doctor.ps1 -Fix           # ⑥ "哪里不对劲"：refspec + stash + 切回分支 + 拉取一键修
+.\hardware.ps1 -Deep        # ⑦ 采集本机硬件/conda 环境报告并推送（每台机器一次）
+.\pr.ps1                    # ⑧ 开 PR 到 main（需 GitHub CLI）
 ```
 
 `upload.ps1` 会自动在仓库旁找到附件目录，按扩展名归位（docx/pptx/pdf/md → `sources\`，py → `code\`，xlsx/csv → `results\`）后提交推送。
-首次 push 会弹 GitHub 登录窗；若提示要输**密码**，那里应填 token，或改用 GitHub Desktop 点 Push，亦可直接在 Arena 里把文件作为附件发我。
+首次 push 会弹 GitHub 登录窗；若提示要输**密码**，那里应填 token —— 或者干脆 `.\auth.ps1 -Setup`，之后值守就能免点击静默推送。
 
-**这套脚本本身已沉淀成 skill**：`skills\git-sync\`（`SKILL.md` 给 Agent 看，`README.md` 给你看，
-`sync.config.json` 是唯一的配置 —— 分支名、下载集合、扩展名归位规则都改这里）。
-换项目时用 `skills\git-sync\scripts\install.ps1 -Target <新仓库>` 一键装好。
+**这套脚本本身已沉淀成 skill**：`skills\git-sync\`（**v2.7.4**，来源
+[git-pull-arena](https://github.com/mqgg5630-cyber/git-pull-arena) 分支 `arena/01a0a821-git-pull-arena`；
+`SKILL.md` 给 Agent 看，`README.md` 给你看，`sync.config.json` 是唯一配置）。
+换项目时用 `skills\git-sync\scripts\install.ps1 -Target <新仓库>`，或在新的 Arena 会话里让 agent 跑
+`agent-install.sh --source <v2.7.4 源>`。
 
 不用脚本时的等价命令：
 
 ```powershell
-git fetch origin; git checkout arena/01a09d79-zhongqi; git pull --ff-only origin arena/01a09d79-zhongqi
-git add -A; git commit -m "加入本地文件"; git push origin arena/01a09d79-zhongqi
+git fetch origin; git checkout arena/01a0a95e-zhongqi; git pull --ff-only origin arena/01a0a95e-zhongqi
+git add -A; git commit -m "加入本地文件"; git push origin arena/01a0a95e-zhongqi
 ```
 
 > ⚠️ 不要 `git init` 新仓库再推这个分支：历史对不上会被拒绝；强推（`--force`）会把远端内容整支覆盖。
+
+## 五·五、自循环任务（docx / pptx 生成 ⇄ 本机核验 ⇄ 状态回推）
+
+一条命令让"生成 → 送到你机器 → 你机器核验 → 结论推回分支 → 我按结论决定收工或再来一轮"自己转起来：
+
+```bash
+# agent 侧（我在沙箱里跑）
+python code/build_deliverables.py      # 一轮：重生成 docx/pptx + 断言 + 闸门 + 写 sha256 清单
+bash   code/loop_deliverables.sh       # 完整闭环：推分支 → 请本机核验 → 等结论 → 收工 / 再来一轮
+```
+
+```powershell
+# 本机侧（值守自动跑；也可手动）
+.\code\check_deliverables.ps1          # sha256 对清单 + OOXML 包结构 + 页数/段落数独立复核
+.\code\check_deliverables.ps1 -Com     # 再加一层：让真 Word / PowerPoint 打开一遍
+.\watch.ps1 -Status                    # 最近一轮结论 / 心跳 / last_push
+```
+
+- **交付物清单与验收断言的唯一事实源**：`code/deliverables.tsv`（改内容请改
+  `deliverable/中期检查表_填写内容.md` 或 `docs/ppt_outline.json`，然后跑一轮，别直接改二进制成品）。
+- **闭环状态文件**：`results/status/handshake.json`（轮次与两侧状态）、`agent_manifest.json`（本轮产物 sha256）、
+  `success_criteria.json`（机读验收标准）、`check_r<N>_*.txt`（本机那一轮的完整输出）、`LOOP_LOG.md`（轮次台账）。
+- **退出码**：0 = 本机 passed + 验收标准过 + 已 accept；2 = 本机判 failed（按日志修，再跑一次进下一轮）；
+  3 = 本机值守不在线（停下来先把 5.1 那段跑通，**不假装成功**）。
+- 完整协议、时序图、卡住怎么办：[`docs/自循环任务.md`](docs/自循环任务.md)。
 
 ## 六、目录说明
 
@@ -169,13 +211,26 @@ zhongqi\
 ├── 中间版\                 中间版 1：中期.docx（正文减半，进度同完整版）、中期答辩_H_nature风.pptx（8 页）
 ├── 中间版2\                中间版 2：中期.docx（正文减半 + 进度减半）、中期答辩_H_nature风.pptx（8 页）
 ├── sources\                你的原件：开题.docx、中期.docx（模板）、已完成1.docx、1.md
-├── code\                   脚本：填表/校验/画图/出 PPT/版式检查（详见 code\README.md）
+├── code\                   脚本：填表/校验/画图/出 PPT/版式检查 + 自循环（详见 code\README.md）
+│   ├── deliverables.tsv        交付物清单与断言（自循环的唯一事实源）
+│   ├── build_deliverables.py   一轮：重生成 docx/pptx + 断言 + 复现性比对 + 写 sha256 清单
+│   ├── loop_deliverables.sh    循环驱动器：build → push → 请本机核验 → 等结论 → 收工/再来一轮
+│   ├── check_all.sh            闸门（A 通用 / B 在场与体积 / C 文档与 PPT 质量）
+│   ├── check_gate.sh           上游 skill 闸门原样副本
+│   ├── local_check.ps1         本机每轮跑什么（值守 check_cmd）
+│   └── check_deliverables.ps1  本机侧产物完整性核验（sha256 + OOXML 结构 + 可选真 Office 打开）
 ├── results\figures\        7 张插图；results\ppt_preview\ 八版各 4 张版式预览 + 对比图；results\qa\ 审计与 QA 报告
-├── docs\                   开题要点、数据台账、PPT 大纲（json+md）、PPT skill 推荐、模板结构解析（docs\_template\）
-├── skills\                 可复用 skill：可编辑 PPT 流水线、本地 git 同步脚本
+├── results\status\         自循环状态：handshake.json / agent_manifest.json / success_criteria.json /
+│                           check_r<N>_*.txt（本机结论）/ LOOP_LOG.md（轮次台账）
+├── results\sync\           每轮同步回执 last_sync.md + history\
+├── docs\                   开题要点、数据台账、PPT 大纲（json+md）、PPT skill 推荐、自循环任务、模板结构解析（docs\_template\）
+├── skills\                 可复用 skill：可编辑 PPT 流水线、git-sync v2.7.4（本机 ↔ Agent 双向同步 + 自循环）
 ├── sync.ps1 / upload.ps1 / push.ps1   一键拉取 / 上传 / 推送
+├── watch.ps1 / auth.ps1               本机值守（零窗口，自动拉/推/核验）/ 免点击推送
 ├── download.ps1 / pack.ps1            一键下载交付物 / 打包成 zip
-├── doctor.ps1 / bootstrap.ps1         体检排障 / 换机首次准备
+├── doctor.ps1 / bootstrap.ps1         体检排障 / 换机首次准备（-Auto 一步到位）
+├── hardware.ps1 / pr.ps1 / install.ps1 本机环境上报 / 开 PR / 把脚本装到别的仓库
+├── 01a0a821.md             短句映射页：arena.ai/agent/01a0a821 → GitHub 上的 skills（别去开 arena.ai）
 └── build\                  中间产物（可重新生成，已 gitignore）
 ```
 
@@ -184,7 +239,7 @@ zhongqi\
 | skill | 内容 | 文件 |
 |---|---|---|
 | **可编辑 PPT 流水线** | 一份 JSON 大纲 → 多条路线的原生可编辑 PPT（python-pptx 直排 A—E；SVG + ppt-master 原生导出 F/G；nature-skills 出 H）+ 自动校验（≥15 pt、不越界）+ 演讲备注；含大纲模板与"装到新项目"脚本 | `skills/editable-ppt-from-outline/`（`SKILL.md` / `README.md` / `outline.template.json` / `scripts/install.ps1`） |
-| **本地 ↔ Agent 双向同步** | 取 / 传 / 下载 / 打包 / 体检 / 首次准备 七个 `.ps1` + 唯一配置 `sync.config.json` + 助手侧 `agent-sync.sh`（分支守卫、提交前自检、发散自愈）与 `agent-recover.sh`（沙箱 `.git` 重置后恢复历史）；含 PowerShell 5.1 的中文坑与 ASCII 自动校验 | `skills/git-sync/`（SKILL.md + README.md + scripts/） |
+| **本地 ↔ Agent 双向同步 + 自循环**（v2.7.4） | 取 / 传 / 下载 / 打包 / 体检 / 首次准备 / **值守** / **免点击推送** / **硬件上报** / **开 PR** 十二个 `.ps1` + 唯一配置 `sync.config.json`；助手侧 `agent-sync.sh`（分支守卫、提交前自检、发散自愈、同步回执）、`agent-recover.sh`（沙箱 `.git` 重置后恢复历史）、`agent-check.sh` / `agent-wait.sh` / `agent-criteria.sh` / **`agent-handsfree.sh`**（请求核验 → 等本机结论 → 核验收标准 → accept，一条命令闭环）；本机侧 `watch.ps1` 值守每 2 分钟自动拉、自动静默推、自动跑 `local_check.ps1` 并把结论推回分支；含 PowerShell 5.1 的中文坑与 ASCII / `$var:` / 收尾行自动校验 | `skills/git-sync/`（SKILL.md + README.md + VERSION + scripts/ + templates/）；本仓库的落地见 `docs/自循环任务.md` |
 
 用法（在本仓库）：
 

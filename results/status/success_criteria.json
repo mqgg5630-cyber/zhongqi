@@ -1,0 +1,44 @@
+{
+  "description": "自循环验收标准（由 code/deliverables.tsv 编译，勿手改；改 tsv 后重跑 build_deliverables.py）",
+  "require_files": [
+    "deliverable/中期检查表_填写内容.md",
+    "deliverable/中期.docx",
+    "deliverable/中期新.docx",
+    "deliverable/抗菌肽与AD关联机制说明.docx",
+    "deliverable/中期答辩_H_nature风.pptx",
+    "中间版/中期.docx",
+    "中间版/中期答辩_H_nature风.pptx",
+    "中间版2/中期.docx",
+    "中间版2/中期答辩_H_nature风.pptx",
+    "results/status/agent_manifest.json",
+    "deliverable/中期答辩_A_学术蓝.pptx",
+    "deliverable/中期答辩_B_白底细线.pptx",
+    "deliverable/中期答辩_C_卡片色块.pptx",
+    "deliverable/中期答辩_D_双栏杂志风.pptx",
+    "deliverable/中期答辩_E_深色标题区.pptx",
+    "deliverable/中期答辩_F_深色科技风.pptx",
+    "deliverable/中期答辩_G_学术期刊风.pptx"
+  ],
+  "min_bytes": {
+    "deliverable/中期检查表_填写内容.md": 20000,
+    "deliverable/中期.docx": 50000,
+    "deliverable/中期新.docx": 50000,
+    "deliverable/抗菌肽与AD关联机制说明.docx": 500000,
+    "deliverable/中期答辩_H_nature风.pptx": 1400000,
+    "中间版/中期.docx": 45000,
+    "中间版/中期答辩_H_nature风.pptx": 1000000,
+    "中间版2/中期.docx": 45000,
+    "中间版2/中期答辩_H_nature风.pptx": 1000000,
+    "deliverable/中期答辩_A_学术蓝.pptx": 950000,
+    "deliverable/中期答辩_B_白底细线.pptx": 950000,
+    "deliverable/中期答辩_C_卡片色块.pptx": 950000,
+    "deliverable/中期答辩_D_双栏杂志风.pptx": 950000,
+    "deliverable/中期答辩_E_深色标题区.pptx": 950000,
+    "deliverable/中期答辩_F_深色科技风.pptx": 950000,
+    "deliverable/中期答辩_G_学术期刊风.pptx": 950000,
+    "results/status/agent_manifest.json": 200
+  },
+  "require_contains": {
+    "results/status/agent_manifest.json": "\"verdict\": \"pass\""
+  }
+}

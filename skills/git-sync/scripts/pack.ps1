@@ -12,18 +12,45 @@
 
 param(
     [string]$Set = 'final',
-    [string]$Out = ''
+    [string]$Out = '',
+    [string]$Config = ''
 )
 
 $ErrorActionPreference = 'Stop'
 
+# repo root = walk up from this script until .git appears, so the script also
+# works when run straight from skills\git-sync\scripts\
 $repo = if ($PSScriptRoot) { $PSScriptRoot } else { (Get-Location).Path }
+while ($repo -and -not (Test-Path -LiteralPath (Join-Path $repo '.git'))) {
+    $up = Split-Path -Parent $repo
+    if (-not $up -or $up -eq $repo) { break }
+    $repo = $up
+}
 Set-Location -LiteralPath $repo
 
-$cfgPath = @(
+# ------------------------------------------------------------------- config
+# resolution order: -Config <path> > profile file (sync.config.<PROFILE>.json,
+# PROFILE from $env:GIT_SYNC_PROFILE) > skills\git-sync\sync.config.json >
+# next to this script
+if ($Config -and -not (Test-Path -LiteralPath $Config)) {
+    Write-Host "[ERROR] config not found: $Config" -ForegroundColor Red
+    exit 1
+}
+$cfgPath = @()
+if ($Config) { $cfgPath += $Config }
+if ($env:GIT_SYNC_PROFILE) {
+    $prof = 'sync.config.' + $env:GIT_SYNC_PROFILE + '.json'
+    $cfgPath += @(
+        (Join-Path $repo ('skills\git-sync\' + $prof)),
+        (Join-Path $repo $prof),
+        (Join-Path $PSScriptRoot $prof)
+    )
+}
+$cfgPath += @(
     (Join-Path $repo 'skills\git-sync\sync.config.json'),
     (Join-Path $PSScriptRoot 'sync.config.json')
-) | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+)
+$cfgPath = $cfgPath | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
 if (-not $cfgPath) { Write-Host "[ERROR] sync.config.json not found" -ForegroundColor Red; exit 1 }
 
 $cfg = Get-Content -LiteralPath $cfgPath -Encoding UTF8 -Raw | ConvertFrom-Json
