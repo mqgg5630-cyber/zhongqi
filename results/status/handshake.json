@@ -1,9 +1,9 @@
 {
-  "round": 1,
-  "arena_state": "awaiting_check",
-  "local_state": "pending",
-  "arena_updated": "2026-09-16 09:12:16",
-  "local_updated": null,
-  "host": "",
-  "note": "verify: 本轮 docx / pptx 已回到本机（sha256 与 agent 清单一致、包结构完好、闸门通过）"
+    "round":  1,
+    "arena_state":  "awaiting_check",
+    "local_state":  "passed",
+    "arena_updated":  "2026-09-16 09:12:16",
+    "local_updated":  "2026-09-16 17:33:55",
+    "host":  "LAPTOP-R77M5D6M",
+    "note":  "verify: 本轮 docx / pptx 已回到本机（sha256 与 agent 清单一致、包结构完好、闸门通过）"
 }

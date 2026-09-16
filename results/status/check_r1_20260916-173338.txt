@@ -1,0 +1,91 @@
+check round 1 on LAPTOP-R77M5D6M - passed (exit 0)
+cmd: powershell -NoProfile -ExecutionPolicy Bypass -File code/local_check.ps1
+elapsed: 17s
+
+########## A. skill 閫氱敤闂搁棬锛?ps1 ASCII / 鍒嗘敮瀹堝崼 / 鑴氭湰涓€鑷?/ 鍊煎畧鏀跺熬琛岋級
+OK: all .ps1 files are ASCII-only
+NOTE: python3 is not a working python - trying plain text
+OK: sync.config.json branch=arena/01a0a95e-zhongqi remote=origin (checked without python)
+OK: root scripts identical to skills/git-sync/scripts
+SKIP: python3 is not a working python - $var: typo scan skipped here
+      (it still runs in the agent sandbox before every push)
+SKIP: python3 is not a working python - watcher closing-line check skipped here
+      (it still runs in the agent sandbox before every push)
+OK: every .ps1 parses
+########## B. 浜や粯鐗╁湪鍦?+ 浣撶Н涓嬮檺锛坈ode/deliverables.tsv锛?OK: 17 涓氦浠樼墿鍦ㄥ満涓斾綋绉揪鏍囷紙鍛婅 0 涓級
+########## C. 鏂囨。 / PPT 璐ㄩ噺鏍稿
+SKIP: 娌℃湁鍙敤鐨?python 鈥斺€?鏂囨。 QA 鍦ㄦ湰鏈鸿烦杩囷紙agent 娌欑姣忔 push 鍓嶄細璺戯級
+   (gate ran via E:\hermes\git\bin\bash.exe [git])
+== accept 2a: silent push PROVEN (ls-remote + push --dry-run, prompts disabled)
+== accept 2b (fallback): one LONG-LIVED loop process - one brief flash per logon,
+   not per poll. For zero flash: admin PowerShell -> .\watch.ps1 -Unregister ;
+   .\watch.ps1 -Register -Headless   (or fix the launcher, see watch-*.log)
+== exits in Invoke-PollRound: 6
+OK: every exit path sets its closing summary
+== exits in Invoke-PollOnce: 2 (lock held / crashed / normal)
+OK: loop closing lines covered (6 exit paths, all with their own summary)
+== check_loop_summary PASSED
+== accept 2c: watcher closing lines verified (every exit path has its summary)
+== agent manifest: round 1 | built 2026-09-16 09:19:22 UTC
+   branch arena/01a0a95e-zhongqi | base commit 229f266 | generator code/build_deliverables.py
+   agent-side verdict: pass | rebuilt=True | only=all
+   content changed this round: 0 file(s) | identical to HEAD (bytes restored): 8 file(s)
+   OK   deliverable/中期检查表_填写内容.md                         26345 B  sha256 ef088124f7ee  lines=126  (matches after CRLF->LF normalisation - core.autocrlf, content is identical)
+   OK   deliverable/中期.docx                               60887 B  sha256 3542d8a05a14  paragraphs=181 tables=2
+   OK   deliverable/中期新.docx                              60887 B  sha256 3542d8a05a14  paragraphs=181 tables=2
+   OK   deliverable/抗菌肽与AD关联机制说明.docx                    622205 B  sha256 c0814ba2a981  paragraphs=104 tables=2
+   OK   deliverable/中期答辩_H_nature风.pptx                 1752849 B  sha256 16fde1fbc5f8  slides=20
+   OK   中间版/中期.docx                                       55588 B  sha256 0c547edd938d  paragraphs=150 tables=2
+   OK   中间版/中期答辩_H_nature风.pptx                         1305981 B  sha256 2f91da381dee  slides=12
+   OK   中间版2/中期.docx                                      55194 B  sha256 b02cdc816510  paragraphs=148 tables=2
+   OK   中间版2/中期答辩_H_nature风.pptx                        1285517 B  sha256 929834d1e17a  slides=12
+   OK   deliverable/中期答辩_A_学术蓝.pptx                     1163395 B  sha256 c6927950f0f6  slides=16
+   OK   deliverable/中期答辩_B_白底细线.pptx                    1163751 B  sha256 730f3c9f9519  slides=16
+   OK   deliverable/中期答辩_C_卡片色块.pptx                    1164676 B  sha256 6b1d728a952c  slides=16
+   OK   deliverable/中期答辩_D_双栏杂志风.pptx                   1164748 B  sha256 37c236318d1a  slides=16
+   OK   deliverable/中期答辩_E_深色标题区.pptx                   1164334 B  sha256 513fc374ee5c  slides=16
+   OK   deliverable/中期答辩_F_深色科技风.pptx                   1156228 B  sha256 05aa4c1f9e61  slides=16
+   OK   deliverable/中期答辩_G_学术期刊风.pptx                   1156330 B  sha256 027c1b35eb4e  slides=16
+   OK   results/status/agent_manifest.json (self-reference, not hash-checked)
+== deliverables on this machine: 17 intact, 0 failed, 0 warning(s)
+== the docx / pptx of this round are on this machine and byte-identical to what the agent built
+== accept 3: docx / pptx delivered intact (manifest + sha256 + OOXML structure)
+== accept 2d: hands-free auto_pull/auto_push present in watch.ps1
+== success criteria: results/status/success_criteria.json
+   自循环验收标准（由 code/deliverables.tsv 编译，勿手改；改 tsv 后重跑 build_deliverables.py）
+   OK   exists: deliverable/中期检查表_填写内容.md (26345 B)
+   OK   exists: deliverable/中期.docx (60887 B)
+   OK   exists: deliverable/中期新.docx (60887 B)
+   OK   exists: deliverable/抗菌肽与AD关联机制说明.docx (622205 B)
+   OK   exists: deliverable/中期答辩_H_nature风.pptx (1752849 B)
+   OK   exists: 中间版/中期.docx (55588 B)
+   OK   exists: 中间版/中期答辩_H_nature风.pptx (1305981 B)
+   OK   exists: 中间版2/中期.docx (55194 B)
+   OK   exists: 中间版2/中期答辩_H_nature风.pptx (1285517 B)
+   OK   exists: results/status/agent_manifest.json (14468 B)
+   OK   exists: deliverable/中期答辩_A_学术蓝.pptx (1163395 B)
+   OK   exists: deliverable/中期答辩_B_白底细线.pptx (1163751 B)
+   OK   exists: deliverable/中期答辩_C_卡片色块.pptx (1164676 B)
+   OK   exists: deliverable/中期答辩_D_双栏杂志风.pptx (1164748 B)
+   OK   exists: deliverable/中期答辩_E_深色标题区.pptx (1164334 B)
+   OK   exists: deliverable/中期答辩_F_深色科技风.pptx (1156228 B)
+   OK   exists: deliverable/中期答辩_G_学术期刊风.pptx (1156330 B)
+   OK   contains results/status/agent_manifest.json <- "verdict": "pass"
+   OK   size deliverable/中期检查表_填写内容.md: 26345 >= 20000
+   OK   size deliverable/中期.docx: 60887 >= 50000
+   OK   size deliverable/中期新.docx: 60887 >= 50000
+   OK   size deliverable/抗菌肽与AD关联机制说明.docx: 622205 >= 500000
+   OK   size deliverable/中期答辩_H_nature风.pptx: 1752849 >= 1400000
+   OK   size 中间版/中期.docx: 55588 >= 45000
+   OK   size 中间版/中期答辩_H_nature风.pptx: 1305981 >= 1000000
+   OK   size 中间版2/中期.docx: 55194 >= 45000
+   OK   size 中间版2/中期答辩_H_nature风.pptx: 1285517 >= 1000000
+   OK   size deliverable/中期答辩_A_学术蓝.pptx: 1163395 >= 950000
+   OK   size deliverable/中期答辩_B_白底细线.pptx: 1163751 >= 950000
+   OK   size deliverable/中期答辩_C_卡片色块.pptx: 1164676 >= 950000
+   OK   size deliverable/中期答辩_D_双栏杂志风.pptx: 1164748 >= 950000
+   OK   size deliverable/中期答辩_E_深色标题区.pptx: 1164334 >= 950000
+   OK   size deliverable/中期答辩_F_深色科技风.pptx: 1156228 >= 950000
+   OK   size deliverable/中期答辩_G_学术期刊风.pptx: 1156330 >= 950000
+   OK   size results/status/agent_manifest.json: 14468 >= 200
+== local checks passed
