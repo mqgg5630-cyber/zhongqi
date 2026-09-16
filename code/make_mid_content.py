@@ -146,10 +146,15 @@ def main(argv=None) -> int:
         total_items += 1
         kept_items += 1
     out.append("")
-    out.append("# 检查小组成员")
-    out.append("")
-    out += members
-    out.append("")
+    # 若原名单已删除（小组更换），则不输出旧名单，留空待新名单
+    if members:
+        out.append("# 检查小组成员")
+        out.append("")
+        out += members
+        out.append("")
+    else:
+        # 不输出检查小组成员章节，docx 中对应行将留空
+        pass
 
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text("\n".join(out) + "\n", encoding="utf-8")

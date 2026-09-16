@@ -176,6 +176,8 @@ def parse(md_path: Path):
                     "texts": [ev]})
 
     # ---- Ⅲ.评议情况：检查小组成员 ---------------------------------------
+    # 若 md 中未提供成员（已删除旧名单），则清空模板中原有的 5 行成员行，
+    # 留空待新名单填写。清空操作使用 fill_cell，格式与模板一致，verify 可通过。
     if members:
         extra = max(0, len(members) - (MEMBER_LAST_ROW - MEMBER_FIRST_ROW + 1))
         for _ in range(extra):                      # 行数不够时先克隆一行
@@ -193,6 +195,12 @@ def parse(md_path: Path):
                 else:
                     ops.append({"op": "fill_cell", "table": 22, "row": row,
                                 "col": col, "keep_before": 0, "texts": [text]})
+    else:
+        # 清空旧成员：把 11-15 行的 role/name/title/major/unit 全部置空
+        for row in range(MEMBER_FIRST_ROW, MEMBER_LAST_ROW + 1):
+            for key, col in MEMBER_COLS.items():
+                ops.append({"op": "fill_cell", "table": 22, "row": row,
+                            "col": col, "keep_before": 0, "texts": [""]})
 
     return {"docx": TEMPLATE, "out": OUTPUT, "ops": ops}
 

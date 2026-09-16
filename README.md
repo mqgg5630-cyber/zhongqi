@@ -155,9 +155,14 @@ cd E:\0zhongqi\zhongqi
 不用脚本时的等价命令：
 
 ```powershell
-git fetch origin; git checkout arena/01a09d79-zhongqi; git pull --ff-only origin arena/01a09d79-zhongqi
-git add -A; git commit -m "加入本地文件"; git push origin arena/01a09d79-zhongqi
+git fetch origin; git checkout arena/01a0a949-zhongqi; git pull --ff-only origin arena/01a0a949-zhongqi
+git add -A; git commit -m "加入本地文件"; git push origin arena/01a0a949-zhongqi
 ```
+
+> **分支已更新**：本会话工作分支为 `arena/01a0a949-zhongqi`，旧分支 `arena/01a09d79-zhongqi` 已废弃。
+> 同步脚本（`sync.ps1` / `upload.ps1` / `push.ps1` / `bootstrap.ps1`）均从 `skills/git-sync/sync.config.json` 读取分支，无需手动改路径；
+> 若直接用 git 命令，需把上面示例中的分支名替换为 `arena/01a0a949-zhongqi`。
+> 检查小组成员已按要求删除，表格中对应行留空待新名单填写。
 
 > ⚠️ 不要 `git init` 新仓库再推这个分支：历史对不上会被拒绝；强推（`--force`）会把远端内容整支覆盖。
 

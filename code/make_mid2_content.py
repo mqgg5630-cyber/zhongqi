@@ -205,7 +205,11 @@ def main(argv=None) -> int:
         out.append(f"{k}：{v}")
         kept_chars += len(v)
         kept_body += 1
-    out += ["", "# 检查小组成员", ""] + members + [""]
+    # 若原名单已删除（小组更换），则不输出旧名单
+    if members:
+        out += ["", "# 检查小组成员", ""] + members + [""]
+    else:
+        pass
 
     Path(a.out).parent.mkdir(parents=True, exist_ok=True)
     Path(a.out).write_text("\n".join(out) + "\n", encoding="utf-8")
