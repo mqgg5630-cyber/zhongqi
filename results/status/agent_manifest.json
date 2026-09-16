@@ -1,8 +1,8 @@
 {
   "round": "1",
-  "generated_at_utc": "2026-09-16 09:12:04 UTC",
+  "generated_at_utc": "2026-09-16 09:19:22 UTC",
   "branch": "arena/01a0a95e-zhongqi",
-  "base_commit": "c5dbc94",
+  "base_commit": "229f266",
   "generator": "code/build_deliverables.py",
   "toolchain": {
     "python": "3.11.2",
@@ -15,79 +15,79 @@
   "steps": [
     {
       "step": "ops:中期",
-      "cmd": "/usr/bin/python3 code/build_ops.py",
+      "cmd": "/usr/bin/python code/build_ops.py",
       "exit": 0,
       "tail": "  set cell table 22 r15c1 <- '组员' |   set cell table 22 r16c1 <- '组员'"
     },
     {
       "step": "docx:中期",
-      "cmd": "/usr/bin/python3 code/fill_docx.py --ops build/ops_中期.json",
+      "cmd": "/usr/bin/python code/fill_docx.py --ops build/ops_中期.json",
       "exit": 0,
       "tail": "OK    fill_cell     table 22 r16c6 +1 paragraphs (0 bold) | saved -> deliverable/中期.docx  (45 ops, 0 failed)"
     },
     {
       "step": "docx:中期新",
-      "cmd": "/usr/bin/python3 code/fill_docx.py --ops build/ops_中期.json --out deliverable/中期新.docx",
+      "cmd": "/usr/bin/python code/fill_docx.py --ops build/ops_中期.json --out deliverable/中期新.docx",
       "exit": 0,
       "tail": "OK    fill_cell     table 22 r16c6 +1 paragraphs (0 bold) | saved -> deliverable/中期新.docx  (45 ops, 0 failed)"
     },
     {
       "step": "docx:机制说明",
-      "cmd": "/usr/bin/python3 code/make_mech_doc.py",
+      "cmd": "/usr/bin/python code/make_mech_doc.py",
       "exit": 0,
       "tail": "wrote deliverable/抗菌肽与AD关联机制说明.docx |   paragraphs: 59 | tables: 2 | inline shapes: 2 | chars: 6534"
     },
     {
       "step": "md:中间版草稿",
-      "cmd": "/usr/bin/python3 code/make_mid_content.py",
+      "cmd": "/usr/bin/python code/make_mid_content.py",
       "exit": 0,
       "tail": "  全部行（含小节标题）47/78 = 60% |   字数 4236/8253 = 51%"
     },
     {
       "step": "ops:中间版",
-      "cmd": "/usr/bin/python3 code/build_ops.py --in docs/中间版_填写内容.md --out build/ops_中间版.json",
+      "cmd": "/usr/bin/python code/build_ops.py --in docs/中间版_填写内容.md --out build/ops_中间版.json",
       "exit": 0,
       "tail": "  set cell table 22 r15c1 <- '组员' |   set cell table 22 r16c1 <- '组员'"
     },
     {
       "step": "docx:中间版",
-      "cmd": "/usr/bin/python3 code/fill_docx.py --ops build/ops_中间版.json --out 中间版/中期.docx",
+      "cmd": "/usr/bin/python code/fill_docx.py --ops build/ops_中间版.json --out 中间版/中期.docx",
       "exit": 0,
       "tail": "OK    fill_cell     table 22 r16c6 +1 paragraphs (0 bold) | saved -> 中间版/中期.docx  (45 ops, 0 failed)"
     },
     {
       "step": "md:中间版2草稿",
-      "cmd": "/usr/bin/python3 code/make_mid2_content.py",
+      "cmd": "/usr/bin/python code/make_mid2_content.py",
       "exit": 0,
       "tail": "  正文段落 31/60 = 52% |   字数 4097/7982 = 51%"
     },
     {
       "step": "ops:中间版2",
-      "cmd": "/usr/bin/python3 code/build_ops.py --in docs/中间版2_填写内容.md --out build/ops_中间版2.json",
+      "cmd": "/usr/bin/python code/build_ops.py --in docs/中间版2_填写内容.md --out build/ops_中间版2.json",
       "exit": 0,
       "tail": "  set cell table 22 r15c1 <- '组员' |   set cell table 22 r16c1 <- '组员'"
     },
     {
       "step": "docx:中间版2",
-      "cmd": "/usr/bin/python3 code/fill_docx.py --ops build/ops_中间版2.json --out 中间版2/中期.docx",
+      "cmd": "/usr/bin/python code/fill_docx.py --ops build/ops_中间版2.json --out 中间版2/中期.docx",
       "exit": 0,
       "tail": "OK    fill_cell     table 22 r16c6 +1 paragraphs (0 bold) | saved -> 中间版2/中期.docx  (45 ops, 0 failed)"
     },
     {
       "step": "pptx:H(20页)",
-      "cmd": "/usr/bin/python3 code/make_ppt_nature.py --mechanism",
+      "cmd": "/usr/bin/python code/make_ppt_nature.py --mechanism",
       "exit": 0,
       "tail": "wrote deliverable/中期答辩_H_nature风.pptx | slides: 20 | runs: 137"
     },
     {
       "step": "pptx:中间版(12页)",
-      "cmd": "/usr/bin/python3 code/make_ppt_mid.py",
+      "cmd": "/usr/bin/python code/make_ppt_mid.py",
       "exit": 0,
       "tail": "wrote 中间版/中期答辩_H_nature风.pptx | slides: 12 (完整版 16 页) | runs: 73"
     },
     {
       "step": "pptx:中间版2(12页)",
-      "cmd": "/usr/bin/python3 code/make_ppt_mid.py --half",
+      "cmd": "/usr/bin/python code/make_ppt_mid.py --half",
       "exit": 0,
       "tail": "wrote 中间版2/中期答辩_H_nature风.pptx | slides: 12 (完整版 16 页) | runs: 75 | 进度口径：前四项已完成、其余下一阶段"
     }
@@ -121,7 +121,8 @@
         "paragraphs": 100
       },
       "assert_fails": [],
-      "status": "ok"
+      "status": "ok",
+      "sha256_lf": "ef088124f7eefdfdfcc5fc28d2d72de38fce3ea87a4d044cd552ce6ca348be4f"
     },
     {
       "path": "deliverable/中期.docx",
@@ -378,8 +379,14 @@
       "min_bytes": 200,
       "note": "本轮 agent 侧产物清单（路径 / 字节 / sha256 / QA 结论）；本机按它逐个核对哈希",
       "status": "self-reference",
-      "bytes": 13658
+      "bytes": 14076
     }
   ],
-  "_read_me": "本机值守 code/local_check.ps1 会逐个核对 files[].sha256 —— 哈希对上就说明这一轮的 docx/pptx 完整地回到了本机。"
+  "_read_me": "本机值守 code/local_check.ps1 会逐个核对 files[].sha256 —— 哈希对上就说明这一轮的 docx/pptx 完整地回到了本机。",
+  "preflight_local_check": {
+    "would_pass": true,
+    "failed_items": 0,
+    "simulator": "code/simulate_local_check.py",
+    "note": "沙箱里预演 code/check_deliverables.ps1 的判据（在场/体积/sha256/OOXML 结构/页数段落数）；auth.ps1、计划任务形态、-Com 真 Office 打开只有本机验得了"
+  }
 }

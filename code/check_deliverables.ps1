@@ -140,13 +140,35 @@ foreach ($f in @($man.files)) {
     if ($f.sha256) { $want = ([string]$f.sha256).ToLowerInvariant() }
     $got = ''
     try { $got = (Get-FileHash -LiteralPath $fp -Algorithm SHA256).Hash.ToLowerInvariant() } catch { $got = '' }
+    $eolNote = ''
     if ($want -and $got -ne $want) {
-        Write-Output ('   FAIL sha256        ' + $rel)
-        Write-Output ('        this machine ' + $got)
-        Write-Output ('        agent built  ' + $want)
-        Write-Output '        (stale or truncated copy - run .\sync.ps1 and let the round repeat)'
-        $bad = $bad + 1
-        continue
+        # text files can be checked out with CRLF when core.autocrlf=true - the
+        # agent records an LF-normalised hash too, so line endings alone never
+        # fail a round (docx / pptx are binary and never converted)
+        $wantLf = ''
+        if ($f.sha256_lf) { $wantLf = ([string]$f.sha256_lf).ToLowerInvariant() }
+        $gotLf = ''
+        if ($wantLf -and ($kind -eq 'md' -or $kind -eq 'manifest')) {
+            try {
+                $bytes = [System.IO.File]::ReadAllBytes($fp)
+                $txt = [System.Text.Encoding]::UTF8.GetString($bytes) -replace "`r`n", "`n"
+                $sha = [System.Security.Cryptography.SHA256]::Create()
+                $hashBytes = $sha.ComputeHash([System.Text.Encoding]::UTF8.GetBytes($txt))
+                $gotLf = ([System.BitConverter]::ToString($hashBytes) -replace '-', '').ToLowerInvariant()
+            } catch { $gotLf = '' }
+        }
+        if ($wantLf -and $gotLf -eq $wantLf) {
+            $eolNote = '  (matches after CRLF->LF normalisation - core.autocrlf, content is identical)'
+            $got = $gotLf
+            $want = $wantLf
+        } else {
+            Write-Output ('   FAIL sha256        ' + $rel)
+            Write-Output ('        this machine ' + $got)
+            Write-Output ('        agent built  ' + $want)
+            Write-Output '        (stale or truncated copy - run .\sync.ps1 and let the round repeat)'
+            $bad = $bad + 1
+            continue
+        }
     }
 
     $detail = ''
@@ -251,7 +273,7 @@ foreach ($f in @($man.files)) {
     $prefix = $got
     if ($got.Length -ge 12) { $prefix = $got.Substring(0, 12) }
     Write-Output ('   OK   ' + ([string]$rel).PadRight(46) + ([string]$sz).PadLeft(9) +
-                  ' B  sha256 ' + $prefix + '  ' + $detail)
+                  ' B  sha256 ' + $prefix + '  ' + $detail + $eolNote)
     $ok = $ok + 1
 }
 

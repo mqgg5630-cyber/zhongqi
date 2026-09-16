@@ -260,6 +260,8 @@ def main(argv=None) -> int:
     ap.add_argument("--only", choices=["all", "docx", "pptx"], default="all")
     ap.add_argument("--no-build", action="store_true", help="不重生成，只自检 + 写清单")
     ap.add_argument("--no-gate", action="store_true", help="跳过 code/check_all.sh")
+    ap.add_argument("--no-preflight", action="store_true",
+                    help="跳过 code/simulate_local_check.py（预演本机核验）")
     ap.add_argument("--keep", action="store_true",
                     help="内容与 HEAD 一致时也保留新字节（默认还原原文件）")
     ap.add_argument("--round", default="", help="轮次标签（默认取 handshake.round+1）")
@@ -270,16 +272,21 @@ def main(argv=None) -> int:
     loop_rows = [r for r in rows if r["scope"] in ("loop", "source")]
     all_rows = rows
 
-    # 轮次标签：handshake 里当前轮 + 1（agent-check.sh --request 会把远端轮次 +1）
+    # 轮次标签：已经有一轮开着（awaiting_check + pending）就沿用它的轮次 ——
+    # 这次重生成就是为它准备的；没有开着的轮次才是"下一轮"（--request 会 +1）
     rnd = a.round
     if not rnd:
-        cur = 0
+        cur, astate, lstate = 0, "", ""
         if HANDSHAKE.exists():
             try:
-                cur = int(json.loads(HANDSHAKE.read_text(encoding="utf-8-sig")).get("round") or 0)
+                hs = json.loads(HANDSHAKE.read_text(encoding="utf-8-sig"))
+                cur = int(hs.get("round") or 0)
+                astate = str(hs.get("arena_state") or "")
+                lstate = str(hs.get("local_state") or "")
             except Exception:
                 cur = 0
-        rnd = str(cur + 1)
+        open_round = (astate == "awaiting_check" and lstate == "pending" and cur > 0)
+        rnd = str(cur if open_round else cur + 1)
 
     print(f"== build_deliverables  round {rnd}  only={a.only} "
           f"build={'no' if a.no_build else 'yes'} gate={'no' if a.no_gate else 'yes'}")
@@ -362,6 +369,12 @@ def main(argv=None) -> int:
         rec.update({"bytes": p.stat().st_size, "sha256": sha256(p),
                     "metrics": metrics, "assert_fails": ef,
                     "status": "ok" if not ef else "assert-failed"})
+        if kind in ("md", "manifest"):
+            # 文本文件在 Windows 上可能被 core.autocrlf  checkout 成 CRLF ——
+            # 多记一个"换行归一化后"的哈希，本机对不上原始哈希时用它兜底，
+            # 免得把行尾差异误判成"产物没送到"。二进制（docx/pptx）不受影响。
+            raw = p.read_bytes().replace(b"\r\n", b"\n")
+            rec["sha256_lf"] = hashlib.sha256(raw).hexdigest()
 
         # 复现性：与 HEAD 比内容指纹（只对这一轮真正重新生成过的文件有意义）
         if kind in ("docx", "pptx", "md") and row["scope"] == "loop" and not a.no_build:
@@ -399,7 +412,7 @@ def main(argv=None) -> int:
                             capture_output=True, text=True).stdout.strip()
     head = subprocess.run(["git", "rev-parse", "--short", "HEAD"], cwd=str(ROOT),
                           capture_output=True, text=True).stdout.strip()
-    verdict = "pass" if (build_ok and not fails) else "fail"
+    verdict = "pass" if (build_ok and not fails) else "fail"   # 预演失败会在后面改写
     manifest = {
         "round": rnd,
         "generated_at_utc": _dt.datetime.now(_dt.timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"),
@@ -421,8 +434,39 @@ def main(argv=None) -> int:
     }
     man_path = Path(a.manifest)
     man_path.parent.mkdir(parents=True, exist_ok=True)
-    man_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
-                        encoding="utf-8")
+
+    def write_manifest(m: dict) -> None:
+        man_path.write_text(json.dumps(m, ensure_ascii=False, indent=2) + "\n",
+                            encoding="utf-8")
+
+    write_manifest(manifest)
+
+    # --------------------------------------------- 预演本机核验（push 之前先自己过一遍）
+    if not a.no_preflight:
+        code, out = run([PY, "code/simulate_local_check.py", "--json",
+                         "--manifest", str(man_path)])
+        pre = {"exit": code}
+        try:
+            pre.update(json.loads(out))
+        except Exception:
+            pre["raw"] = out[-800:]
+        manifest["preflight_local_check"] = {
+            "would_pass": bool(pre.get("would_pass")) and code == 0,
+            "failed_items": pre.get("failed", 0 if code == 0 else 1),
+            "simulator": "code/simulate_local_check.py",
+            "note": "沙箱里预演 code/check_deliverables.ps1 的判据（在场/体积/sha256/OOXML 结构/"
+                    "页数段落数）；auth.ps1、计划任务形态、-Com 真 Office 打开只有本机验得了",
+        }
+        write_manifest(manifest)
+        if code != 0:
+            manifest["verdict"] = "fail"
+            fails.append(f"预演本机核验没过（{pre.get('failed', '?')} 项对不上）")
+            print("  [FAIL] 预演本机核验：")
+            for r in (pre.get("results") or []):
+                if str(r.get("state", "")).startswith("fail"):
+                    print(f"      - {r.get('path')}: {r.get('state')} / {r.get('detail')}")
+        else:
+            print("  [OK ] 预演本机核验：本机那一关会过（sha256 / OOXML 结构 / 页数段落数全部对上）")
 
     # ------------------------------------------- success_criteria.json（同一份 tsv 编译）
     crit = {
