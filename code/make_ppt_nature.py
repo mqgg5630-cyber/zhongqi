@@ -304,18 +304,25 @@ def metrics_slide(prs, idx, total, *, headline, lead, stages, note):
     return slide
 
 
-def table_slide(prs, idx, total, *, headline, rows, note):
-    """对照表：原生可编辑表格（nature skill 建议显式数值用原生表）。"""
+def table_slide(prs, idx, total, *, headline, rows, note, header=None, widths=None):
+    """对照表：原生可编辑表格（nature skill 建议显式数值用原生表）。
+
+    header / widths 可自定义（机制补充页用它排“证据强度分级”）。
+    """
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     title(slide, headline, size=25)
     n_rows = len(rows) + 1
     shape = slide.shapes.add_table(n_rows, 3, LEFT, BODY_TOP + Inches(0.05),
                                    CONTENT_W, Inches(0.52) * n_rows)
     table = shape.table
-    table.columns[0].width = Inches(2.0)
-    table.columns[1].width = Inches(4.6)
-    table.columns[2].width = CONTENT_W - Inches(6.6)
-    head = ["环节", "开题计划", "现阶段结果"]
+    if widths:
+        for i, w in enumerate(widths):
+            table.columns[i].width = Inches(w)
+    else:
+        table.columns[0].width = Inches(2.0)
+        table.columns[1].width = Inches(4.6)
+        table.columns[2].width = CONTENT_W - Inches(6.6)
+    head = list(header) if header else ["环节", "开题计划", "现阶段结果"]
     for c, text in enumerate(head):
         cell = table.cell(0, c)
         cell.text = ""
@@ -369,12 +376,11 @@ def closing(prs, idx, total, *, headline, lines, note, thanks=False):
 
 
 # ---------------------------------------------------------------- 逐页内容
-def build(outline: dict) -> Presentation:
+def build(outline: dict, total: int = 16) -> Presentation:
     meta = outline["meta"]
     S = {s["n"]: s for s in outline["slides"]}
     prs = Presentation()
     prs.slide_width, prs.slide_height = SLIDE_W, SLIDE_H
-    total = 16
 
     cover(prs, S[1], total, meta)
 
@@ -560,6 +566,8 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--audit", action="store_true")
     ap.add_argument("--outline", default=str(OUTLINE))
+    ap.add_argument("--mechanism", action="store_true",
+                    help="在 16 页之后追加 4 页机制补充页（共 20 页）")
     a = ap.parse_args(argv)
 
     # 1) 术语一致性：全篇只允许术语表里的写法
@@ -569,7 +577,11 @@ def main(argv=None) -> int:
             PROBLEMS.append(f"term not allowed: {banned}")
 
     outline = json.loads(text)
-    prs = build(outline)
+    total = 20 if a.mechanism else 16
+    prs = build(outline, total)
+    if a.mechanism:
+        import make_ppt_mech as MECH
+        MECH.append(prs, first_idx=17, total=20)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     prs.save(str(OUT))
     slides = len(prs.slides._sldIdLst)

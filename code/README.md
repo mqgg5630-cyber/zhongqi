@@ -62,6 +62,9 @@ bash skills/git-sync/scripts/agent-sync.sh "feat: ..."   # 助手侧一键：守
 bash skills/git-sync/scripts/agent-sync.sh --status      # 只看状态（HEAD / 远端 / 未提交 / stash）
 bash skills/git-sync/scripts/agent-recover.sh            # 沙箱 .git 被重置回基线提交后的恢复
 
+python code/make_mech_figures.py         # 机制补充图：七环逻辑链 / AChE-Aβ 机制与 H1-H3
+python code/make_mech_doc.py             # 机制说明 docx -> deliverable/抗菌肽与AD关联机制说明.docx
+python code/make_ppt_nature.py --mechanism   # H 版 + 4 页机制补充页（共 20 页）
 python code/make_mid_content.py          # 中间版 1 docx 草稿（保留清单在脚本内）-> docs/中间版_填写内容.md
 python code/make_mid2_content.py         # 中间版 2 docx 草稿（保留清单 + 半程进度口径）-> docs/中间版2_填写内容.md
 python code/make_mid2_figures.py         # 中间版 2 专用图：半程进度路线图

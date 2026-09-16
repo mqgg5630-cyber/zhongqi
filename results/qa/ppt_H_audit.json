@@ -1,0 +1,134 @@
+{
+  "file": "/home/user/zhongqi/deliverable/中期答辩_H_nature风.pptx",
+  "slide_count": 20,
+  "media_count": 9,
+  "notes_count": 20,
+  "finding_counts": {
+    "high": 0,
+    "medium": 0,
+    "low": 0
+  },
+  "findings": [],
+  "slides": [
+    {
+      "slide": 1,
+      "shape_count": 8,
+      "image_count": 0,
+      "text_chars": 153
+    },
+    {
+      "slide": 2,
+      "shape_count": 7,
+      "image_count": 0,
+      "text_chars": 253
+    },
+    {
+      "slide": 3,
+      "shape_count": 7,
+      "image_count": 0,
+      "text_chars": 239
+    },
+    {
+      "slide": 4,
+      "shape_count": 17,
+      "image_count": 0,
+      "text_chars": 171
+    },
+    {
+      "slide": 5,
+      "shape_count": 7,
+      "image_count": 1,
+      "text_chars": 127
+    },
+    {
+      "slide": 6,
+      "shape_count": 6,
+      "image_count": 1,
+      "text_chars": 125
+    },
+    {
+      "slide": 7,
+      "shape_count": 8,
+      "image_count": 1,
+      "text_chars": 102
+    },
+    {
+      "slide": 8,
+      "shape_count": 7,
+      "image_count": 1,
+      "text_chars": 149
+    },
+    {
+      "slide": 9,
+      "shape_count": 6,
+      "image_count": 1,
+      "text_chars": 139
+    },
+    {
+      "slide": 10,
+      "shape_count": 8,
+      "image_count": 1,
+      "text_chars": 118
+    },
+    {
+      "slide": 11,
+      "shape_count": 7,
+      "image_count": 1,
+      "text_chars": 137
+    },
+    {
+      "slide": 12,
+      "shape_count": 5,
+      "image_count": 0,
+      "text_chars": 239
+    },
+    {
+      "slide": 13,
+      "shape_count": 12,
+      "image_count": 0,
+      "text_chars": 200
+    },
+    {
+      "slide": 14,
+      "shape_count": 5,
+      "image_count": 0,
+      "text_chars": 166
+    },
+    {
+      "slide": 15,
+      "shape_count": 5,
+      "image_count": 0,
+      "text_chars": 206
+    },
+    {
+      "slide": 16,
+      "shape_count": 7,
+      "image_count": 0,
+      "text_chars": 161
+    },
+    {
+      "slide": 17,
+      "shape_count": 7,
+      "image_count": 1,
+      "text_chars": 190
+    },
+    {
+      "slide": 18,
+      "shape_count": 7,
+      "image_count": 0,
+      "text_chars": 188
+    },
+    {
+      "slide": 19,
+      "shape_count": 6,
+      "image_count": 1,
+      "text_chars": 201
+    },
+    {
+      "slide": 20,
+      "shape_count": 5,
+      "image_count": 0,
+      "text_chars": 269
+    }
+  ]
+}

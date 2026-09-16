@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""make_ppt_mid.py - 中间版（提交给老师）PPT：整份页数砍一半（16 -> 8）。
+"""make_ppt_mid.py - 中间版（提交给老师）PPT：整份页数砍一半（16 -> 8，含机制页 12）。
 
 完整版 16 页（deliverable/）保持不动。本版是同一份内容的压缩稿：
 
@@ -35,6 +35,7 @@ from pptx import Presentation
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import make_ppt_nature as N          # noqa: E402  (复用 H 版版式与配色)
+import make_ppt_mech as MECH         # noqa: E402  (机制补充页)
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTLINE = ROOT / "docs" / "ppt_outline.json"
@@ -43,10 +44,9 @@ OUT_HALF = ROOT / "中间版2" / "中期答辩_H_nature风.pptx"
 QA_DIR = ROOT / "results" / "qa"
 
 
-def build_mid(meta: dict, cover: dict) -> Presentation:
+def build_mid(meta: dict, cover: dict, total: int = 8) -> Presentation:
     prs = Presentation()
     prs.slide_width, prs.slide_height = N.SLIDE_W, N.SLIDE_H
-    total = 8
 
     # 1 封面 ---------------------------------------------------------------
     N.cover(prs, cover, total, meta)
@@ -139,11 +139,10 @@ def build_mid(meta: dict, cover: dict) -> Presentation:
     return prs
 
 
-def build_half(meta: dict, cover: dict) -> Presentation:
+def build_half(meta: dict, cover: dict, total: int = 8) -> Presentation:
     """中间版 2：内容减半 + **进度也减半**（只把数据与预测算作中期完成的工作）。"""
     prs = Presentation()
     prs.slide_width, prs.slide_height = N.SLIDE_W, N.SLIDE_H
-    total = 8
 
     # 1 封面 ---------------------------------------------------------------
     N.cover(prs, cover, total, meta)
@@ -246,6 +245,8 @@ def main(argv=None) -> int:
     ap.add_argument("--audit", action="store_true")
     ap.add_argument("--half", action="store_true",
                     help="出中间版 2（进度也减半）到 中间版2/")
+    ap.add_argument("--no-mech", action="store_true",
+                    help="不追加后面的 4 页机制补充页")
     a = ap.parse_args(argv)
 
     outline = json.loads(OUTLINE.read_text(encoding="utf-8"))
@@ -253,7 +254,10 @@ def main(argv=None) -> int:
     cover = outline["slides"][0]
 
     out = OUT_HALF if a.half else OUT
-    prs = build_half(meta, cover) if a.half else build_mid(meta, cover)
+    total = 8 if a.no_mech else 12
+    prs = build_half(meta, cover, total) if a.half else build_mid(meta, cover, total)
+    if not a.no_mech:
+        MECH.append(prs, first_idx=9, total=total)
     out.parent.mkdir(parents=True, exist_ok=True)
     prs.save(str(out))
 
