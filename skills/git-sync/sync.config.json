@@ -1,29 +1,71 @@
 {
-  "branch": "arena/01a09d79-zhongqi",
+  "branch": "arena/01a0a984-zhongqi",
   "remote": "origin",
   "download_dir": "",
   "download_sets": {
-    "final":   ["deliverable", "中间版", "中间版2"],
-    "docs":    ["deliverable"],
-    "source":  ["sources", "docs"],
-    "preview": ["results/ppt_preview", "results/figures"],
-    "all":     ["deliverable", "中间版", "中间版2", "sources", "docs", "results", "code", "skills"]
+    "final": [
+      "deliverable",
+      "中间版",
+      "中间版2"
+    ],
+    "docs": [
+      "deliverable"
+    ],
+    "source": [
+      "sources",
+      "docs"
+    ],
+    "preview": [
+      "results/ppt_preview",
+      "results/figures"
+    ],
+    "all": [
+      "deliverable",
+      "中间版",
+      "中间版2",
+      "sources",
+      "docs",
+      "results",
+      "code",
+      "skills"
+    ]
   },
   "upload_map": {
     ".docx": "sources",
-    ".doc":  "sources",
+    ".doc": "sources",
     ".pptx": "sources",
-    ".ppt":  "sources",
-    ".pdf":  "sources",
-    ".md":   "sources",
-    ".txt":  "sources",
-    ".py":   "code",
+    ".ppt": "sources",
+    ".pdf": "sources",
+    ".md": "sources",
+    ".txt": "sources",
+    ".py": "code",
     ".ipynb": "code",
     ".xlsx": "results",
-    ".xls":  "results",
-    ".csv":  "results",
-    ".zip":  "sources"
+    ".xls": "results",
+    ".csv": "results",
+    ".zip": "sources"
   },
   "gate": "bash code/check_all.sh",
-  "_note": "branch / remote 与助手约定的工作分支；download_sets 是 download.ps1 -Set 可用的集合（文件夹名可以是中文，因为本文件是 UTF-8 JSON，不是 .ps1）；download_dir 留空时下载到仓库上一级目录的 <仓库名>_out；upload_map 决定 upload.ps1 把附件按扩展名放到哪里；gate 是 agent-sync.sh 提交前运行的检查命令。"
+  "_note": "branch / remote 与助手约定的工作分支；download_sets 是 download.ps1 -Set 可用的集合（文件夹名可以是中文，因为本文件是 UTF-8 JSON，不是 .ps1）；download_dir 留空时下载到仓库上一级目录的 <仓库名>_out；upload_map 决定 upload.ps1 把附件按扩展名放到哪里；gate 是 agent-sync.sh 提交前运行的检查命令。",
+  "receipt": "results/sync/last_sync.md",
+  "receipt_history": "results/sync/history",
+  "hardware_dir": "results/hardware",
+  "handshake": "results/status/handshake.json",
+  "check_cmd": "powershell -NoProfile -ExecutionPolicy Bypass -File code/local_check.ps1",
+  "check_timeout_min": 30,
+  "lock_stale_min": 45,
+  "hands_free": true,
+  "auto_pull": true,
+  "auto_push": true,
+  "auto_push_prefix": "local: auto",
+  "auto_push_exclude": [
+    ".env",
+    ".env.*",
+    "**/*.pem",
+    "**/*.key",
+    "**/credentials*",
+    "**/*secret*",
+    "**/*token*"
+  ],
+  "success_criteria": "results/status/success_criteria.json"
 }
