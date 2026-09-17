@@ -2,7 +2,7 @@
 #
 # Usage (inside the repo folder):
 #     .\bootstrap.ps1
-#     .\bootstrap.ps1 -Branch arena/01a09d79-zhongqi
+#     .\bootstrap.ps1 -Branch arena/01a0a949-zhongqi
 #
 # It will:
 #   1. allow local scripts for the current user (RemoteSigned)

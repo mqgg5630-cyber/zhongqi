@@ -35,6 +35,16 @@
 > [nature-skills](https://github.com/mqgg5630-cyber/nature-skills) 的 `nature-paper2ppt` 重新组织内容与版式。
 > 八版口径由 `code/check_consistency.py` 统一核对。
 
+## 2.5 抗菌肽与AD关联机制说明 PPT（**单独机制专属**，15页，三风格）
+
+为回应“机制没说清”，单独做了一份机制解释PPT，全面回答8个问题，补充38篇文献（含动力学多文献链 Inestrosa1996→De Ferrari2001→Inestrosa2008→Atanasova2020，抗菌活性预测 Ma2022 83%阳性率、Santos-Junior 2024 79%活性，AD-感染关联 HSV-1/HHV-6/P.gingivalis/LPS/肠道菌群等）。
+
+- `抗菌肽与AD机制_F_深色科技风.pptx` — 深色科技风
+- `抗菌肽与AD机制_G_学术期刊风.pptx` — 学术期刊风
+- `抗菌肽与AD机制_M_深蓝金·机制专属.pptx` — 深蓝金·机制专属（更精美，推荐用于机制答辩）
+
+内容大纲见 `docs/ppt_outline_mech.json`，生成脚本 `code/make_ppt_mech_master.py`，版式自检 `check_ppt.py` 均已通过（15 pt、无越界、无重叠）。
+
 ## 3. 拿到新版后
 
 ```powershell
