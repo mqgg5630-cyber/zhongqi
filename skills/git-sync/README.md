@@ -58,9 +58,10 @@ bash skills/git-sync/scripts/agent-recover.sh                    # 沙箱 .git �
 | `scripts/pack.ps1` | 压缩包交付；输出到 `_export\`（已在 `.gitignore` 里，不会被推送） |
 | `scripts/doctor.ps1` | 体检报告；"哪里不对劲"先跑它 |
 | `scripts/bootstrap.ps1` | 首次准备：执行策略、git 身份、fetch、切分支、首拉 |
+| `scripts/where.ps1` | 判断“该用哪个文件夹”：列出本份与相邻克隆的分支 / config 分支 / 最新提交 / 下载目录（`-Want <branch>` 直接标出目标） |
 | `scripts/reclone.ps1` | 另拉一个干净文件夹：`.\reclone.ps1 -Path E:\0zhongqi\zhongqi-arena`（不碰当前文件夹；目标已是克隆则快进） |
 | `scripts/install.ps1` | 把整套脚本装到另一个仓库：`.\install.ps1 -Target C:\MyProject -Branch main`（含 `.cmd` 双击外壳） |
-| `scripts/*.cmd` | 五个双击外壳：`sync.cmd` / `download.cmd` / `doctor.cmd` / `bootstrap.cmd` / `reclone.cmd`（ASCII + CRLF，`check_ps1.py` 一并检查） |
+| `scripts/*.cmd` | 六个双击外壳：`sync.cmd` / `download.cmd` / `doctor.cmd` / `bootstrap.cmd` / `reclone.cmd` / `where.cmd`（ASCII + CRLF，`check_ps1.py` 一并检查） |
 | `scripts/agent-sync.sh` | 助手侧一键：分支守卫 → fetch → 发散自愈 → gate → commit + push |
 | `scripts/agent-recover.sh` | 助手侧修复：`.git` 被重置回基线提交时，保住工作区把 HEAD 挪回分支 |
 
@@ -79,7 +80,7 @@ bash skills/git-sync/scripts/agent-recover.sh                    # 沙箱 .git �
 Windows PowerShell 5.1 读**没有 BOM** 的 `.ps1` 时按 **ANSI/GBK** 解码；UTF-8 的中文注释会变成乱码，
 乱码里一旦出现引号就会把后面的字符串吞掉，报 `字符串缺少终止符` / `InvalidArgument`。
 约定：**`.ps1` 只用 ASCII，中文只出现在 `.md` / `.json`**；
-本仓库提交前跑 `python code/check_ps1.py`（扫描全部 `.ps1`，含 `skills\` 下的），非 ASCII 直接 FAIL。
+本仓库提交前跑 `python code/check_ps1.py`（扫描全部 `.ps1` / `.cmd`，含 `skills\` 下的），非 ASCII 直接 FAIL；当前基线 **32/32**。
 
 中文目录名（如 `中间版`）因此**只写在 `sync.config.json` 里**，脚本用 `Get-Content -Encoding UTF8` 读取，
 再拼路径——这样既有中文目录，又不会有 GBK 问题。

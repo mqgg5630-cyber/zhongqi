@@ -88,8 +88,13 @@ foreach ($rel in $folders) {
 
 Write-Host ""
 if ($fail -eq 0) {
-    Write-Host "== done. latest commit:" -ForegroundColor Green
-    git log -1 --oneline
+    Write-Host "== done" -ForegroundColor Green
+    Write-Host ("   from repo : {0}" -f $repo)
+    Write-Host ("   branch    : {0}" -f (git rev-parse --abbrev-ref HEAD))
+    Write-Host ("   commit    : {0}" -f (git log -1 --oneline))
+    Write-Host ("   copied to : {0}" -f $Dest)
+    Write-Host "   (if the branch is not the one your session uses, you are in the wrong folder -"
+    Write-Host "    run where.cmd to see every clone on this machine)" -ForegroundColor DarkGray
 } else {
     Write-Host ("== finished with {0} error(s)" -f $fail) -ForegroundColor Red
     exit 1

@@ -103,7 +103,7 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 | `check_ppt.py` | 独立的 PPT 版式检查（用真实 CJK 字体估算换行高度；每个 run ≥15 pt、形状不越界，并硬性禁止正文/备注里出现"图：本项目自制（results/figures/…）"一类来源小字） |
 | `preview_ppt.py` | 无 PowerPoint 环境下的逐页 PNG 预览（用于核版式）；支持读取 `p:bg` 幻灯片背景色，深色版式不会预览成白底 |
 | `get_cjk_font.py` | 从 PyPI 的 `noto-cjk-sans-otc` 抽出思源黑体 SC 单字体，供 matplotlib/PIL 使用 |
-| `check_ps1.py` | 校验 .ps1 脚本为纯 ASCII（避免 Windows PowerShell 5.1 按 GBK 解码导致的解析错误） |
+| `check_ps1.py` | 校验 .ps1 / .cmd 脚本为纯 ASCII + CRLF（避免 Windows PowerShell 5.1 按 GBK 解码导致的解析错误）；基线 **32 个文件全过** |
 | `1.py` | 你的原始脚本：全队列 476 样本 MAGs 成果校验与统计（bash/SLURM 流程） |
 
 ## 依赖
