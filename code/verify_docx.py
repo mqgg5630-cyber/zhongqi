@@ -209,6 +209,42 @@ def main(argv=None) -> int:
     f = Document(args.filled)
     problems = []
 
+    # --pbb-rows：这些表格行允许且**只允许**多出 <w:pageBreakBefore/>（签字页段前分页）。
+    # 校验前先确认标记确实加上了，然后把它从“已填”文档的内存树里摘掉 ——
+    # 脚本只读不保存，摘掉后其余逐格比对与普通文档完全一致，所以这条特例不会
+    # 放宽任何别的检查（文本、字体、框线、行高照样逐字节比）。
+    if pbb_rows:
+        for (t, r) in sorted(pbb_rows):
+            els_b, els_f = body(b), body(f)
+            if t >= len(els_b) or els_b[t][0] != "tbl" or t >= len(els_f) or els_f[t][0] != "tbl":
+                problems.append(f"--pbb-rows {t}:{r}: body element {t} is not a table")
+                print(f"{BAD} --pbb-rows {t}:{r}: body element {t} is not a table")
+                continue
+            trs_b = els_b[t][1]._tbl.findall(qn("w:tr"))
+            trs_f = els_f[t][1]._tbl.findall(qn("w:tr"))
+            if r >= len(trs_b) or r >= len(trs_f):
+                problems.append(f"--pbb-rows {t}:{r}: no such row")
+                print(f"{BAD} --pbb-rows {t}:{r}: no such row")
+                continue
+            base_had = any(p.find(qn("w:pPr")) is not None and
+                           p.find(qn("w:pPr")).find(qn("w:pageBreakBefore")) is not None
+                           for p in trs_b[r].iter(qn("w:p")))
+            added = 0
+            for p in trs_f[r].iter(qn("w:p")):
+                ppr = p.find(qn("w:pPr"))
+                if ppr is not None:
+                    for pb in ppr.findall(qn("w:pageBreakBefore")):
+                        ppr.remove(pb)
+                        added += 1
+            if added and not base_had:
+                print(f"{OK} page break in row tbl{t} r{r}: {added} paragraph(s) start a new "
+                      f"page in the filled file, template had none")
+            else:
+                problems.append(f"tbl{t} r{r}: page break missing (added={added}, "
+                                f"template already had one={base_had})")
+                print(f"{BAD} page break in row tbl{t} r{r}: added={added} "
+                      f"template_had={base_had}")
+
     # element ids of the content controls we are allowed to change (base tree)
     target_sdt_els = []
     if sdt_targets or tc_targets:
@@ -280,33 +316,6 @@ def main(argv=None) -> int:
                 if key in seen:
                     continue          # horizontally/vertically merged: already checked
                 seen.add(key)
-                if (i, r) in pbb_rows:
-                    # 只允许一种改动：这一行单元格里的段落加了 <w:pageBreakBefore/>
-                    # （签字页单独成页），其余部分必须逐字节相同
-                    a_tc, b_tc = copy.deepcopy(cell1._tc), copy.deepcopy(cell2._tc)
-                    had = any(p.find(qn("w:pPr")) is not None and
-                              p.find(qn("w:pPr")).find(qn("w:pageBreakBefore")) is not None
-                              for p in a_tc.iter(qn("w:p")))
-                    added = 0
-                    for p in b_tc.iter(qn("w:p")):
-                        ppr = p.find(qn("w:pPr"))
-                        if ppr is not None and ppr.find(qn("w:pageBreakBefore")) is not None:
-                            added += 1
-                    for x in (a_tc, b_tc):
-                        for pb in list(x.iter(qn("w:pageBreakBefore"))):
-                            pb.getparent().remove(pb)
-                    same = strip_ns(a_tc.xml) == strip_ns(b_tc.xml)
-                    checked += 1
-                    if same and added and not had:
-                        print(f"{OK} page break row tbl{i} r{r}c{c}: "
-                              f"{added} paragraph(s) start a new page, rest identical")
-                    else:
-                        problems.append(f"page-break row tbl{i} r{r}c{c} changed beyond "
-                                        f"<w:pageBreakBefore/>")
-                        print(f"{BAD} page break row tbl{i} r{r}c{c}: same={same} "
-                              f"added={added} already={had}")
-                    continue
-
                 is_target = (i, r, c) in targets or any(
                     x in target_sdt_els for x in cell1._tc.iter(qn("w:sdt")))
 
@@ -450,8 +459,6 @@ def main(argv=None) -> int:
                     if tag == "w:sdt":
                         sdt_no = k
                         target = k in target_sdts
-                    elif (i, r) in pbb_rows:
-                        target = True
                     else:
                         # a plain cell counts as a target either because it is
                         # listed in --tc-cells or because it *contains* a content

@@ -38,7 +38,8 @@ try:
 except ImportError:                                  # pragma: no cover
     ImageFont = None
 
-SIGN_LABEL = "Ⅲ.评议情况"
+SIGN_LABEL = "导师综合评语"     # 签字页从这一行开始（末尾即“导师签字： 年 月 日”）
+SIGN_TAIL = "Ⅲ.评议情况"        # 检查小组签字 / 检查意见 / 组长签字也要在同一页上
 TW = 20                       # 1 pt = 20 twips
 MIN_ROW = 24                  # 行高下限（空行 / 边框）
 DEFAULT_SIZE_PT = 12.0
@@ -228,6 +229,10 @@ def main(argv=None) -> int:
     if sign_row is None:
         print(f"[ERROR] no row with {SIGN_LABEL!r}", file=sys.stderr)
         return 1
+    tail_row = next((i for i, tr in enumerate(trs) if SIGN_TAIL in text_of(tr)), None)
+    if tail_row is None or tail_row < sign_row:
+        print(f"[ERROR] row with {SIGN_TAIL!r} not found after {SIGN_LABEL!r}", file=sys.stderr)
+        return 1
 
     print(f"[layout] {path}")
     print(f"  paper {doc.sections[-1].page_width.inches:.2f}x"
@@ -236,7 +241,8 @@ def main(argv=None) -> int:
           f"{doc.sections[-1].bottom_margin.inches:.2f} in "
           f"-> 一页可用高度 {avail:.0f} twips = {avail / TW:.0f} pt")
     print(f"  table: {len(trs)} rows x {len(cols)} cols; 签字部分 = row "
-          f"{sign_row}—{len(trs) - 1}")
+          f"{sign_row}—{len(trs) - 1}"
+          f"（{SIGN_LABEL} → {len(trs) - 1 - sign_row + 1} 行，含 {SIGN_TAIL}）")
 
     heights = [row_height(tr, cols, cellmar) for tr in trs]
     breaks = [has_page_break_before(tr) for tr in trs]
@@ -273,9 +279,9 @@ def main(argv=None) -> int:
     # ---- 检查 1：签字页从新的一页开始
     if args.sign_page:
         if trs and SIGN_LABEL in text_of(trs[0]):
-            print(f"  OK   {SIGN_LABEL} 就是表格第一行（这是单独一份签字页文件）")
+            print(f"  OK   表格第一行就是 {SIGN_LABEL}（这是单独一份签字页文件）")
         else:
-            problems.append("签字页文件的第一行不是 Ⅲ.评议情况")
+            problems.append(f"签字页文件的第一行不是 {SIGN_LABEL}")
             print(f"  FAIL 第一行是 {text_of(trs[0])[:16]!r}，不是 {SIGN_LABEL!r}")
     elif breaks[sign_row]:
         print(f"  OK   row {sign_row} [{SIGN_LABEL}] 带 <w:pageBreakBefore/>："
@@ -301,6 +307,25 @@ def main(argv=None) -> int:
         problems.append(f"签字部分分布在估算的第 {sign_pages} 页")
         print(f"  FAIL 签字部分分布在估算的第 {sign_pages} 页")
 
+    # ---- 检查 4：导师签字与检查小组签字在同一页上
+    if page_of[tail_row] == page_of[sign_row] and sign_row < tail_row:
+        print(f"  OK   {SIGN_LABEL}（导师签字）与 {SIGN_TAIL}（检查小组签字 / 检查意见 / "
+              f"组长签字 / 单位盖章）都在第 {page_of[sign_row]} 页")
+    else:
+        problems.append(f"{SIGN_LABEL} 在第 {page_of[sign_row]} 页、"
+                        f"{SIGN_TAIL} 在第 {page_of[tail_row]} 页，不在同一页")
+        print(f"  FAIL {SIGN_LABEL} 在第 {page_of[sign_row]} 页、"
+              f"{SIGN_TAIL} 在第 {page_of[tail_row]} 页，不在同一页")
+
+    # 签字页里的填空提示（签字行）要都在
+    sign_text = " ".join(text_of(trs[i]) for i in sign_rows)
+    for needle in ("导师签字", "组长（签字）", "培养单位盖章", "中期检查意见"):
+        if needle in sign_text:
+            print(f"  OK   签字页含 {needle}")
+        else:
+            problems.append(f"签字页缺 {needle}")
+            print(f"  FAIL 签字页缺 {needle}")
+
     if page_of[-1] == page_of[sign_row]:
         print(f"  估算总页数 {len(set(page_of))}，签字页 = 第 {page_of[sign_row]} 页（最后一页）")
     else:
@@ -311,8 +336,9 @@ def main(argv=None) -> int:
         for p in problems:
             print(f"  - {p}")
         return 1
-    print("\nRESULT: OK - 一页装得下整份签字页" if args.sign_page
-          else "\nRESULT: OK - 签字页单独成完整一页")
+    print("\nRESULT: OK - 一页装得下整份签字页（导师签字 + 检查小组签字都在这一页）"
+          if args.sign_page else
+          "\nRESULT: OK - 签字页单独成完整一页（导师签字 + 检查小组签字同页）")
     return 0
 
 

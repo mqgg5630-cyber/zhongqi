@@ -14,8 +14,9 @@
 ------------------------------
 不做任何重排：直接打开 `sources/中期.docx`（学校模板），
   * 删掉封面页、填表说明页以及它们的分节符
-  * 正文表只保留 “Ⅲ.评议情况” 那一行到表格末尾（行元素原样搬过来，
-    框线 / 列宽 / 行高 / 字体 / 单元格内容都不动）
+  * 正文表只保留 “2. 导师综合评语” 那一行到表格末尾（行元素原样搬过来，
+    框线 / 列宽 / 行高 / 字体 / 单元格内容都不动）—— 因为导师签字在综合评语这一格，
+    要和后面检查小组签字（Ⅲ.评议情况、检查意见、组长签字、单位盖章）在同一页上
   * 保留表后的空段落与最后一节的 sectPr —— 纸张、页边距、页脚（日期 + 页码）
     与整份表里的那一页完全相同
 所以这份文件打印出来的样子，就是整份检查表最后一页的样子。
@@ -43,7 +44,8 @@ ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE = ROOT / "sources" / "中期.docx"
 OUT = ROOT / "deliverable" / "中期检查表_签字页.docx"
 
-SIGN_LABEL = "Ⅲ.评议情况"
+SIGN_LABEL = "导师综合评语"     # 签字页第一行：2. 导师综合评语（末尾就是“导师签字： 年 月 日”）
+SIGN_TAIL = "Ⅲ.评议情况"        # 后面接着检查小组签字 / 检查意见 / 组长签字 / 单位盖章
 
 
 def strip_ns(xml: str) -> str:
@@ -74,6 +76,11 @@ def main(argv=None) -> int:
                      if SIGN_LABEL in "".join(t.text or "" for t in tr.iter(qn("w:t")))), None)
     if sign_row is None:
         print(f"[ERROR] no row with {SIGN_LABEL!r}", file=sys.stderr)
+        return 1
+    tail_row = next((i for i, tr in enumerate(trs)
+                     if SIGN_TAIL in "".join(t.text or "" for t in tr.iter(qn("w:t")))), None)
+    if tail_row is None or tail_row < sign_row:
+        print(f"[ERROR] row with {SIGN_TAIL!r} not found after {SIGN_LABEL!r}", file=sys.stderr)
         return 1
 
     tbl_idx = kids.index(tbl)
@@ -114,10 +121,18 @@ def main(argv=None) -> int:
 
     first = "".join(t.text or "" for t in trs2[0].iter(qn("w:t"))) if trs2 else ""
     if SIGN_LABEL in first:
-        print(f"OK    第一行 = {SIGN_LABEL}（就是签字页本身）")
+        print(f"OK    第一行 = {SIGN_LABEL}（签字页从这里开始）")
     else:
-        problems.append("第一行不是 Ⅲ.评议情况")
+        problems.append(f"第一行不是 {SIGN_LABEL}")
         print(f"FAIL  第一行 = {first[:20]!r}")
+
+    all_text = " ".join("".join(t.text or "" for t in tr.iter(qn("w:t"))) for tr in trs2)
+    for needle in ("导师签字", SIGN_TAIL, "组长（签字）", "培养单位盖章", "中期检查意见"):
+        if needle in all_text:
+            print(f"OK    签字页含 {needle}")
+        else:
+            problems.append(f"签字页缺 {needle}")
+            print(f"FAIL  签字页缺 {needle}")
 
     # 每一行都要与模板里的对应行逐字节一致（证明没有重排）
     same = all(strip_ns(a.xml) == strip_ns(b.xml)
@@ -145,7 +160,7 @@ def main(argv=None) -> int:
     if problems:
         print(f"RESULT: {len(problems)} problem(s)")
         return 1
-    print("RESULT: OK - 签字页已单独成一份一页文件")
+    print("RESULT: OK - 签字页已单独成一份一页文件（导师签字 + 检查小组签字同页）")
     print(f"接着跑：python code/check_docx_layout.py {out} --sign-page")
     return 0
 
