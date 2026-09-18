@@ -12,6 +12,36 @@
 - `中期检查表_填写内容.md`：正文草稿（纯文本，改这个文件最省事；开头 `# 封面信息` 段就是封面 7 栏），改完执行
   `python code/build_ops.py && python code/fill_docx.py --ops build/ops_中期.json` 即可重出 `中期.docx`。
 
+## 1.1 签字页单独成页（明天要签的那一页）
+
+检查表正文还要改，但“Ⅲ.评议情况”这一页明天就要签，所以做了两件事：
+
+1. **`中期.docx` / `中期新.docx` 里，签字页单独成完整的一页**
+   在“Ⅲ.评议情况”那一行加了**段前分页**（Word 的 `pageBreakBefore`，行内容、框线、
+   列宽、行高一个字都没动）。于是：检查小组成员名单 → 中期检查意见 → 是否同意参加预答辩 /
+   检查组长签字 / 培养单位盖章 / 年月日，全部落在**最后一页**上，不会跟前面的正文挤在一起，
+   也不会被拆到两页。前面几节以后怎么改都不影响它。
+
+2. **再加一份只有签字页的一页文件：`中期检查表_签字页.docx`**
+   从学校模板里原样裁出“Ⅲ.评议情况”到表格末尾（逐行逐字节与模板一致），A4 一页，
+   纸张 / 页边距 / 页脚（日期 + 页码）与整份表里的那一页完全相同。
+   打印这一页去签字 → 正文改完重新生成后，把签好的这页**直接替换 / 装订到最后**即可。
+   由 `python code/make_sign_page.py` 生成。
+
+   ```powershell
+   python code/make_sign_page.py                        # 重出签字页文件
+   python code/check_docx_layout.py deliverable/中期.docx                 # 检查签字页是否单独成页
+   python code/check_docx_layout.py deliverable/中期检查表_签字页.docx --sign-page
+   python code/preview_docx.py deliverable/中期.docx -o results/docx_preview/完整版 --sheet
+   ```
+
+   版面图：`../results/docx_preview/三版签字页_都在最后一页.png`、
+   `../results/docx_preview/完整版_全部页缩略图.png`、`../results/docx_preview/签字页_单独文件_一页.png`。
+   签字页在估算分页里都落在最后一页（完整版第 10 页、中间版 1 与中间版 2 各第 7 页）。
+
+   > 打印小提示：签字页那页是 A4 竖版，按“实际大小 / 100%”打印即可；页脚页码由 Word 域生成，
+   > 单独打印时显示第 1 页，装订进整份表时以整份表为准。
+
 ## 2. 中期答辩 PPT（**八个**可编辑版本，挑一个用）
 
 八版**内容口径一致**（同一份大纲 `docs/ppt_outline.json`），都是**原生可编辑 pptx**、全篇最小 **15 pt**、每页带演讲备注。

@@ -73,6 +73,7 @@ ADVISOR_EVAL_CELL = (22, 8, 0)       # "2. 导师综合评语："
 ADVISOR_TEMPLATE_PARA = (22, 7, 0, 1)  # 正文格式模板段落（同表"论文指导情况"的占位段）
 MEMBER_FIRST_ROW = 11                # 组长行
 MEMBER_LAST_ROW = 15                 # 模板里最后一行组员
+SIGN_PAGE_LABEL = "Ⅲ.评议情况"        # 签字页：这一行起单独成完整的一页（段前分页）
 MEMBER_COLS = {"role": 1, "name": 2, "title": 4, "major": 5, "unit": 6}
 
 TEMPLATE = "sources/中期.docx"
@@ -176,6 +177,11 @@ def parse(md_path: Path):
                     "texts": [ev]})
 
     # ---- Ⅲ.评议情况：检查小组成员 ---------------------------------------
+    # 签字页（Ⅲ.评议情况 → 检查小组签字 → 中期检查意见 → 组长签字 / 培养单位盖章）
+    # 单独整成完整的一页：给这一行加段前分页，表格内容 / 框线 / 行高全部不动。
+    # 前面正文以后怎么改都不影响它 —— 签好字的那一页可以直接替换进去。
+    ops.append({"op": "page_break_before_row", "table": 22, "label": SIGN_PAGE_LABEL})
+
     if members:
         extra = max(0, len(members) - (MEMBER_LAST_ROW - MEMBER_FIRST_ROW + 1))
         for _ in range(extra):                      # 行数不够时先克隆一行
@@ -223,6 +229,8 @@ def main(argv=None) -> int:
             pass
         elif o["op"] == "clone_row":
             print(f"  clone row table {o['table']} r{o['row']}")
+        elif o["op"] == "page_break_before_row":
+            print(f"  page break before table {o['table']} row of {o.get('label')!r}")
         elif o["op"] == "set_cell":
             print(f"  set cell table {o['table']} r{o['row']}c{o['col']} <- {o['text']!r}")
         elif o["op"] == "insert_cell_paras":

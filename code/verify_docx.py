@@ -149,6 +149,9 @@ def main(argv=None) -> int:
                          "format must equal the source row)")
     ap.add_argument("--sdt-cells", nargs="*", default=[],
                     help="content-control fill targets as table:row:sdt_index (fills done with fill_sdt)")
+    ap.add_argument("--pbb-rows", nargs="*", default=[],
+                    help="rows that may only gain <w:pageBreakBefore/> (signature page starts "
+                         "a new page): table:row - everything else in the row must be identical")
     args = ap.parse_args(argv)
 
     targets = set()
@@ -184,6 +187,10 @@ def main(argv=None) -> int:
     for spec in args.tc_skip:
         t, r, c = (int(x) for x in spec.split(":"))
         tc_skips.add((t, r, c))
+    pbb_rows = set()
+    for spec in args.pbb_rows:
+        t, r = (int(x) for x in spec.split(":"))
+        pbb_rows.add((t, r))
 
     row_inserts = {}
     for spec in args.row_insert:
@@ -273,6 +280,33 @@ def main(argv=None) -> int:
                 if key in seen:
                     continue          # horizontally/vertically merged: already checked
                 seen.add(key)
+                if (i, r) in pbb_rows:
+                    # 只允许一种改动：这一行单元格里的段落加了 <w:pageBreakBefore/>
+                    # （签字页单独成页），其余部分必须逐字节相同
+                    a_tc, b_tc = copy.deepcopy(cell1._tc), copy.deepcopy(cell2._tc)
+                    had = any(p.find(qn("w:pPr")) is not None and
+                              p.find(qn("w:pPr")).find(qn("w:pageBreakBefore")) is not None
+                              for p in a_tc.iter(qn("w:p")))
+                    added = 0
+                    for p in b_tc.iter(qn("w:p")):
+                        ppr = p.find(qn("w:pPr"))
+                        if ppr is not None and ppr.find(qn("w:pageBreakBefore")) is not None:
+                            added += 1
+                    for x in (a_tc, b_tc):
+                        for pb in list(x.iter(qn("w:pageBreakBefore"))):
+                            pb.getparent().remove(pb)
+                    same = strip_ns(a_tc.xml) == strip_ns(b_tc.xml)
+                    checked += 1
+                    if same and added and not had:
+                        print(f"{OK} page break row tbl{i} r{r}c{c}: "
+                              f"{added} paragraph(s) start a new page, rest identical")
+                    else:
+                        problems.append(f"page-break row tbl{i} r{r}c{c} changed beyond "
+                                        f"<w:pageBreakBefore/>")
+                        print(f"{BAD} page break row tbl{i} r{r}c{c}: same={same} "
+                              f"added={added} already={had}")
+                    continue
+
                 is_target = (i, r, c) in targets or any(
                     x in target_sdt_els for x in cell1._tc.iter(qn("w:sdt")))
 
@@ -416,6 +450,8 @@ def main(argv=None) -> int:
                     if tag == "w:sdt":
                         sdt_no = k
                         target = k in target_sdts
+                    elif (i, r) in pbb_rows:
+                        target = True
                     else:
                         # a plain cell counts as a target either because it is
                         # listed in --tc-cells or because it *contains* a content

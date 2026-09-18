@@ -27,6 +27,8 @@ ops.json format
      "anchor": "（1）", "texts": ["第一段", "第二段"]},
 
     {"op": "clone_row", "table": 0, "row": 5},          // 表格行不够时先复制一行
+    {"op": "page_break_before_row", "table": 22,
+     "label": "Ⅲ.评议情况"},                    // 签字页单独成完整一页
 
     {"op": "set_paragraph", "index": 12, "text": "内容"},
 
@@ -217,6 +219,82 @@ def op_insert_in_cell(doc, op):
     insert_paragraphs_after(base._p, texts, base, cell)
     print(f"OK    insert_in_cell table {op['table']} r{op['row']}c{op['col']} "
           f"+{len(texts)} paragraphs")
+
+
+# <w:pPr> 子元素顺序（WordprocessingML CT_PPr）：插入新元素必须按这个顺序，
+# 否则 Word 会认为文档结构不对。
+PPR_ORDER = [
+    "pStyle", "keepNext", "keepLines", "pageBreakBefore", "framePr", "widowControl",
+    "numPr", "suppressLineNumbers", "pBdr", "shd", "tabs", "suppressAutoHyphens",
+    "kinsoku", "wordWrap", "overflowPunct", "topLinePunct", "autoSpaceDE", "autoSpaceDN",
+    "bidi", "adjustRightInd", "snapToGrid", "spacing", "ind", "contextualSpacing",
+    "mirrorIndents", "suppressOverlap", "jc", "textDirection", "textAlignment",
+    "textboxTightWrap", "outlineLvl", "divId", "cnfStyle", "rPr", "sectPr", "pPrChange",
+]
+
+
+def _set_page_break_before(p_el) -> bool:
+    """给段落加 <w:pageBreakBefore/>（按 schema 顺序插入），返回是否是新加的。"""
+    ppr = p_el.find(qn("w:pPr"))
+    if ppr is None:
+        ppr = OxmlElement("w:pPr")
+        p_el.insert(0, ppr)
+    if ppr.find(qn("w:pageBreakBefore")) is not None:
+        return False
+    el = OxmlElement("w:pageBreakBefore")
+    rank = PPR_ORDER.index("pageBreakBefore")
+    pos = len(ppr)
+    for i, child in enumerate(ppr):
+        tag = child.tag.split("}")[1]
+        other = PPR_ORDER.index(tag) if tag in PPR_ORDER else len(PPR_ORDER) - 1
+        if other > rank:
+            pos = i
+            break
+    ppr.insert(pos, el)
+    return True
+
+
+def op_page_break_before_row(doc, op):
+    """让表格的某一行“段前分页”：这一行连同后面的行一起从新的一页开始。
+
+    用于把“Ⅲ.评议情况”签字部分单独整成完整的一页 —— 只给该行单元格里的段落加
+    w:pageBreakBefore，表格框线、列宽、行高、单元格内容一概不动，Word / WPS
+    打开即成新页（表格行不会在行内断开，所以签字页必然完整）。
+
+    op = {"op": "page_break_before_row", "table": 22, "label": "Ⅲ.评议情况"}
+    也可以用行号：{"op": "page_break_before_row", "table": 22, "row": 9}
+    """
+    els = body_elements(doc)
+    t_idx = int(op["table"])
+    if t_idx >= len(els) or els[t_idx][0] != "tbl":
+        warn(f"page_break_before_row: body element {t_idx} is not a table")
+        return
+    trs = els[t_idx][1]._tbl.findall(qn("w:tr"))
+
+    r = op.get("row")
+    if r is None:
+        label = str(op.get("label", "")).strip()
+        r = next((i for i, tr in enumerate(trs)
+                  if label and label in "".join(t.text or "" for t in tr.iter(qn("w:t")))), None)
+        if r is None:
+            warn(f"page_break_before_row: no row with {label!r} in table {t_idx}")
+            return
+    r = int(r)
+    if r >= len(trs):
+        warn(f"page_break_before_row: table {t_idx} has no row {r}")
+        return
+
+    added, seen = 0, 0
+    for tc in trs[r].findall(qn("w:tc")):
+        for p_el in tc.iter(qn("w:p")):
+            seen += 1
+            if _set_page_break_before(p_el):
+                added += 1
+    if not added:
+        warn(f"page_break_before_row: table {t_idx} row {r} already starts a new page")
+        return
+    print(f"OK    page_break_before_row table {t_idx} row {r}: "
+          f"{added}/{seen} paragraph(s) now start a new page")
 
 
 def op_clone_row(doc, op):
@@ -506,6 +584,7 @@ def _apply_fill(cell, label: str, op):
 
 
 HANDLERS = {
+    "page_break_before_row": op_page_break_before_row,
     "clone_row": op_clone_row,
     "insert_cell_paras": op_insert_cell_paras,
     "replace_text": op_replace_text,

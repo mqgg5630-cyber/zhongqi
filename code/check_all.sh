@@ -17,8 +17,16 @@ for f in "deliverable/中期.docx" "deliverable/中期新.docx" "中间版/中�
   echo "=== $f"
   python code/verify_docx.py --base sources/中期.docx --filled "$f" \
     --cells $CELLS --blank-cells $BLANK --insert-cells $INS \
-    --tc-skip $TCSKIP --tc-cells $TCCELLS --sdt-cells $SDT | tail -1 || rc=1
+    --tc-skip $TCSKIP --tc-cells $TCCELLS --sdt-cells $SDT \
+    --pbb-rows 22:9 | tail -1 || rc=1
 done
+
+echo "=== docx 排版（签字页单独成完整一页）"
+for f in "deliverable/中期.docx" "deliverable/中期新.docx" "中间版/中期.docx" "中间版2/中期.docx"; do
+  printf "%-32s " "$f"; python code/check_docx_layout.py "$f" --quiet | tail -1 || rc=1
+done
+printf "%-32s " "deliverable/中期检查表_签字页.docx"
+python code/check_docx_layout.py "deliverable/中期检查表_签字页.docx" --sign-page --quiet | tail -1 || rc=1
 
 echo "=== 口径核对"
 python code/check_consistency.py | tail -1 || rc=1
