@@ -160,11 +160,6 @@ def title(slide, text, *, size=25, second=None):
         hline(slide, RULE_Y)
 
 
-def source_line(slide, text):
-    _, tf = tb(slide, LEFT, SOURCE_TOP, CONTENT_W, Inches(0.36))
-    para(tf, text, size=15, color=MUTED, first=True, spacing=1.0)
-
-
 def footer(slide, idx, total, note=None):
     _, tf = tb(slide, LEFT, NOTE_TOP, Inches(9.6), Inches(0.34))
     para(tf, note or "研究生论文中期检查 · 文绍华", size=15, color=MUTED, first=True, spacing=1.0)
@@ -251,10 +246,11 @@ def claim_slide(prs, idx, total, *, headline, support, aside, note):
 
 
 def figure_slide(prs, idx, total, *, headline, figure, reading, note,
-                 layout="full", caption=None, source="图：本项目自制（results/figures）"):
+                 layout="full", caption=None, source=None):
     """figure-dominant / process-wide / rail：按图的形状选择版式。
 
     说明行一律放在图片下沿之下（按图片实际高度计算），避免与图片重叠。
+    图下不再排“来源”小字（source 参数保留只为兼容旧调用，不绘制）。
     """
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     title(slide, headline, size=25)
@@ -267,7 +263,6 @@ def figure_slide(prs, idx, total, *, headline, figure, reading, note,
         y = min(bottom_in + 0.16, 5.55)
         _, tf = tb(slide, LEFT, Inches(y), CONTENT_W, Inches(0.95))
         para(tf, reading, size=17, color=BODY, first=True, spacing=1.3)
-        source_line(slide, source)
     elif layout == "rail":
         pic, _, w, h = picture(slide, figure, BODY_TOP, Inches(4.60), left=LEFT,
                                width=Inches(8.60))
@@ -284,14 +279,12 @@ def figure_slide(prs, idx, total, *, headline, figure, reading, note,
         _, tf = tb(slide, LEFT, Inches(bottom_in + 0.14), CONTENT_W,
                    Inches(max(0.4, 6.42 - bottom_in)))
         para(tf, reading, size=16, color=BODY, first=True, spacing=1.24)
-        source_line(slide, source)
     else:                                   # "band"：图 + 底部说明带
         pic, _, w, h = picture(slide, figure, BODY_TOP, Inches(4.45))
         rect(slide, LEFT, Inches(5.96), CONTENT_W, Inches(0.52), PANEL)
         _, tf = tb(slide, Inches(0.86), Inches(5.96), Inches(11.5), Inches(0.52),
                    anchor=MSO_ANCHOR.MIDDLE)
         para(tf, reading, size=16, color=BODY, first=True, spacing=1.1)
-        source_line(slide, source)
     footer(slide, idx, total)
     notes(slide, note)
     return slide
@@ -386,7 +379,7 @@ def flow_slide(prs, idx, total, *, headline, lead, steps, note):
     return slide
 
 
-def stage_slide(prs, idx, total, *, headline, lead, facts, stages, note, source=None):
+def stage_slide(prs, idx, total, *, headline, lead, facts, stages, note):
     """分组页：上排关键规模，下排五个认知阶段的分组构成。"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     title(slide, headline, size=25)
@@ -403,22 +396,21 @@ def stage_slide(prs, idx, total, *, headline, lead, facts, stages, note, source=
     hline(slide, Inches(3.00))
 
     sw = float(CONTENT_W) / len(stages)
-    for k, (code, n, sex, age, color) in enumerate(stages):
+    for k, (code, label, n, feat, color) in enumerate(stages):
         x = Emu(int(float(LEFT) + k * sw))
         rect(slide, x, Inches(3.16), Emu(int(sw - 0.24 * 914400)), Pt(3), color)
-        _, tf = tb(slide, x, Inches(3.30), Emu(int(sw - 0.20 * 914400)), Inches(0.40))
+        _, tf = tb(slide, x, Inches(3.28), Emu(int(sw - 0.20 * 914400)), Inches(0.34))
         para(tf, code, size=18, bold=True, color=INK, first=True, spacing=1.0)
-        _, tf = tb(slide, x, Inches(3.70), Emu(int(sw - 0.20 * 914400)), Inches(1.10))
-        para(tf, n, size=16, color=BODY, first=True, spacing=1.16)
-        para(tf, sex, size=15, color=BODY, before=3, spacing=1.16)
-        para(tf, age, size=15, color=MUTED, before=3, spacing=1.16)
+        _, tf = tb(slide, x, Inches(3.62), Emu(int(sw - 0.20 * 914400)), Inches(1.20))
+        para(tf, label, size=16, color=BODY, first=True, spacing=1.14)
+        para(tf, n, size=15, color=TEAL, before=3, spacing=1.14)
+        para(tf, feat, size=15, color=MUTED, before=3, spacing=1.14)
     hline(slide, Inches(4.90))
     _, tf = tb(slide, LEFT, Inches(5.06), CONTENT_W, Inches(1.30))
     para(tf, "分层方式：5 个阶段 × 2 个性别 × 3 个年龄段（60—69、70—79、≥80 岁）= 30 个分层单元；"
-             "每个单元内按年龄与性别匹配，得到结构一致的比较亚队列，保证阶段之间的差异不来自年龄与性别构成。",
+             "每个单元内按年龄与性别匹配，最终选出 265 例匹配亚队列——各阶段 53 例、每组 35 女 / 18 男，"
+             "组间平均年龄最大差 1.8 岁，保证阶段之间的差异不来自年龄与性别构成。",
          size=16, color=BODY, first=True, spacing=1.26)
-    if source:
-        source_line(slide, source)
     footer(slide, idx, total)
     notes(slide, note)
     return slide
@@ -511,30 +503,30 @@ def closing(prs, idx, total, *, headline, lines, note, thanks=False):
 
 # ---------------------------------------------------------------- 标准内容页
 FLOW_STEPS = [
-    ("①", "测序与质控", "双端鸟枪法测序\n质控与去宿主", "done"),
-    ("②", "组装与分箱", "序列组装与分箱\n分箱提纯", "done"),
-    ("③", "参考基因组集", "种水平去冗余\n非冗余参考集", "done"),
-    ("④", "sORF 预测", "小开放阅读框\n长度 5—50 aa", "done"),
-    ("⑤", "去冗余建库", "序列级去冗余\n非冗余短肽库", "done"),
-    ("⑥", "共识预测", "多模型独立预测\n一致阳性才纳入", "done"),
-    ("⑦", "阶段差异分析", "按五个认知阶段\n比较组成与丰度", "done"),
-    ("⑧", "表达证据去重", "蛋白组二次去重\n剔除无表达序列", "done"),
+    ("①", "测序与质控", "fastp 质控\nKneadData 去宿主", "done"),
+    ("②", "组装与分箱", "MEGAHIT 组装\nMetaBAT2 分箱\nCONCOCT 分箱", "done"),
+    ("③", "参考基因组集", "metaWRAP 提纯\ndRep 去冗余", "done"),
+    ("④", "sORF 预测", "EMBOSS getorf\n长度 5—50 aa", "done"),
+    ("⑤", "去冗余建库", "序列级精确去冗余\n非冗余短肽库", "done"),
+    ("⑥", "共识预测", "Attention / LSTM\n/ BERT 一致阳性", "done"),
+    ("⑦", "阶段差异分析", "CoverM 定量\nCLR 变换\nKruskal-Wallis", "done"),
+    ("⑧", "表达证据去重", "宏蛋白组二次去重\n剔除无表达序列", "done"),
     ("⑨", "特有抗菌肽", "健康人群特有肽\n各阶段特有肽", "done"),
-    ("⑩", "机制关联分析", "对接与动力学\n给出候选优先序", "doing"),
-    ("⑪", "抑菌实验验证", "合成代表性肽\n纸片扩散法筛查\n肉汤稀释法 MIC", "doing"),
+    ("⑩", "机制关联分析", "分子对接 + 动力学\n给出候选优先序", "doing"),
+    ("⑪", "抑菌实验验证", "纸片扩散法筛查\n微量肉汤稀释法 MIC", "doing"),
     ("⑫", "整理与撰写", "学位论文与投稿\n结果汇总", "doing"),
 ]
 
-STAGE_FACTS = [("5 个阶段", "NC · SCS · SCD · MCI · AD"),
-               ("2 个性别", "男女分别匹配"),
+STAGE_FACTS = [("265 例", "匹配亚队列 · 各阶段 53 例"),
+               ("53 例", "每阶段样本量 · 每组 35 女 / 18 男"),
                ("3 个年龄段", "60—69 · 70—79 · ≥80 岁"),
-               ("30 个分层单元", "阶段 × 性别 × 年龄")]
+               ("68.2—70.0 岁", "各阶段平均年龄 · 组间差 ≤1.8 岁")]
 
-STAGE_ROWS = [("NC", "认知正常（对照）", "菌群多样性最高", "作为比较基线", TEAL),
-              ("SCS", "主观认知下降", "组成已出现偏移", "阶段特有菌属出现", TEAL),
-              ("SCD", "可疑认知障碍", "肠屏障标志物升高", "改变早于痴呆", ORANGE),
-              ("MCI", "轻度认知障碍", "菌群失衡最明显", "与炎症指标相关", ORANGE),
-              ("AD", "阿尔茨海默症", "菌群变化幅度最大", "炎症—Aβ 环放大", RED)]
+STAGE_ROWS = [("NC", "认知正常（对照）", "53 例 ｜ 35 女 / 18 男", "平均 68.4 岁 · 多样性最高", TEAL),
+              ("SCS", "主观认知下降", "53 例 ｜ 35 女 / 18 男", "平均 68.2 岁 · 组成偏移", TEAL),
+              ("SCD", "可疑认知障碍", "53 例 ｜ 35 女 / 18 男", "平均 69.1 岁 · 屏障标志↑", ORANGE),
+              ("MCI", "轻度认知障碍", "53 例 ｜ 35 女 / 18 男", "平均 68.8 岁 · 失衡最明显", ORANGE),
+              ("AD", "阿尔茨海默症", "53 例 ｜ 35 女 / 18 男", "平均 70.0 岁 · 变化幅度最大", RED)]
 
 
 def std_flow_slide(prs, idx, total, progress="full"):
@@ -543,11 +535,19 @@ def std_flow_slide(prs, idx, total, progress="full"):
     steps = [(n, l, d, "done" if k < cut else "doing")
              for k, (n, l, d, _st) in enumerate(FLOW_STEPS)]
     if progress == "half":
-        note = ("这页说明整体流程：从测序数据到候选抗菌肽清单，共十二步，输入输出都可追溯。"
+        note = ("这页说明整体流程：从测序数据到候选抗菌肽清单，共十二步。"
+                "工具链是 fastp 与 KneadData 质控去宿主、MEGAHIT 组装、MetaBAT2 / MaxBin2 / CONCOCT "
+                "联合分箱、metaWRAP 提纯、dRep 去冗余、EMBOSS getorf 预测 sORF、三模型一致阳性判定、"
+                "CoverM 定量与 Kruskal-Wallis / Mann-Whitney U 检验。"
                 "目前前四步已完成，其余内容安排在下一阶段推进。")
     else:
         note = ("这页说明整体流程：从测序数据到候选抗菌肽清单，共十二步，输入输出都可追溯。"
-                "前九步已经在中期前完成，最后三步正在推进——机制关联分析、抑菌实验验证与结果整理。")
+                "工具链是 fastp 与 KneadData 做质控去宿主，MEGAHIT 组装，MetaBAT2、MaxBin2 与 CONCOCT "
+                "多算法联合分箱后 metaWRAP 提纯，dRep 按 95% ANI 去冗余得到参考基因组集，"
+                "EMBOSS getorf 预测 sORF 并做序列级去冗余，Attention / LSTM / BERT 三模型一致阳性才纳入候选，"
+                "CoverM 定量并做 CLR 变换，用 Kruskal-Wallis 与 Mann-Whitney U 做组间检验，"
+                "再用宏蛋白组表达证据二次去重。前九步已经在中期前完成，最后三步正在推进——"
+                "机制关联分析、抑菌实验验证与结果整理。")
     flow_slide(prs, idx, total,
         headline="宏基因组分析流程：从测序数据到候选抗菌肽清单",
         lead="流程按“数据 → 序列 → 预测 → 统计 → 功能”顺序推进，每一步的输入输出都可追溯。",
@@ -562,13 +562,26 @@ def std_stage_slide(prs, idx, total, headline=None):
         facts=STAGE_FACTS,
         stages=STAGE_ROWS,
         note="分组方式是这页的重点：五个认知阶段，每阶段内再按性别与三个年龄段分层，共三十个分层单元；"
-             "每个单元内按年龄与性别匹配，得到结构一致的比较亚队列。各阶段的样本量相同、性别构成相同、"
-             "组间平均年龄差小于两岁，这样阶段之间的差异不会来自年龄与性别构成。",
-        source="分组与分层依据：已完成的全队列临床信息表（sources/已完成1.docx）")
+             "每个单元内按年龄与性别匹配，最终选出 265 例匹配亚队列——各阶段 53 例、每组 35 女 / 18 男，"
+             "组间平均年龄最大差 1.8 岁，这样阶段之间的差异不会来自年龄与性别构成。")
 
 
 # ---------------------------------------------------------------- 逐页内容
-def build(outline: dict, total: int = 24) -> Presentation:
+def final_closing(prs, total: int) -> None:
+    """H 版最后一页（谢谢页）：放在机制补充页之后，保证它是整份 PPT 的最后一页。"""
+    closing(prs, total, total,
+        headline="主要分析已完成，剩余工作风险可控",
+        lines=[
+            "确认事实：数据资源、短肽库、三模型共识预测、分阶段差异分析与特有抗菌肽筛选均已完成。",
+            "待完成：机制关联分析的结论整理、候选抗菌肽的抑菌实验验证，以及学位论文与投稿论文撰写。",
+            "进度安排：按开题计划推进，后续不依赖新的数据生产。",
+        ],
+        note="总结一下：主体分析工作已经在中期完成，剩余是机制关联的结论整理、抑菌实验验证和论文撰写，"
+             "整体风险可控。我的汇报到此结束，请各位老师批评指正。",
+        thanks=True)
+
+
+def build(outline: dict, total: int = 24, *, with_final: bool = True) -> Presentation:
     meta = outline["meta"]
     S = {s["n"]: s for s in outline["slides"]}
     prs = Presentation()
@@ -629,7 +642,6 @@ def build(outline: dict, total: int = 24) -> Presentation:
         figure="figB_三模型预测.png", layout="rail",
         reading="Attention、LSTM、BERT 三个模型相互独立地给出抗菌肽概率；只有三者一致判为阳性的序列才进入候选集合，"
                 "以此降低单一模型的偏倚。该步骤已完成，候选名单已产出。",
-        source="图：本项目自制（results/figures/figB）",
         note="预测环节采用 Attention、LSTM、BERT 三个模型分别预测，只有三者一致判为阳性的序列才纳入候选集合。"
              "这样处理的目的是降低单一模型带来的假阳性，提高候选集合的可信度；这一步已经完成。")
 
@@ -653,7 +665,6 @@ def build(outline: dict, total: int = 24) -> Presentation:
         figure="figE_机制关联.png", layout="rail",
         reading="借鉴乙酰胆碱酯酶—β-淀粉样肽复合物分子模拟研究的思路：考察候选肽与 Aβ 的相互作用、"
                 "与 AChE 外周阴离子位点的结合，以及经免疫与炎症通路参与神经炎症的可能性。定位为线索发现。",
-        source="图：本项目自制（results/figures/figE）",
         note="机制关联参照乙酰胆碱酯酶—β-淀粉样肽复合物分子模拟研究的思路，从三个方向考察："
              "与 Aβ 的相互作用及其对聚集的影响、与 AChE 外周阴离子位点结合从而干扰成核的可能性，"
              "以及经免疫与炎症通路参与神经炎症的可能性。这部分把结论定位为线索发现，不夸大因果。")
@@ -723,16 +734,8 @@ def build(outline: dict, total: int = 24) -> Presentation:
              "同时说明现阶段的边界：机制关联是计算预测、抑菌实验只覆盖代表性候选肽、阶段划分依据队列既有标签，"
              "这些限定会在论文中写清楚。")
 
-    closing(prs, 18, total,
-        headline="主要分析已完成，剩余工作风险可控",
-        lines=[
-            "确认事实：数据资源、短肽库、三模型共识预测、分阶段差异分析与特有抗菌肽筛选均已完成。",
-            "待完成：机制关联分析的结论整理、候选抗菌肽的抑菌实验验证，以及学位论文与投稿论文撰写。",
-            "进度安排：按开题计划推进，后续不依赖新的数据生产。",
-        ],
-        note="总结一下：主体分析工作已经在中期完成，剩余是机制关联的结论整理、抑菌实验验证和论文撰写，"
-             "整体风险可控。我的汇报到此结束，请各位老师批评指正。",
-        thanks=True)
+    if with_final:
+        final_closing(prs, total)
 
     return prs
 
@@ -774,10 +777,11 @@ def main(argv=None) -> int:
 
     outline = json.loads(text)
     total = 24 if a.mechanism else 18
-    prs = build(outline, total)
+    prs = build(outline, total, with_final=not a.mechanism)
     if a.mechanism:
         import make_ppt_mech as MECH
-        MECH.append(prs, first_idx=19, total=24, which="full")
+        MECH.append(prs, first_idx=18, total=24, which="full")   # 机制页插在谢谢页之前
+        final_closing(prs, total)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     prs.save(str(OUT))
     slides = len(prs.slides._sldIdLst)

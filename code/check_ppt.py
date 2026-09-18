@@ -5,7 +5,9 @@
 Two things are verified, since neither PowerPoint nor LibreOffice is available
 in this environment:
 
-1. every run >= 15 pt (the hard requirement) and every shape inside the canvas
+1. every run >= 15 pt (the hard requirement) and every shape inside the canvas;
+   no "图：本项目自制（results/figures/…）" style source line anywhere (body
+   or speaker notes) - the figure caption carries the meaning instead
 2. a text-fit estimate: the wrapped text of every shape is measured with the
    real CJK font (PIL) and compared with the shape's box - a shape whose text
    needs more height than the box (or than the space left on the slide) is
@@ -28,6 +30,9 @@ from pptx.util import Emu, Pt
 
 MIN_PT = 15
 TOLERANCE = 1.06          # allow 6 % slack in the estimate
+
+# 用户要求：PPT 正文与备注里不得出现"图：本项目自制（results/figures/…）"一类来源小字
+BANNED = ("图：本项目自制", "本项目自制", "results/figures", "图：", "来源：")
 
 
 def cjk_font(px: int):
@@ -62,6 +67,15 @@ def main(argv=None) -> int:
     problems, warnings = [], []
 
     for idx, slide in enumerate(prs.slides, 1):
+        # ---- 来源小字 / 禁用表述（正文 + 演讲备注）
+        blobs = [sh.text_frame.text for sh in slide.shapes if sh.has_text_frame]
+        if slide.has_notes_slide:
+            blobs.append(slide.notes_slide.notes_text_frame.text)
+        for b in blobs:
+            for bad in BANNED:
+                if bad in b:
+                    problems.append(f"slide {idx}: 出现来源小字/禁用表述 {bad!r}")
+
         for sh in slide.shapes:
             if sh.left is None:
                 continue

@@ -24,21 +24,21 @@
     },
     {
       "slide": 3,
-      "shape_count": 7,
+      "shape_count": 6,
       "image_count": 1,
-      "text_chars": 113
+      "text_chars": 89
     },
     {
       "slide": 4,
       "shape_count": 43,
       "image_count": 0,
-      "text_chars": 421
+      "text_chars": 495
     },
     {
       "slide": 5,
-      "shape_count": 32,
+      "shape_count": 31,
       "image_count": 0,
-      "text_chars": 437
+      "text_chars": 562
     },
     {
       "slide": 6,
@@ -48,9 +48,9 @@
     },
     {
       "slide": 7,
-      "shape_count": 7,
+      "shape_count": 6,
       "image_count": 1,
-      "text_chars": 144
+      "text_chars": 120
     },
     {
       "slide": 8,
@@ -66,33 +66,33 @@
     },
     {
       "slide": 10,
-      "shape_count": 7,
-      "image_count": 0,
-      "text_chars": 192
+      "shape_count": 6,
+      "image_count": 1,
+      "text_chars": 159
     },
     {
       "slide": 11,
-      "shape_count": 7,
+      "shape_count": 6,
       "image_count": 1,
-      "text_chars": 183
+      "text_chars": 135
     },
     {
       "slide": 12,
-      "shape_count": 7,
-      "image_count": 1,
-      "text_chars": 165
-    },
-    {
-      "slide": 13,
       "shape_count": 5,
       "image_count": 0,
       "text_chars": 415
     },
     {
-      "slide": 14,
+      "slide": 13,
       "shape_count": 5,
       "image_count": 0,
       "text_chars": 605
+    },
+    {
+      "slide": 14,
+      "shape_count": 7,
+      "image_count": 0,
+      "text_chars": 192
     }
   ]
 }

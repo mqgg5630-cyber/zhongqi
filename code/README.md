@@ -71,7 +71,7 @@ python code/make_mid2_content.py         # 中间版 2 docx 草稿（保留清�
 python code/make_mid2_figures.py         # 中间版 2 专用图：半程进度路线图
 python code/make_ppt_mid.py              # 中间版 1 PPT（14 页 = 主体 10 + 机制 4）-> 中间版/
 python code/make_ppt_mid.py --half       # 中间版 2 PPT（14 页，进度减半）-> 中间版2/
-bash code/check_all.sh                   # 四份 docx 格式 + 十份 PPT 版式 + 版面体检 + 口径核对
+bash code/check_all.sh                   # 四份 docx 格式 + 十一份 PPT 版式 + 四份版面体检 + 口径核对
 python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"   # 给 A 版补演讲备注（大纲 -> 备注区）
 python code/check_ppt.py "deliverable/中期答辩_B_白底细线.pptx" # 独立版式检查
 python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/prevA
@@ -97,7 +97,7 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 | `check_consistency.py` | 以 docx 为准核对八版 PPT 的题目 / 封面 / 阶段划分 / 机制方向 / 成果形式 / 完成度口径 / 禁用词，输出 `RESULT: docx 与全部 PPT 口径一致` |
 | `fetch_ppt_master.py` | 按需下载 ppt-master（54k★，MIT）到 `build/ppt-master/` 供 `make_ppt_svg.py` 调用；不在仓库里存 125 MB 的第三方源码 |
 | `add_notes.py` | 把大纲里的演讲备注（口播稿）按页序写进任意 pptx（A 版补备注即用它），八版备注口径一致 |
-| `check_ppt.py` | 独立的 PPT 版式检查（用真实 CJK 字体估算换行高度） |
+| `check_ppt.py` | 独立的 PPT 版式检查（用真实 CJK 字体估算换行高度；每个 run ≥15 pt、形状不越界，并硬性禁止正文/备注里出现"图：本项目自制（results/figures/…）"一类来源小字） |
 | `preview_ppt.py` | 无 PowerPoint 环境下的逐页 PNG 预览（用于核版式）；支持读取 `p:bg` 幻灯片背景色，深色版式不会预览成白底 |
 | `get_cjk_font.py` | 从 PyPI 的 `noto-cjk-sans-otc` 抽出思源黑体 SC 单字体，供 matplotlib/PIL 使用 |
 | `check_ps1.py` | 校验 .ps1 脚本为纯 ASCII（避免 Windows PowerShell 5.1 按 GBK 解码导致的解析错误） |

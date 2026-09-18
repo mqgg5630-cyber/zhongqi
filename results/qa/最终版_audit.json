@@ -38,19 +38,19 @@
       "slide": 5,
       "shape_count": 43,
       "image_count": 0,
-      "text_chars": 421
+      "text_chars": 495
     },
     {
       "slide": 6,
-      "shape_count": 32,
+      "shape_count": 31,
       "image_count": 0,
-      "text_chars": 437
+      "text_chars": 562
     },
     {
       "slide": 7,
-      "shape_count": 7,
+      "shape_count": 6,
       "image_count": 1,
-      "text_chars": 127
+      "text_chars": 103
     },
     {
       "slide": 8,
@@ -60,15 +60,15 @@
     },
     {
       "slide": 9,
-      "shape_count": 8,
+      "shape_count": 7,
       "image_count": 1,
-      "text_chars": 102
+      "text_chars": 78
     },
     {
       "slide": 10,
-      "shape_count": 7,
+      "shape_count": 6,
       "image_count": 1,
-      "text_chars": 150
+      "text_chars": 126
     },
     {
       "slide": 11,
@@ -78,15 +78,15 @@
     },
     {
       "slide": 12,
-      "shape_count": 8,
+      "shape_count": 7,
       "image_count": 1,
-      "text_chars": 118
+      "text_chars": 94
     },
     {
       "slide": 13,
-      "shape_count": 7,
+      "shape_count": 6,
       "image_count": 1,
-      "text_chars": 137
+      "text_chars": 113
     },
     {
       "slide": 14,
@@ -114,45 +114,45 @@
     },
     {
       "slide": 18,
-      "shape_count": 7,
-      "image_count": 0,
-      "text_chars": 161
+      "shape_count": 6,
+      "image_count": 1,
+      "text_chars": 159
     },
     {
       "slide": 19,
-      "shape_count": 7,
-      "image_count": 1,
-      "text_chars": 183
-    },
-    {
-      "slide": 20,
       "shape_count": 15,
       "image_count": 0,
       "text_chars": 429
     },
     {
-      "slide": 21,
-      "shape_count": 7,
+      "slide": 20,
+      "shape_count": 6,
       "image_count": 1,
-      "text_chars": 165
+      "text_chars": 135
+    },
+    {
+      "slide": 21,
+      "shape_count": 6,
+      "image_count": 1,
+      "text_chars": 139
     },
     {
       "slide": 22,
-      "shape_count": 7,
-      "image_count": 1,
-      "text_chars": 169
-    },
-    {
-      "slide": 23,
       "shape_count": 5,
       "image_count": 0,
       "text_chars": 415
     },
     {
-      "slide": 24,
+      "slide": 23,
       "shape_count": 5,
       "image_count": 0,
       "text_chars": 605
+    },
+    {
+      "slide": 24,
+      "shape_count": 7,
+      "image_count": 0,
+      "text_chars": 161
     }
   ]
 }

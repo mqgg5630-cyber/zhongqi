@@ -51,7 +51,40 @@ QA_DIR = ROOT / "results" / "qa"
 MECH_PAGES = 4
 
 
-def build(meta: dict, cover: dict, total: int = 14, half: bool = False) -> Presentation:
+def mid_closing(prs, total: int, half: bool) -> None:
+    """中间版最后一页（谢谢页）：放在机制补充页之后。"""
+    if half:
+        N.closing(prs, total, total,
+            headline="阶段目标明确，下一阶段按计划推进",
+            lines=[
+                "已完成：全队列宏基因组数据处理与微生物基因组参考集、微生物源短肽库，"
+                "以及三模型共识预测的候选抗菌肽名单。",
+                "下一阶段：分阶段差异分析与宏蛋白组二次去重、特有抗菌肽筛选，"
+                "随后开展机制关联分析与抑菌实验验证。",
+                "时间安排：按开题计划推进，分析与验证所需数据与方案均已具备，"
+                "学位论文与以第一作者投稿的 SCI 论文撰写同步准备。",
+            ],
+            note="中期完成的是数据与预测这一半，候选抗菌肽名单已经形成；"
+                 "下一阶段推进分阶段差异分析、二次去重与特有肽筛选，随后开展机制关联分析与抑菌实验验证，"
+                 "论文撰写同步准备。我的汇报到此结束，请各位老师批评指正。",
+            thanks=True)
+    else:
+        N.closing(prs, total, total,
+            headline="主体分析已完成，后续安排集中在验证与撰写",
+            lines=[
+                "已完成：数据资源与参考集、短肽库、三模型共识预测、分阶段差异分析、"
+                "宏蛋白组二次去重与特有抗菌肽筛选。",
+                "进行中：特有抗菌肽的机制关联分析、候选抗菌肽的抑菌实验验证，"
+                "以及学位论文与以第一作者投稿的 SCI 论文撰写。",
+                "时间安排：按开题计划推进，后续不依赖新的数据生产，整体风险可控。",
+            ],
+            note="主体分析工作已经在中期完成，后续是机制关联的结论整理、抑菌实验验证和论文撰写，"
+                 "整体风险可控。我的汇报到此结束，请各位老师批评指正。",
+            thanks=True)
+
+
+def build(meta: dict, cover: dict, total: int = 14, half: bool = False,
+          *, with_final: bool = True) -> Presentation:
     prs = Presentation()
     prs.slide_width, prs.slide_height = N.SLIDE_W, N.SLIDE_H
     p = "下一阶段" if half else "已完成"
@@ -106,7 +139,6 @@ def build(meta: dict, cover: dict, total: int = 14, half: bool = False) -> Prese
         figure="figB_三模型预测.png", layout="rail",
         reading="Attention、LSTM、BERT 三个模型相互独立地给出预测，只有三者一致判为阳性的序列进入候选集合，"
                 "以降低单一模型的偏倚。该步骤" + p + "。",
-        source="图：本项目自制（results/figures/figB）",
         note="预测环节采用 Attention、LSTM、BERT 三个模型分别预测，只有三者一致判为阳性的序列才纳入候选集合，"
              "目的是降低单一模型的假阳性。")
 
@@ -136,7 +168,6 @@ def build(meta: dict, cover: dict, total: int = 14, half: bool = False) -> Prese
                 "结合从而干扰成核的可能性、以及经免疫与炎症通路参与神经炎症的可能性，结论定位为线索发现。"
                 "抑菌实验验证以代表性候选肽对大肠杆菌与金黄色葡萄球菌做纸片扩散法初筛，"
                 "并以微量肉汤稀释法测定最低抑菌浓度。",
-        source="图：本项目自制（results/figures/figE）",
         note="机制关联参照乙酰胆碱酯酶—β-淀粉样肽复合物分子模拟研究的思路，从三个方向展开，"
              "把结论定位为线索发现；抑菌实验验证选取有代表性的候选抗菌肽人工合成，"
              "以大肠杆菌与金黄色葡萄球菌为指示菌，先用纸片扩散法初筛，再用微量肉汤稀释法测最低抑菌浓度。")
@@ -167,38 +198,11 @@ def build(meta: dict, cover: dict, total: int = 14, half: bool = False) -> Prese
             note="数据准备、候选肽挖掘、差异分析三项已完成；模型方案由自建模型改为三个已发表模型协同预测；"
                  "机制与验证环节正在实施。研究方向没有变，调整都发生在方法层面。")
 
-    # 10 后续安排与总结 -----------------------------------------------------
-    if half:
-        N.closing(prs, 10, total,
-            headline="阶段目标明确，下一阶段按计划推进",
-            lines=[
-                "已完成：全队列宏基因组数据处理与微生物基因组参考集、微生物源短肽库，"
-                "以及三模型共识预测的候选抗菌肽名单。",
-                "下一阶段：分阶段差异分析与宏蛋白组二次去重、特有抗菌肽筛选，"
-                "随后开展机制关联分析与抑菌实验验证。",
-                "时间安排：按开题计划推进，分析与验证所需数据与方案均已具备，"
-                "学位论文与以第一作者投稿的 SCI 论文撰写同步准备。",
-            ],
-            note="中期完成的是数据与预测这一半，候选抗菌肽名单已经形成；"
-                 "下一阶段推进分阶段差异分析、二次去重与特有肽筛选，随后开展机制关联分析与抑菌实验验证，"
-                 "论文撰写同步准备。我的汇报到此结束，请各位老师批评指正。",
-            thanks=True)
-    else:
-        N.closing(prs, 10, total,
-            headline="主体分析已完成，后续安排集中在验证与撰写",
-            lines=[
-                "已完成：数据资源与参考集、短肽库、三模型共识预测、分阶段差异分析、"
-                "宏蛋白组二次去重与特有抗菌肽筛选。",
-                "进行中：特有抗菌肽的机制关联分析、候选抗菌肽的抑菌实验验证，"
-                "以及学位论文与以第一作者投稿的 SCI 论文撰写。",
-                "时间安排：按开题计划推进，后续不依赖新的数据生产，整体风险可控。",
-            ],
-            note="主体分析工作已经在中期完成，后续是机制关联的结论整理、抑菌实验验证和论文撰写，"
-                 "整体风险可控。我的汇报到此结束，请各位老师批评指正。",
-            thanks=True)
+    # 10 后续安排与总结（机制页在 main 里插到它之前，这里只在无机制页时输出）
+    if with_final:
+        mid_closing(prs, total, half)
 
-    # 11—14 机制补充页 ------------------------------------------------------
-    MECH.append(prs, first_idx=11, total=total, which="mid")
+    # 机制补充页（由 build 的调用方插入，保证谢谢页在最后） ------------------------------------------------------
     return prs
 
 
@@ -231,15 +235,10 @@ def main(argv=None) -> int:
     outline = json.loads(OUTLINE.read_text(encoding="utf-8"))
     meta, cover = outline["meta"], {s["n"]: s for s in outline["slides"]}[1]
     total = 14 if not a.no_mech else 10
-    prs = build(meta, cover, total, half=a.half)
-    if a.no_mech:                                   # 只出主体 10 页
-        prs = build(meta, cover, 10, half=a.half)
-        while len(prs.slides._sldIdLst) > 10:
-            xml = prs.slides._sldIdLst[-1]
-            rId = xml.get(
-                "{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id")
-            prs.part.drop_rel(rId)
-            prs.slides._sldIdLst.remove(xml)
+    prs = build(meta, cover, total, half=a.half, with_final=a.no_mech)
+    if not a.no_mech:                               # 机制页插在谢谢页之前
+        MECH.append(prs, first_idx=10, total=total, which="mid")
+        mid_closing(prs, total, a.half)
     out = OUT_HALF if a.half else OUT
     out.parent.mkdir(parents=True, exist_ok=True)
     prs.save(str(out))

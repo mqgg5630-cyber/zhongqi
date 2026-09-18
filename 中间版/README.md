@@ -7,8 +7,8 @@
 
 | 文件 | 页数 / 段落 | 与完整版的关系 |
 |---|---|---|
-| `中期.docx` | 正文 29 段 / 完整版 60 段（**48%**），字数 51% | 同一份学校模板、同样就地填写，Ⅱ.导师指导情况与检查小组成员都在，格式校验 `RESULT: template format fully preserved` |
-| `中期答辩_H_nature风.pptx` | **8 页** / 完整版 16 页 | 与 H 版同一套版式、配色、参考线、最小 15 pt，含 8 页演讲备注 |
+| `中期.docx` | 正文 29 段 / 完整版 60 段（**48%**），字数 51% | 同一份学校模板、同样就地填写，Ⅱ.导师指导情况保留、检查小组成员格按模板留空，格式校验 `RESULT: template format fully preserved` |
+| `中期答辩_H_nature风.pptx` | **14 页** / 完整版 24 页 | 与 H 版同一套版式、配色、参考线、最小 15 pt，含 14 页演讲备注；**谢谢页在第 14 页（最后一页）** |
 
 ## 砍掉的是什么
 
@@ -18,18 +18,21 @@
   结果整理与投稿、问题 1/3 及对策、后续安排。
   去掉的是对同一件事的重复展开（现状的三条不足、研究内容的第 2/6/8 条、实时进度的第 2/4/8 条、
   技术路线的实施要点细节等）。
-- **PPT**：16 页 → 8 页，每张"图 + 图注"合并为一页：
+- **PPT**：24 页 → 14 页，每张"图 + 图注"合并为一页，机制页只留四页：
 
   | 中间版 | 完整版对应页 |
   |---|---|
   | 1 封面 | 1 封面 |
   | 2 背景与切入点 | 2 背景 + 3 思路总览（旁栏） |
-  | 3 研究思路与完成进度 | 3 思路总览 + 5 思路总览图 |
-  | 4 队列分阶段 + 三模型共识预测 | 4 阶段队列 + 6 三模型 |
-  | 5 分阶段差异 + 宏蛋白组二次去重 | 7 分阶段差异 + 8 二次去重 |
-  | 6 机制关联与抑菌实验验证 | 9 机制关联 + 10 抑菌实验 |
-  | 7 进度与开题计划对照（原生表格 4 行） | 12 对照表 5 行（合并"模型方案"，4 行） |
-  | 8 后续安排与总结 | 14 后续安排 + 16 总结 |
+  | 3 研究思路与完成进度 | 3 思路总览 + 7 研究路线 |
+  | 4 宏基因组分析流程 | 5 流程页（12 步工具名保留） |
+  | 5 分阶段组的划分 | 6 分组页（265 例 / 各阶段 53 例 / 35 女 18 男） |
+  | 6 队列分阶段 + 三模型共识预测 | 4 阶段队列 + 8 三模型 |
+  | 7 分阶段差异 + 宏蛋白组二次去重 | 9 分阶段差异 + 10 二次去重 |
+  | 8 机制关联与抑菌实验验证 | 11 机制关联 + 12 抑菌实验 |
+  | 9 进度与开题计划对照（原生表格 4 行） | 13 进度 + 14 对照表（合并"模型方案"，4 行） |
+  | 10—13 机制补充页（七环 / AChE–Aβ / 八问 / 文献） | 18—23 机制六页中取四页 |
+  | 14 结束与致谢 | 24 结束页（完整版同一位置："谢谢各位老师"在最后一页） |
 
 ## 怎么重新生成
 
@@ -38,7 +41,7 @@ python code/make_mid_content.py        # 完整版草稿 -> docs/中间版_填�
 python code/build_ops.py --in docs/中间版_填写内容.md --out build/ops_中期_中间版.json
 python code/fill_docx.py --ops build/ops_中期_中间版.json --out 中间版/中期.docx
 
-python code/make_ppt_mid.py            # 出 8 页 PPT
+python code/make_ppt_mid.py            # 出 14 页 PPT（含 4 页机制页，谢谢页在最后）
 python code/make_ppt_mid.py --audit    # 顺带跑 nature-skills 的审计脚本
 
 bash code/check_all.sh                 # 三份 docx 格式 + 九份 PPT 版式 + 口径核对，一次跑完
@@ -47,7 +50,7 @@ bash code/check_all.sh                 # 三份 docx 格式 + 九份 PPT 版式 
 ## 自检结果
 
 - `code/verify_docx.py`：`RESULT: template format fully preserved`
-- `code/check_ppt.py`：`RESULT: OK (0 soft warning(s))`（8 页，最小字号 15 pt）
+- `code/check_ppt.py`：`RESULT: OK (0 soft warning(s))`（14 页，最小字号 15 pt、无来源小字）
 - nature-skills `audit_pptx_quality.py`：`high=0, medium=0, low=0`（`results/qa/中期版_audit.{md,json}`）
 - `code/check_consistency.py`：完整版与中间版 docx、九份 PPT 口径一致（含禁用表述：按导师意见 / 极简 等）
-- 预览图：`results/ppt_preview/中间版_第1页起.png`、`中间版_第5页起.png`
+- 预览图：`results/ppt_preview/中间版_第1页起.png`、`中间版_第5页起.png`、`中间版_第9页起.png`
