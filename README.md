@@ -9,7 +9,8 @@
 
 | 文件 | 说明 |
 |---|---|
-| `deliverable/中期答辩_H_nature风.pptx` | **16 页中期答辩 PPT（H 版·nature 风）**——按 [nature-skills](https://github.com/mqgg5630-cyber/nature-skills) 的 `nature-paper2ppt` 生成：论文汇报叙事弧、结论式标题、原生对照表、留白多；**论文汇报/答辩首选** |
+| `deliverable/中期答辩_最终版.pptx` | **最终版（H 版·nature 风，24 页）**：18 页主体（含**宏基因组流程页**与**分阶段分组页**）+ 6 页机制补充页；与 `中期答辩_H_nature风.pptx` 同源同版式，改名只为好认 |
+| `deliverable/中期答辩_H_nature风.pptx` | **24 页中期答辩 PPT（H 版·nature 风）**——按 [nature-skills](https://github.com/mqgg5630-cyber/nature-skills) 的 `nature-paper2ppt` 生成：论文汇报叙事弧、结论式标题、原生对照表、留白多；**论文汇报/答辩首选** |
 | `deliverable/中期答辩_F_深色科技风.pptx` | **16 页中期答辩 PPT（F 版·深色科技风）**——近黑底 + 青色强调 + 网格底纹 + 深色结论条，**推荐首选**；由 ppt-master 原生导出（DrawingML） |
 | `deliverable/中期答辩_G_学术期刊风.pptx` | **G 版·学术期刊风**——白底纸面 + 期刊红 + 细线分隔 + 衬线标题，**推荐次选**；同为 ppt-master 原生导出 |
 | `deliverable/中期答辩_A_学术蓝.pptx` | A 版·学术蓝（深蓝 + 青绿标签块，常见工作汇报观感） |
@@ -27,7 +28,7 @@
 | `deliverable/中期新.docx` | 同一内容的第二个文件名（"两版中期"用），与 `中期.docx` 由同一脚本生成、内容一致 |
 | `deliverable/抗菌肽与AD关联机制说明.docx` | **机制解释补充材料**（老师指出机制没说清后新增）：逐条回答 8 个问题 + AChE–Aβ 分子动力学 + 交叉成核机制 + 三个可检验假设 + 证据强度分级 + **46 条参考文献**；正文源 `docs/机制说明_正文.md`，由 `code/make_mech_doc.py` 生成 |
 | `deliverable/中期答辩_最终版.pptx` | **最终版 PPT（H 版）**：3 张机制图、24 页（含流程页、分组页与 6 页机制页），与 `中期答辩_H_nature风.pptx` 同源同版式 |
-| `中间版/` | **提交给老师用的中间版 1**：内容砍一半（docx 正文 48%、PPT 8 页 / 完整版 16 页），**进度口径同完整版**；文件名与完整版一致；完整版不放这里、也不改动 |
+| `中间版/` | **提交给老师用的中间版 1**：内容砍一半（docx 正文 48%、PPT 14 页 / 完整版 24 页），**进度口径同完整版**；文件名与完整版一致；完整版不放这里、也不改动 |
 | `中间版2/` | **中间版 2（与中间版平行）**：内容同样减半，**进度也减半** —— 只把数据与预测（4/8）算作中期已完成，其余列入下一阶段计划 |
 | `deliverable/中期检查表_填写内容.md` | 报告正文草稿（纯文本，最方便改；改完一键重生成 docx；正文约 8 000 字） |
 | `results/ppt_preview/A版_*-*页.png` … `E版_*` | 五个版本各 4 张版式预览图（A/B/C/D/E），不用装 Office 也能核对 |
@@ -39,6 +40,12 @@
 > 表中"除签名外需打印填写"指的是本表**用打印稿提交**，如学院要求手写，把封面 7 栏改成手写即可，正文内容不受影响。
 
 ---
+
+## 本地同步（先看这一页）
+
+**进文件夹 `E:\0zhongqi\zhongqi`（仓库根目录），双击 `sync.cmd` 就是一键同步。**
+完整速查（含首次准备、下载交付物、故障对照）见 `docs/本地同步怎么用.md`，
+脚本说明见 `skills/git-sync/README.md`。
 
 ## 〇、八版 PPT 与通用大纲（每次都会同步）
 
@@ -129,7 +136,9 @@
 
 ## 五、协作方式（取 / 传 / 下载 / 打包）
 
-唯一需要记的两条：
+> 在 `E:\0zhongqi\zhongqi` 里**双击 `sync.cmd`** 即一键同步；速查页见 `docs/本地同步怎么用.md`。
+
+唯一需要记的两条（也可双击 `sync.cmd` / 直接用 `upload.ps1`）：
 
 ```powershell
 cd E:\0zhongqi\zhongqi
@@ -168,8 +177,8 @@ git add -A; git commit -m "加入本地文件"; git push origin arena/01a09d79-z
 ```
 zhongqi\
 ├── deliverable\            成品（完整版）：中期.docx / 中期新.docx、八版中期答辩 PPT（A—H）、正文草稿 md、PPT版本选择.md
-├── 中间版\                 中间版 1：中期.docx（正文减半，进度同完整版）、中期答辩_H_nature风.pptx（8 页）
-├── 中间版2\                中间版 2：中期.docx（正文减半 + 进度减半）、中期答辩_H_nature风.pptx（8 页）
+├── 中间版\                 中间版 1：中期.docx（正文减半，进度同完整版）、中期答辩_H_nature风.pptx（14 页）
+├── 中间版2\                中间版 2：中期.docx（正文减半 + 进度减半）、中期答辩_H_nature风.pptx（14 页）
 ├── sources\                你的原件：开题.docx、中期.docx（模板）、已完成1.docx、1.md
 ├── code\                   脚本：填表/校验/画图/出 PPT/版式检查（详见 code\README.md）
 ├── results\figures\        7 张插图；results\ppt_preview\ 八版各 4 张版式预览 + 对比图；results\qa\ 审计与 QA 报告

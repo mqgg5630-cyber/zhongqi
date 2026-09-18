@@ -5,9 +5,20 @@
 > 本仓库根目录已经放好同款脚本（`sync.ps1 / push.ps1 / upload.ps1 / download.ps1 / doctor.ps1 / pack.ps1 / bootstrap.ps1`），
 > 这份 skill 是**通用版 + 说明书**。
 
+## 〇、最快上手（三步）
+
+1. 进文件夹：`E:\0zhongqi\zhongqi`（仓库根目录，**不是** `E:\0zhongqi`）
+2. 双击 **`sync.cmd`** —— 就是一键拉取最新（等价于 `.\sync.ps1`）
+3. 双击 **`download.cmd`** —— 把交付物复制到本机（等价于 `.\download.ps1 -Set final`）
+
+`.cmd` 是 `.ps1` 的双击外壳（自动 `-ExecutionPolicy Bypass`），参数照样能传：
+`download.cmd -Set all`。一页纸速查见 `docs/本地同步怎么用.md`。
+旧克隆里如果还没有这些文件，先做一次裸 git：`git fetch origin` → `git checkout arena/01a09d79-zhongqi` → `git pull`。
+
 ## 一、最短用法（在仓库目录里）
 
 ```powershell
+.\sync.cmd                     # 同 .\sync.ps1，双击可用
 .\sync.ps1                     # 取：拉最新（本地有改动会自动 stash）
 .\upload.ps1                   # 传：附件归位到 sources\ code\ results\ 后 commit + push
 .\download.ps1 -Set final      # 下载：把 deliverable\ 等目录镜像到本机
@@ -36,7 +47,8 @@ bash skills/git-sync/scripts/agent-recover.sh                    # 沙箱 .git �
 | `scripts/pack.ps1` | 压缩包交付；输出到 `_export\`（已在 `.gitignore` 里，不会被推送） |
 | `scripts/doctor.ps1` | 体检报告；"哪里不对劲"先跑它 |
 | `scripts/bootstrap.ps1` | 首次准备：执行策略、git 身份、fetch、切分支、首拉 |
-| `scripts/install.ps1` | 把整套脚本装到另一个仓库：`.\install.ps1 -Target C:\MyProject -Branch main` |
+| `scripts/install.ps1` | 把整套脚本装到另一个仓库：`.\install.ps1 -Target C:\MyProject -Branch main`（含 `.cmd` 双击外壳） |
+| `scripts/*.cmd` | 四个双击外壳：`sync.cmd` / `download.cmd` / `doctor.cmd` / `bootstrap.cmd`（ASCII + CRLF，`check_ps1.py` 一并检查） |
 | `scripts/agent-sync.sh` | 助手侧一键：分支守卫 → fetch → 发散自愈 → gate → commit + push |
 | `scripts/agent-recover.sh` | 助手侧修复：`.git` 被重置回基线提交时，保住工作区把 HEAD 挪回分支 |
 

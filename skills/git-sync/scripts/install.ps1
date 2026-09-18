@@ -5,8 +5,8 @@
 #     .\install.ps1 -Target C:\MyProject -Branch main -DownloadDir "C:\out"
 #
 # It copies sync/push/upload/download/doctor/pack/bootstrap into the target repo
-# root and creates <target>\sync.config.json (UTF-8) with the branch, remote and
-# folder sets. The .ps1 files stay ASCII; only the JSON carries folder names.
+# root (plus the .cmd wrappers that can be double-clicked), and creates
+# <target>\sync.config.json (UTF-8) with the branch, remote and folder sets. The .ps1 files stay ASCII; only the JSON carries folder names.
 #
 # ASCII-only on purpose (Windows PowerShell 5.1 decodes .ps1 as ANSI/GBK).
 
@@ -27,7 +27,8 @@ if (-not (Test-Path -LiteralPath $Target)) {
 }
 
 $files = @('sync.ps1', 'push.ps1', 'upload.ps1', 'download.ps1',
-           'doctor.ps1', 'pack.ps1', 'bootstrap.ps1')
+           'doctor.ps1', 'pack.ps1', 'bootstrap.ps1',
+           'sync.cmd', 'download.cmd', 'doctor.cmd', 'bootstrap.cmd')
 
 Write-Host "source : $src"
 Write-Host "target : $Target"
@@ -60,4 +61,5 @@ Write-Host "== next steps in $Target" -ForegroundColor Cyan
 Write-Host "   .\bootstrap.ps1                 first-time setup (policy, identity, branch)"
 Write-Host "   .\sync.ps1 / .\upload.ps1       pull / upload"
 Write-Host "   .\download.ps1 -List            show the download sets"
+Write-Host "   (or just double-click sync.cmd / download.cmd)"
 Write-Host "   edit sync.config.json to change the branch, sets or download folder"

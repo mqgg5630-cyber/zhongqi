@@ -9,13 +9,14 @@ swallow a closing quote and break the parser - exactly the error users see as
 "InvalidArgument" / "字符串缺少终止符".
 
 This checker flags:
+  0. any non-ASCII byte in a .cmd / .bat wrapper       (same GBK trap)
   1. any non-ASCII byte in a .ps1 file                (must be avoided)
   2. a UTF-8 BOM                                       (fine, but reported)
   3. unbalanced double quotes per file                 (unterminated string)
   4. unbalanced braces / parentheses                   (unterminated block)
 
 Usage:
-    python code/check_ps1.py *.ps1
+    python code/check_ps1.py *.ps1 *.cmd
 """
 
 from __future__ import annotations
@@ -107,7 +108,22 @@ def scan(text: str):
     return issues
 
 
+def check_batch(path: Path) -> list:
+    """cmd/bat 只查两件事：必须 ASCII、必须 CRLF（双击/命令行都稳）。"""
+    raw = path.read_bytes()
+    issues = []
+    try:
+        raw.decode("ascii")
+    except UnicodeDecodeError as e:
+        issues.append((0, f"NON-ASCII bytes at offset {e.start} - keep .cmd/.bat pure ASCII"))
+    if raw.count(b"\n") and raw.count(b"\r\n") != raw.count(b"\n"):
+        issues.append((0, "mixed or LF-only line endings - use CRLF in .cmd/.bat"))
+    return issues
+
+
 def check(path: Path) -> list:
+    if path.suffix.lower() in (".cmd", ".bat"):
+        return check_batch(path)
     raw = path.read_bytes()
     issues = []
     if raw.startswith(b"\xef\xbb\xbf"):
@@ -129,7 +145,9 @@ def main(argv) -> int:
     files = [Path(a) for a in (argv or sys.argv[1:])]
     if not files:
         # every .ps1 in the repo, so helper scripts added later are covered too
-        files = sorted(set(Path(".").glob("*.ps1")) | set(Path(".").glob("**/*.ps1")))
+        files = sorted(set(Path(".").glob("*.ps1")) | set(Path(".").glob("**/*.ps1"))
+                       | set(Path(".").glob("*.cmd")) | set(Path(".").glob("**/*.cmd"))
+                       | set(Path(".").glob("*.bat")) | set(Path(".").glob("**/*.bat")))
     bad = 0
     for f in files:
         issues = check(f)
