@@ -13,6 +13,17 @@
 
 `.cmd` 是 `.ps1` 的双击外壳（自动 `-ExecutionPolicy Bypass`），参数照样能传：
 `download.cmd -Set all`。一页纸速查见 `docs/本地同步怎么用.md`。
+
+**如果当前文件夹已经被别的分支占了**：双击 **`reclone.cmd`**，它会在上一层另建一个干净文件夹
+（默认 `<repo>-arena`）并直接检出工作分支，**绝不改动你运行它的那个文件夹**；
+目标文件夹若已是克隆，则只做 fetch + 切分支 + 快进。命令行等价写法：
+
+```powershell
+git clone -b <branch> --single-branch <url> ..\<repo>-arena
+```
+
+（远端有多个 `arena/*` 分支时，一定要写对**本会话的**分支名；`reclone.ps1` 会自己从
+`sync.config.json` 读，不用手打。）
 旧克隆里如果还没有这些文件，先做一次裸 git：`git fetch origin` → `git checkout arena/01a09d79-zhongqi` → `git pull`。
 
 ## 一、最短用法（在仓库目录里）
@@ -47,8 +58,9 @@ bash skills/git-sync/scripts/agent-recover.sh                    # 沙箱 .git �
 | `scripts/pack.ps1` | 压缩包交付；输出到 `_export\`（已在 `.gitignore` 里，不会被推送） |
 | `scripts/doctor.ps1` | 体检报告；"哪里不对劲"先跑它 |
 | `scripts/bootstrap.ps1` | 首次准备：执行策略、git 身份、fetch、切分支、首拉 |
+| `scripts/reclone.ps1` | 另拉一个干净文件夹：`.\reclone.ps1 -Path E:\0zhongqi\zhongqi-arena`（不碰当前文件夹；目标已是克隆则快进） |
 | `scripts/install.ps1` | 把整套脚本装到另一个仓库：`.\install.ps1 -Target C:\MyProject -Branch main`（含 `.cmd` 双击外壳） |
-| `scripts/*.cmd` | 四个双击外壳：`sync.cmd` / `download.cmd` / `doctor.cmd` / `bootstrap.cmd`（ASCII + CRLF，`check_ps1.py` 一并检查） |
+| `scripts/*.cmd` | 五个双击外壳：`sync.cmd` / `download.cmd` / `doctor.cmd` / `bootstrap.cmd` / `reclone.cmd`（ASCII + CRLF，`check_ps1.py` 一并检查） |
 | `scripts/agent-sync.sh` | 助手侧一键：分支守卫 → fetch → 发散自愈 → gate → commit + push |
 | `scripts/agent-recover.sh` | 助手侧修复：`.git` 被重置回基线提交时，保住工作区把 HEAD 挪回分支 |
 
@@ -93,6 +105,7 @@ Windows PowerShell 5.1 读**没有 BOM** 的 `.ps1` 时按 **ANSI/GBK** 解码�
 | 下载后文件是旧的 | 先 `.\sync.ps1` 再 `.\download.ps1`（下载只复制工作区文件） |
 | robocopy 返回 1—7 | 正常（有文件被复制 / 无变化 / 有额外文件），只有 ≥8 才算失败 |
 | **助手侧**工作区正常但历史回到基线提交 | `bash skills/git-sync/scripts/agent-recover.sh` → `agent-sync.sh` |
+| 文件夹被别的分支占了 / 切不回来 | 双击 `reclone.cmd` 另拉一个干净文件夹，旧文件夹不动 |
 
 ## 六、装到别的项目
 
