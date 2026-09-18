@@ -62,15 +62,16 @@ bash skills/git-sync/scripts/agent-sync.sh "feat: ..."   # 助手侧一键：守
 bash skills/git-sync/scripts/agent-sync.sh --status      # 只看状态（HEAD / 远端 / 未提交 / stash）
 bash skills/git-sync/scripts/agent-recover.sh            # 沙箱 .git 被重置回基线提交后的恢复
 
-python code/make_mech_figures.py         # 机制补充图：七环逻辑链 / AChE-Aβ 机制与 H1-H3
-python code/make_mech_doc.py             # 机制说明 docx -> deliverable/抗菌肽与AD关联机制说明.docx
-python code/make_ppt_nature.py --mechanism   # H 版 + 4 页机制补充页（共 20 页）
+python code/make_mech_figures.py         # 机制图 3 张：七环逻辑链 / AChE-Aβ 机制与 H1-H3 / 交叉成核
+python code/make_mech_doc.py             # 机制说明 docx（正文取 docs/机制说明_正文.md，文献取 code/mech_refs.py）
+python code/make_ppt_nature.py --mechanism   # H 版（含流程页、分组页）+ 6 页机制页（共 24 页）
+python code/check_layout.py              # 版面体检：形状重叠 / 文字溢出 / 压页脚
 python code/make_mid_content.py          # 中间版 1 docx 草稿（保留清单在脚本内）-> docs/中间版_填写内容.md
 python code/make_mid2_content.py         # 中间版 2 docx 草稿（保留清单 + 半程进度口径）-> docs/中间版2_填写内容.md
 python code/make_mid2_figures.py         # 中间版 2 专用图：半程进度路线图
-python code/make_ppt_mid.py              # 中间版 1 PPT（8 页，复用 H 版版式）-> 中间版/
-python code/make_ppt_mid.py --half       # 中间版 2 PPT（8 页，进度减半）-> 中间版2/
-bash code/check_all.sh                   # 三份 docx 格式 + 九份 PPT 版式 + 口径核对，一次跑完
+python code/make_ppt_mid.py              # 中间版 1 PPT（14 页 = 主体 10 + 机制 4）-> 中间版/
+python code/make_ppt_mid.py --half       # 中间版 2 PPT（14 页，进度减半）-> 中间版2/
+bash code/check_all.sh                   # 四份 docx 格式 + 十份 PPT 版式 + 版面体检 + 口径核对
 python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"   # 给 A 版补演讲备注（大纲 -> 备注区）
 python code/check_ppt.py "deliverable/中期答辩_B_白底细线.pptx" # 独立版式检查
 python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/prevA

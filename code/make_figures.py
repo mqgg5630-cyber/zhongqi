@@ -203,6 +203,16 @@ def canvas(w=13.33, h=7.5):
     return fig, ax
 
 
+def canvas_full(w=12.0, h=4.35):
+    """满幅画布：坐标轴铺满整张图，box 的比例直接等于图内的英寸比例。"""
+    fig, ax = plt.subplots(figsize=(w, h))
+    fig.subplots_adjust(left=0.004, right=0.996, top=0.996, bottom=0.004)
+    ax.set_xlim(0, 1)
+    ax.set_ylim(0, 1)
+    ax.axis("off")
+    return fig, ax
+
+
 # ----------------------------------------------------------------- 1. pipeline
 def fig_pipeline():
     """三阶段 × 四列的技术路线。画布 12 in 宽，正文 16 pt：

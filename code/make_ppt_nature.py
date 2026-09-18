@@ -63,6 +63,7 @@ BODY = RGBColor(0x33, 0x33, 0x33)
 MUTED = RGBColor(0x77, 0x77, 0x77)
 RED = RGBColor(0xB0, 0x3A, 0x2E)        # 期刊红，仅作强调
 TEAL = RGBColor(0x2F, 0x5D, 0x62)
+ORANGE = RGBColor(0xD9, 0x8A, 0x2B)
 RULE = RGBColor(0xDD, 0xDD, 0xDA)
 PANEL = RGBColor(0xF7, 0xF7, 0xF5)
 CN, EN = "微软雅黑", "Arial"
@@ -189,7 +190,6 @@ def picture(slide, name, top, height, *, left=None, width=None):
     if h > float(height):                       # 以高度为准缩回来
         h = float(height)
         w = h * iw / ih
-        left = Emu(int((SLIDE_W - Emu(int(w))) / 2)) if left is None else left
     pic = slide.shapes.add_picture(str(path), Emu(int(left)), top, Emu(int(w)), Emu(int(h)))
     return pic, Emu(int(left)), Emu(int(w)), Emu(int(h))
 
@@ -252,21 +252,39 @@ def claim_slide(prs, idx, total, *, headline, support, aside, note):
 
 def figure_slide(prs, idx, total, *, headline, figure, reading, note,
                  layout="full", caption=None, source="图：本项目自制（results/figures）"):
-    """figure-dominant / process-wide / rail：按图的形状选择版式。"""
+    """figure-dominant / process-wide / rail：按图的形状选择版式。
+
+    说明行一律放在图片下沿之下（按图片实际高度计算），避免与图片重叠。
+    """
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     title(slide, headline, size=25)
     if layout == "full":
-        pic, _, w, h = picture(slide, figure, BODY_TOP, Inches(4.72))
-        source_line(slide, source)
-        _, tf = tb(slide, LEFT, Inches(5.06), CONTENT_W, Inches(1.4))
+        pic, _, w, h = picture(slide, figure, BODY_TOP, Inches(4.12))
+        if float(w) < float(CONTENT_W) - Inches(0.30):      # 未占满宽度时水平居中
+            shift = int((float(CONTENT_W) - float(w)) / 2)
+            pic.left = Emu(int(float(pic.left)) + shift)
+        bottom_in = (float(BODY_TOP) + float(h)) / 914400.0
+        y = min(bottom_in + 0.16, 5.55)
+        _, tf = tb(slide, LEFT, Inches(y), CONTENT_W, Inches(0.95))
         para(tf, reading, size=17, color=BODY, first=True, spacing=1.3)
+        source_line(slide, source)
     elif layout == "rail":
-        pic, _, w, h = picture(slide, figure, BODY_TOP, Inches(4.85), left=LEFT,
+        pic, _, w, h = picture(slide, figure, BODY_TOP, Inches(4.60), left=LEFT,
                                width=Inches(8.60))
         x = Inches(9.35)
         _, tf = tb(slide, x, BODY_TOP, Inches(3.28), Inches(4.9))
         para(tf, "解读", size=16, bold=True, color=TEAL, first=True, spacing=1.1)
         para(tf, reading, size=16, color=BODY, before=8, spacing=1.3)
+    elif layout == "wide":
+        pic, _, w, h = picture(slide, figure, BODY_TOP, Inches(4.30))
+        if float(w) < float(CONTENT_W) - Inches(0.30):
+            shift = int((float(CONTENT_W) - float(w)) / 2)
+            pic.left = Emu(int(float(pic.left)) + shift)
+        bottom_in = (float(BODY_TOP) + float(h)) / 914400.0
+        _, tf = tb(slide, LEFT, Inches(bottom_in + 0.14), CONTENT_W,
+                   Inches(max(0.4, 6.42 - bottom_in)))
+        para(tf, reading, size=16, color=BODY, first=True, spacing=1.24)
+        source_line(slide, source)
     else:                                   # "band"：图 + 底部说明带
         pic, _, w, h = picture(slide, figure, BODY_TOP, Inches(4.45))
         rect(slide, LEFT, Inches(5.96), CONTENT_W, Inches(0.52), PANEL)
@@ -304,36 +322,148 @@ def metrics_slide(prs, idx, total, *, headline, lead, stages, note):
     return slide
 
 
-def table_slide(prs, idx, total, *, headline, rows, note, header=None, widths=None):
+def flow_slide(prs, idx, total, *, headline, lead, steps, note):
+    """流程页：原生可编辑方框 + 箭头，蛇形两行（①→⑥ 后接下行 ⑦→⑫）。
+
+    steps: [(序号, 标题, 说明, 状态)]，状态 "done" / "doing"。
+    """
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    title(slide, headline, size=25)
+    _, tf = tb(slide, LEFT, Inches(1.12), CONTENT_W, Inches(0.30))
+    para(tf, lead, size=15, color=MUTED, first=True, spacing=1.0)
+
+    n_col = 6
+    gap = 0.15
+    w = (float(CONTENT_W) - Inches(gap) * (n_col - 1)) / n_col
+    h = Inches(1.68)
+    top1, top2 = Inches(1.46), Inches(3.44)
+    for row, (top, flip) in enumerate(((top1, False), (top2, True))):
+        for c in range(n_col):
+            num, label, desc, status = steps[row * n_col + c]
+            x = Emu(int(float(LEFT) + c * (w + Inches(gap))))
+            card = rect(slide, x, top, Emu(int(w)), h, PANEL)
+            rect(slide, x, top, Emu(int(w)), Pt(3), TEAL if status == "done" else ORANGE)
+            tf = card.text_frame
+            tf.word_wrap = True
+            tf.margin_left = tf.margin_right = Inches(0.10)
+            tf.margin_top = Inches(0.10)
+            tf.margin_bottom = Inches(0.06)
+            rich(tf, [(num + " ", True, TEAL if status == "done" else RED),
+                      (label, True, INK)], size=15, first=True, spacing=1.12)
+            para(tf, desc, size=15, color=BODY, before=4, spacing=1.16)
+            if c < n_col - 1:                     # 行内箭头：第一行向右、第二行向左
+                ax_ = Emu(int(float(x) + float(w) + 0.035 * 914400))
+                aw = Emu(int((gap - 0.07) * 914400))
+                arrow = slide.shapes.add_shape(
+                    MSO_SHAPE.LEFT_ARROW if flip else MSO_SHAPE.RIGHT_ARROW,
+                    ax_, Emu(int(float(top) + float(h) / 2 - 0.055 * 914400)),
+                    aw, Emu(int(0.11 * 914400)))
+                arrow.fill.solid()
+                arrow.fill.fore_color.rgb = MUTED
+                arrow.line.fill.background()
+                arrow.shadow.inherit = False
+        if not flip:                              # 第一行末列转第二行
+            x6 = float(LEFT) + (n_col - 1) * (w + Inches(gap))
+            down = slide.shapes.add_shape(MSO_SHAPE.DOWN_ARROW,
+                Emu(int(x6 + w / 2 - 0.06 * 914400)), Emu(int(float(top) + float(h) + 0.03 * 914400)),
+                Emu(int(0.12 * 914400)), Emu(int(0.22 * 914400)))
+            down.fill.solid()
+            down.fill.fore_color.rgb = MUTED
+            down.line.fill.background()
+            down.shadow.inherit = False
+
+    _, tf = tb(slide, LEFT, Inches(5.30), Inches(4.0), Inches(0.30))
+    rich(tf, [("■ ", True, TEAL), ("已完成　", False, BODY),
+              ("■ ", True, ORANGE), ("正在推进", False, BODY)], size=15, first=True, spacing=1.0)
+    _ = tf
+    rect(slide, LEFT, Inches(5.72), CONTENT_W, Inches(0.62), PANEL)
+    _, tf = tb(slide, Inches(0.88), Inches(5.72), Inches(11.6), Inches(0.62),
+               anchor=MSO_ANCHOR.MIDDLE)
+    para(tf, "全流程使用同一套参考集与参数，样本的分组信息与测序数据一一对应；"
+             "青色标注的步骤已完成，橙色标注的正在推进。", size=15, color=BODY, first=True, spacing=1.12)
+    footer(slide, idx, total)
+    notes(slide, note)
+    return slide
+
+
+def stage_slide(prs, idx, total, *, headline, lead, facts, stages, note, source=None):
+    """分组页：上排关键规模，下排五个认知阶段的分组构成。"""
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    title(slide, headline, size=25)
+    _, tf = tb(slide, LEFT, Inches(1.30), CONTENT_W, Inches(0.60))
+    para(tf, lead, size=17, color=BODY, first=True, spacing=1.24)
+
+    fw = float(CONTENT_W) / len(facts)
+    for k, (big, small) in enumerate(facts):
+        x = Emu(int(float(LEFT) + k * fw))
+        _, tf = tb(slide, x, Inches(1.94), Emu(int(fw - 0.20 * 914400)), Inches(0.46))
+        para(tf, big, size=24, bold=True, color=TEAL, first=True, spacing=1.0)
+        _, tf = tb(slide, x, Inches(2.42), Emu(int(fw - 0.20 * 914400)), Inches(0.52))
+        para(tf, small, size=15, color=MUTED, first=True, spacing=1.0)
+    hline(slide, Inches(3.00))
+
+    sw = float(CONTENT_W) / len(stages)
+    for k, (code, n, sex, age, color) in enumerate(stages):
+        x = Emu(int(float(LEFT) + k * sw))
+        rect(slide, x, Inches(3.16), Emu(int(sw - 0.24 * 914400)), Pt(3), color)
+        _, tf = tb(slide, x, Inches(3.30), Emu(int(sw - 0.20 * 914400)), Inches(0.40))
+        para(tf, code, size=18, bold=True, color=INK, first=True, spacing=1.0)
+        _, tf = tb(slide, x, Inches(3.70), Emu(int(sw - 0.20 * 914400)), Inches(1.10))
+        para(tf, n, size=16, color=BODY, first=True, spacing=1.16)
+        para(tf, sex, size=15, color=BODY, before=3, spacing=1.16)
+        para(tf, age, size=15, color=MUTED, before=3, spacing=1.16)
+    hline(slide, Inches(4.90))
+    _, tf = tb(slide, LEFT, Inches(5.06), CONTENT_W, Inches(1.30))
+    para(tf, "分层方式：5 个阶段 × 2 个性别 × 3 个年龄段（60—69、70—79、≥80 岁）= 30 个分层单元；"
+             "每个单元内按年龄与性别匹配，得到结构一致的比较亚队列，保证阶段之间的差异不来自年龄与性别构成。",
+         size=16, color=BODY, first=True, spacing=1.26)
+    if source:
+        source_line(slide, source)
+    footer(slide, idx, total)
+    notes(slide, note)
+    return slide
+
+
+def table_slide(prs, idx, total, *, headline, rows, note, header=None, widths=None,
+                row_h=0.52, size=15):
     """对照表：原生可编辑表格（nature skill 建议显式数值用原生表）。
 
     header / widths 可自定义（机制补充页用它排“证据强度分级”）。
     """
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     title(slide, headline, size=25)
+    head = list(header) if header else ["环节", "开题计划", "现阶段结果"]
+    n_col = len(head)
     n_rows = len(rows) + 1
-    shape = slide.shapes.add_table(n_rows, 3, LEFT, BODY_TOP + Inches(0.05),
-                                   CONTENT_W, Inches(0.52) * n_rows)
+    shape = slide.shapes.add_table(n_rows, n_col, LEFT, BODY_TOP + Inches(0.05),
+                                   CONTENT_W, Inches(row_h) * n_rows)
+    for r in range(n_rows):
+        table_h = shape.table
+        table_h.rows[r].height = Inches(row_h)
     table = shape.table
     if widths:
         for i, w in enumerate(widths):
             table.columns[i].width = Inches(w)
-    else:
+    elif n_col == 3:
         table.columns[0].width = Inches(2.0)
         table.columns[1].width = Inches(4.6)
         table.columns[2].width = CONTENT_W - Inches(6.6)
-    head = list(header) if header else ["环节", "开题计划", "现阶段结果"]
     for c, text in enumerate(head):
         cell = table.cell(0, c)
         cell.text = ""
-        para(cell.text_frame, text, size=15, bold=True, color=INK, first=True, spacing=1.05)
+        para(cell.text_frame, text, size=size, bold=True, color=INK, first=True, spacing=1.05)
         cell.fill.solid()
         cell.fill.fore_color.rgb = PANEL
-    for r, (a, b, c) in enumerate(rows, start=1):
-        for col, text in enumerate((a, b, c)):
+        cell.margin_top = cell.margin_bottom = Inches(0.03)
+    for r, row in enumerate(rows, start=1):
+        for col, text in enumerate(row):
             cell = table.cell(r, col)
             cell.text = ""
-            para(cell.text_frame, text, size=15, color=BODY, first=True, spacing=1.1)
+            para(cell.text_frame, text, size=size,
+                 color=INK if col == 0 else BODY, first=True, spacing=1.05)
+            cell.fill.solid()
+            cell.fill.fore_color.rgb = RGBColor(0xFF, 0xFF, 0xFF)
+            cell.margin_top = cell.margin_bottom = Inches(0.03)
     footer(slide, idx, total)
     notes(slide, note)
     return slide
@@ -343,16 +473,19 @@ def discussion_slide(prs, idx, total, *, headline, pairs, note):
     """问题与对策：开放排版，编号 + 细线，不做卡片。"""
     slide = prs.slides.add_slide(prs.slide_layouts[6])
     title(slide, headline, size=25)
-    y = 1.60
+    y0, y_end = 1.58, 6.30
+    pitch = min(1.62, (y_end - y0) / max(len(pairs), 1))
+    y = y0
     for k, (q, a) in enumerate(pairs, 1):
         _, tf = tb(slide, LEFT, Inches(y), Inches(0.6), Inches(0.5))
         para(tf, f"{k:02d}", size=20, bold=True, color=RED, first=True, spacing=1.0)
-        _, tf = tb(slide, LEFT + Inches(0.62), Inches(y), Inches(11.3), Inches(1.2))
-        para(tf, q, size=18, bold=True, color=INK, first=True, spacing=1.1)
-        para(tf, a, size=16, color=BODY, before=4, spacing=1.26)
-        y += 1.62
+        _, tf = tb(slide, LEFT + Inches(0.62), Inches(y), Inches(11.3),
+                   Inches(pitch - 0.12))
+        para(tf, q, size=18, bold=True, color=INK, first=True, spacing=1.08)
+        para(tf, a, size=16, color=BODY, before=3, spacing=1.20)
+        y += pitch
         if k < len(pairs):
-            hline(slide, Inches(y - 0.34))
+            hline(slide, Inches(y - 0.30))
     footer(slide, idx, total)
     notes(slide, note)
     return slide
@@ -375,8 +508,67 @@ def closing(prs, idx, total, *, headline, lines, note, thanks=False):
     return slide
 
 
+
+# ---------------------------------------------------------------- 标准内容页
+FLOW_STEPS = [
+    ("①", "测序与质控", "双端鸟枪法测序\n质控与去宿主", "done"),
+    ("②", "组装与分箱", "序列组装与分箱\n分箱提纯", "done"),
+    ("③", "参考基因组集", "种水平去冗余\n非冗余参考集", "done"),
+    ("④", "sORF 预测", "小开放阅读框\n长度 5—50 aa", "done"),
+    ("⑤", "去冗余建库", "序列级去冗余\n非冗余短肽库", "done"),
+    ("⑥", "共识预测", "多模型独立预测\n一致阳性才纳入", "done"),
+    ("⑦", "阶段差异分析", "按五个认知阶段\n比较组成与丰度", "done"),
+    ("⑧", "表达证据去重", "蛋白组二次去重\n剔除无表达序列", "done"),
+    ("⑨", "特有抗菌肽", "健康人群特有肽\n各阶段特有肽", "done"),
+    ("⑩", "机制关联分析", "对接与动力学\n给出候选优先序", "doing"),
+    ("⑪", "抑菌实验验证", "合成代表性肽\n纸片扩散法筛查\n肉汤稀释法 MIC", "doing"),
+    ("⑫", "整理与撰写", "学位论文与投稿\n结果汇总", "doing"),
+]
+
+STAGE_FACTS = [("5 个阶段", "NC · SCS · SCD · MCI · AD"),
+               ("2 个性别", "男女分别匹配"),
+               ("3 个年龄段", "60—69 · 70—79 · ≥80 岁"),
+               ("30 个分层单元", "阶段 × 性别 × 年龄")]
+
+STAGE_ROWS = [("NC", "认知正常（对照）", "菌群多样性最高", "作为比较基线", TEAL),
+              ("SCS", "主观认知下降", "组成已出现偏移", "阶段特有菌属出现", TEAL),
+              ("SCD", "可疑认知障碍", "肠屏障标志物升高", "改变早于痴呆", ORANGE),
+              ("MCI", "轻度认知障碍", "菌群失衡最明显", "与炎症指标相关", ORANGE),
+              ("AD", "阿尔茨海默症", "菌群变化幅度最大", "炎症—Aβ 环放大", RED)]
+
+
+def std_flow_slide(prs, idx, total, progress="full"):
+    """标准流程页；progress="half" 时只把前四步记为已完成（中间版 2 用）。"""
+    cut = 4 if progress == "half" else 9      # 完整版：前九步已完成，后三步推进中
+    steps = [(n, l, d, "done" if k < cut else "doing")
+             for k, (n, l, d, _st) in enumerate(FLOW_STEPS)]
+    if progress == "half":
+        note = ("这页说明整体流程：从测序数据到候选抗菌肽清单，共十二步，输入输出都可追溯。"
+                "目前前四步已完成，其余内容安排在下一阶段推进。")
+    else:
+        note = ("这页说明整体流程：从测序数据到候选抗菌肽清单，共十二步，输入输出都可追溯。"
+                "前九步已经在中期前完成，最后三步正在推进——机制关联分析、抑菌实验验证与结果整理。")
+    flow_slide(prs, idx, total,
+        headline="宏基因组分析流程：从测序数据到候选抗菌肽清单",
+        lead="流程按“数据 → 序列 → 预测 → 统计 → 功能”顺序推进，每一步的输入输出都可追溯。",
+        steps=steps, note=note)
+
+
+def std_stage_slide(prs, idx, total, headline=None):
+    stage_slide(prs, idx, total,
+        headline=headline or "分阶段组的划分：阶段、性别、年龄三层匹配后再比较",
+        lead="队列按认知功能分为五个阶段，并在每个阶段内按性别与年龄段匹配，"
+             "保证阶段之间可直接比较。",
+        facts=STAGE_FACTS,
+        stages=STAGE_ROWS,
+        note="分组方式是这页的重点：五个认知阶段，每阶段内再按性别与三个年龄段分层，共三十个分层单元；"
+             "每个单元内按年龄与性别匹配，得到结构一致的比较亚队列。各阶段的样本量相同、性别构成相同、"
+             "组间平均年龄差小于两岁，这样阶段之间的差异不会来自年龄与性别构成。",
+        source="分组与分层依据：已完成的全队列临床信息表（sources/已完成1.docx）")
+
+
 # ---------------------------------------------------------------- 逐页内容
-def build(outline: dict, total: int = 16) -> Presentation:
+def build(outline: dict, total: int = 24) -> Presentation:
     meta = outline["meta"]
     S = {s["n"]: s for s in outline["slides"]}
     prs = Presentation()
@@ -419,7 +611,11 @@ def build(outline: dict, total: int = 16) -> Presentation:
         note="队列按认知功能分五个阶段：NC、SCS、SCD、MCI 与 AD，样本的临床分组信息与测序数据一一对应，"
              "为后续的分阶段差异分析提供可比的基础。")
 
-    figure_slide(prs, 5, total,
+    std_flow_slide(prs, 5, total)
+
+    std_stage_slide(prs, 6, total)
+
+    figure_slide(prs, 7, total,
         headline="研究路线：前五项已完成，后两项正在推进",
         figure="figA_研究思路总览.png", layout="full",
         reading="数据资源与参考集、短肽库、三模型共识预测、分阶段差异分析、宏蛋白组二次去重五项已完成；"
@@ -428,7 +624,7 @@ def build(outline: dict, total: int = 16) -> Presentation:
         note="这一页是整体路线：前五项，也就是数据、短肽库、预测、分阶段差异和宏蛋白组去重，已经全部完成；"
              "后两项机制关联分析和抑菌实验验证正在推进。")
 
-    figure_slide(prs, 6, total,
+    figure_slide(prs, 8, total,
         headline="三模型一致阳性的序列才纳入候选集合",
         figure="figB_三模型预测.png", layout="rail",
         reading="Attention、LSTM、BERT 三个模型相互独立地给出抗菌肽概率；只有三者一致判为阳性的序列才进入候选集合，"
@@ -437,14 +633,14 @@ def build(outline: dict, total: int = 16) -> Presentation:
         note="预测环节采用 Attention、LSTM、BERT 三个模型分别预测，只有三者一致判为阳性的序列才纳入候选集合。"
              "这样处理的目的是降低单一模型带来的假阳性，提高候选集合的可信度；这一步已经完成。")
 
-    figure_slide(prs, 7, total,
+    figure_slide(prs, 9, total,
         headline="分阶段比较给出随病程变化的候选抗菌肽",
         figure="figC_分阶段差异分析.png", layout="band",
         reading="按认知阶段分组比较候选抗菌肽的丰度与组成差异，筛选随病程变化明显的候选抗菌肽。",
         note="差异分析按认知阶段分组，比较各阶段与健康人群之间候选抗菌肽的丰度与组成差异，"
              "得到一批随病程变化明显的候选抗菌肽，作为后续筛选的输入。这一步也已完成。")
 
-    figure_slide(prs, 8, total,
+    figure_slide(prs, 10, total,
         headline="宏蛋白组表达证据二次去重后，得到健康人与各阶段特有抗菌肽",
         figure="figD_宏蛋白组去重.png", layout="full",
         reading="序列层面去冗余解决重复；宏蛋白组表达证据解决“有预测、无表达”的假阳性。"
@@ -452,7 +648,7 @@ def build(outline: dict, total: int = 16) -> Presentation:
         note="在序列去冗余的基础上，引入宏蛋白组的表达证据做二次去重，只保留在蛋白层面真实存在、可检出的抗菌肽；"
              "再按组内共有、组间特比较，得到健康人群特有与各疾病阶段特有的抗菌肽清单。这一步已完成。")
 
-    figure_slide(prs, 9, total,
+    figure_slide(prs, 11, total,
         headline="机制关联从 Aβ、AChE 与炎症通路三个方向展开",
         figure="figE_机制关联.png", layout="rail",
         reading="借鉴乙酰胆碱酯酶—β-淀粉样肽复合物分子模拟研究的思路：考察候选肽与 Aβ 的相互作用、"
@@ -462,7 +658,7 @@ def build(outline: dict, total: int = 16) -> Presentation:
              "与 Aβ 的相互作用及其对聚集的影响、与 AChE 外周阴离子位点结合从而干扰成核的可能性，"
              "以及经免疫与炎症通路参与神经炎症的可能性。这部分把结论定位为线索发现，不夸大因果。")
 
-    figure_slide(prs, 10, total,
+    figure_slide(prs, 12, total,
         headline="抑菌实验验证给出候选抗菌肽活性的直接证据",
         figure="figF_抑菌实验方案.png", layout="band",
         reading="人工合成代表性候选肽，以大肠杆菌与金黄色葡萄球菌为指示菌，纸片扩散法初筛，微量肉汤稀释法测最低抑菌浓度。",
@@ -470,7 +666,7 @@ def build(outline: dict, total: int = 16) -> Presentation:
              "先用纸片扩散法观察抑菌圈做初筛，再用微量肉汤稀释法测定最低抑菌浓度，"
              "并设置阳性对照与阴性对照。这些方法在常规微生物实验室即可完成。")
 
-    figure_slide(prs, 11, total,
+    figure_slide(prs, 13, total,
         headline="进度与开题计划一致：主体分析完成，进入验证与撰写阶段",
         figure="figG_进度甘特.png", layout="full",
         reading="数据资源、短肽库、三模型共识预测、分阶段差异分析与宏蛋白组二次去重均已完成；"
@@ -478,7 +674,7 @@ def build(outline: dict, total: int = 16) -> Presentation:
         note="进度上，前五项已经全部完成，当前集中在机制关联分析与抑菌实验验证两件事上，"
              "论文撰写同步推进，整体进度与开题安排一致。")
 
-    table_slide(prs, 12, total,
+    table_slide(prs, 14, total,
         headline="与开题计划相比，研究方向未变，预测与去重环节做了调整",
         rows=[
             ("数据准备", "使用公开宏基因组数据", "已完成全队列数据处理与参考集构建"),
@@ -491,7 +687,7 @@ def build(outline: dict, total: int = 16) -> Presentation:
              "模型方案由自建模型改为三个已发表模型协同预测；机制与验证环节正在实施。研究方向没有变，"
              "调整都发生在方法层面。")
 
-    discussion_slide(prs, 13, total,
+    discussion_slide(prs, 15, total,
         headline="三个已识别问题都有对应处理办法",
         pairs=[
             ("预测结果的假阳性风险",
@@ -504,7 +700,7 @@ def build(outline: dict, total: int = 16) -> Presentation:
         note="目前识别出三个问题：预测假阳性、部分样本缺少参考基因组、机制关联证据强度有限。"
              "三者都有对应处理办法，不影响整体进度。")
 
-    closing(prs, 14, total,
+    closing(prs, 16, total,
         headline="后续安排集中在机制关联、实验验证与论文撰写",
         lines=[
             "机制关联分析：完成特有抗菌肽与 Aβ 聚集、AChE 结合及炎症通路的关联分析，形成候选肽清单。",
@@ -514,7 +710,7 @@ def build(outline: dict, total: int = 16) -> Presentation:
         note="后续收尾分三块：机制关联分析、抑菌实验验证，以及结果整理与论文撰写。"
              "这些工作以已完成的数据与分析流程为基础，不再涉及大规模数据生产。")
 
-    closing(prs, 15, total,
+    closing(prs, 17, total,
         headline="预期成果与现阶段的边界",
         lines=[
             "预期成果：一套可复用的分析流程、健康人与各阶段特有的候选抗菌肽清单、机制关联与抑菌活性结果，"
@@ -527,7 +723,7 @@ def build(outline: dict, total: int = 16) -> Presentation:
              "同时说明现阶段的边界：机制关联是计算预测、抑菌实验只覆盖代表性候选肽、阶段划分依据队列既有标签，"
              "这些限定会在论文中写清楚。")
 
-    closing(prs, 16, total,
+    closing(prs, 18, total,
         headline="主要分析已完成，剩余工作风险可控",
         lines=[
             "确认事实：数据资源、短肽库、三模型共识预测、分阶段差异分析与特有抗菌肽筛选均已完成。",
@@ -567,7 +763,7 @@ def main(argv=None) -> int:
     ap.add_argument("--audit", action="store_true")
     ap.add_argument("--outline", default=str(OUTLINE))
     ap.add_argument("--mechanism", action="store_true",
-                    help="在 16 页之后追加 4 页机制补充页（共 20 页）")
+                    help="在 18 页之后追加 6 页机制补充页（共 24 页）")
     a = ap.parse_args(argv)
 
     # 1) 术语一致性：全篇只允许术语表里的写法
@@ -577,11 +773,11 @@ def main(argv=None) -> int:
             PROBLEMS.append(f"term not allowed: {banned}")
 
     outline = json.loads(text)
-    total = 20 if a.mechanism else 16
+    total = 24 if a.mechanism else 18
     prs = build(outline, total)
     if a.mechanism:
         import make_ppt_mech as MECH
-        MECH.append(prs, first_idx=17, total=20)
+        MECH.append(prs, first_idx=19, total=24, which="full")
     OUT.parent.mkdir(parents=True, exist_ok=True)
     prs.save(str(OUT))
     slides = len(prs.slides._sldIdLst)

@@ -81,17 +81,21 @@ def draw_text_frame(draw: ImageDraw.ImageDraw, shape, scale_x, scale_y):
             prepared.append(None)
             continue
         size = max(r[1] for r in runs)
-        text = "".join(r[0] for r in runs)
+        text = "".join(r[0] for r in runs).replace("\x0b", "\n")
         font = font_for(size)
-        # wrap
+        # wrap（先按显式换行切段，再逐段折行，避免多行文本测量报错）
         lines, cur = [], ""
-        for ch in text:
-            if draw.textlength(cur + ch, font=font) > w - ml * 2 and cur:
-                lines.append(cur)
-                cur = ch
-            else:
-                cur += ch
-        lines.append(cur)
+        for seg in text.split("\n"):
+            for ch in seg:
+                if draw.textlength(cur + ch, font=font) > w - ml * 2 and cur:
+                    lines.append(cur)
+                    cur = ch
+                else:
+                    cur += ch
+            lines.append(cur)
+            cur = ""
+        if not lines:
+            lines = [""]
         spacing = p.line_spacing or 1.2
         lh = size * spacing * 1.22 * DPI / 72
         prepared.append((lines, size, lh, runs[0][3], bool(runs[0][2]),

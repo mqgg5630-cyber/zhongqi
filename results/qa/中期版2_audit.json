@@ -1,8 +1,8 @@
 {
-  "file": "/home/user/zhongqi/中间版2/中期答辩_H_nature风.pptx",
-  "slide_count": 12,
+  "file": "中间版2/中期答辩_H_nature风.pptx",
+  "slide_count": 14,
   "media_count": 6,
-  "notes_count": 12,
+  "notes_count": 14,
   "finding_counts": {
     "high": 0,
     "medium": 0,
@@ -20,67 +20,79 @@
       "slide": 2,
       "shape_count": 7,
       "image_count": 0,
-      "text_chars": 237
+      "text_chars": 235
     },
     {
       "slide": 3,
       "shape_count": 7,
       "image_count": 1,
-      "text_chars": 155
+      "text_chars": 144
     },
     {
       "slide": 4,
-      "shape_count": 6,
-      "image_count": 1,
-      "text_chars": 167
+      "shape_count": 43,
+      "image_count": 0,
+      "text_chars": 421
     },
     {
       "slide": 5,
-      "shape_count": 7,
-      "image_count": 1,
-      "text_chars": 177
+      "shape_count": 32,
+      "image_count": 0,
+      "text_chars": 437
     },
     {
       "slide": 6,
       "shape_count": 6,
       "image_count": 1,
-      "text_chars": 206
+      "text_chars": 123
     },
     {
       "slide": 7,
+      "shape_count": 7,
+      "image_count": 1,
+      "text_chars": 134
+    },
+    {
+      "slide": 8,
+      "shape_count": 6,
+      "image_count": 1,
+      "text_chars": 183
+    },
+    {
+      "slide": 9,
       "shape_count": 5,
       "image_count": 0,
       "text_chars": 181
     },
     {
-      "slide": 8,
-      "shape_count": 7,
-      "image_count": 0,
-      "text_chars": 207
-    },
-    {
-      "slide": 9,
-      "shape_count": 7,
-      "image_count": 1,
-      "text_chars": 189
-    },
-    {
       "slide": 10,
       "shape_count": 7,
       "image_count": 0,
-      "text_chars": 188
+      "text_chars": 208
     },
     {
       "slide": 11,
-      "shape_count": 6,
+      "shape_count": 7,
       "image_count": 1,
-      "text_chars": 201
+      "text_chars": 183
     },
     {
       "slide": 12,
+      "shape_count": 7,
+      "image_count": 1,
+      "text_chars": 165
+    },
+    {
+      "slide": 13,
       "shape_count": 5,
       "image_count": 0,
-      "text_chars": 269
+      "text_chars": 415
+    },
+    {
+      "slide": 14,
+      "shape_count": 5,
+      "image_count": 0,
+      "text_chars": 605
     }
   ]
 }

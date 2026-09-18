@@ -1,9 +1,9 @@
 # PPTX Quality Audit
 
-- File: `/home/user/zhongqi/中间版/中期答辩_H_nature风.pptx`
-- Slides: 12
+- File: `中间版/中期答辩_H_nature风.pptx`
+- Slides: 14
 - Embedded media: 6
-- Notes slides: 12
+- Notes slides: 14
 - Findings: high=0, medium=0, low=0
 
 ## Findings

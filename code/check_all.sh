@@ -17,8 +17,7 @@ for f in "deliverable/中期.docx" "deliverable/中期新.docx" "中间版/中�
   echo "=== $f"
   python code/verify_docx.py --base sources/中期.docx --filled "$f" \
     --cells $CELLS --blank-cells $BLANK --insert-cells $INS \
-    --tc-skip $TCSKIP --tc-cells $TCCELLS --sdt-cells $SDT \
-    --row-insert 22:15:1 | tail -1 || rc=1
+    --tc-skip $TCSKIP --tc-cells $TCCELLS --sdt-cells $SDT | tail -1 || rc=1
 done
 
 echo "=== 口径核对"
@@ -28,6 +27,15 @@ echo "=== PPT 版式"
 for f in deliverable/中期答辩_*.pptx 中间版/*.pptx 中间版2/*.pptx; do
   printf "%-46s " "$f"; python code/check_ppt.py "$f" | tail -1
 done
+
+echo "=== PPT 版面体检（重叠 / 溢出 / 压页脚）"
+for f in deliverable/中期答辩_H_nature风.pptx deliverable/中期答辩_最终版.pptx \
+         中间版/中期答辩_H_nature风.pptx 中间版2/中期答辩_H_nature风.pptx; do
+  printf "%-46s " "$f"; python code/check_layout.py "$f" | tail -1 || rc=1
+done
+
+echo "=== 机制图（框内溢出 + 投影字号）"
+python code/make_mech_figures.py | tail -1 || rc=1
 
 echo "=== PowerPoint 脚本 ASCII 检查"
 python code/check_ps1.py | tail -2
