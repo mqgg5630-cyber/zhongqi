@@ -48,6 +48,22 @@ if ($cfgPath) {
 }
 
 Write-Host ""
+Write-Host "== network" -ForegroundColor Cyan
+# can we reach the remote at all? (the usual cause of a failed sync)
+$probe = (& git ls-remote --heads origin 2>&1 | Out-String).Trim()
+$probeCode = $LASTEXITCODE
+if ($probeCode -eq 0) {
+    Line 'remote' 'reachable (git ls-remote OK)' 'Green'
+} else {
+    Line 'remote' 'NOT reachable - sync will fail' 'Red'
+    Write-Host "               $probe" -ForegroundColor DarkGray
+    Write-Host "               try: git config --global http.sslBackend openssl" -ForegroundColor Yellow
+    Write-Host "                    git config --global http.version HTTP/1.1" -ForegroundColor Yellow
+    Write-Host "                    git config --global http.proxy http://127.0.0.1:7890   (if you use a proxy)" -ForegroundColor Yellow
+    Write-Host "               undo: git config --global --unset http.sslBackend" -ForegroundColor DarkGray
+}
+
+Write-Host ""
 Write-Host "== git state" -ForegroundColor Cyan
 git fetch origin --quiet 2>$null
 

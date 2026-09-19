@@ -12,7 +12,8 @@
 6. 机制关联三方向一致（Aβ 聚集 / AChE 外周阴离子位点 / 免疫与炎症通路）；
 7. 结果形式一致（SCI 论文 1 篇 + 学位论文）；
 8. 送审版（deliverable/中期.docx）不含任何抑菌实验表述（其余两份表保留），导师评语为指定文本；
-9. 日期一致：三份表里“封面填表日期 / 导师签字 / 检查组长签字 + 培养单位盖章”都填 2026年9月19日、
+9. 最终版（deliverable/中期_最终版.docx）：4 页、含第一作者已发表论文引用、无实验表述、评语为指定文本；
+10. 日期一致：三份表里“封面填表日期 / 导师签字 / 检查组长签字 + 培养单位盖章”都填 2026年9月19日、
    模板的“年 月 日”空档一个不剩（签字页单独文件里也要有日期）。
 
 用法
@@ -200,12 +201,40 @@ def main(argv=None) -> int:
         else:
             problems += 1
             print(f"  FAIL 版本·{d.parent.name}/{d.name} 缺抑菌实验内容（这一版应当保留）")
+    # 最终版（deliverable/中期_最终版.docx）：精简 4 页 + 已发表论文引用 + 无实验表述
+    final_docx = ROOT / "deliverable" / "中期_最终版.docx"
+    if final_docx.exists():
+        ftext = docx_text(final_docx)
+        fplain = re.sub(r"<[^>]+>", "", ftext)
+        bad = [w for w in NOEXP_WORDS if w in fplain]
+        cite_ok = ("149910" in fplain) and ("Food Chem" in fplain) and ("Wen SH" in fplain)
+        if bad:
+            problems += 1
+            print(f"  FAIL 最终版·无实验表述  仍有：{'、'.join(bad)}")
+        else:
+            print("  OK   最终版·无实验表述   实验相关表述 0 处")
+        if cite_ok:
+            print("  OK   最终版·已发表论文   第一作者 Food Chem 2026, 521: 149910 在文中")
+        else:
+            problems += 1
+            print("  FAIL 最终版·已发表论文   缺第一作者论文引用（Wen SH / Food Chem / 149910）")
+
     # 导师综合评语已换成用户给的文本（不再提“部分样本缺少可用参考基因组”）
     # 注意：只截取评语那一段来判，正文技术路线里本来就有“部分样本缺少可用参考基因组”一句
     ev_text = ""
     ev_at = main_text.find("导师综合评语")
     if ev_at >= 0:
         ev_text = re.sub(r"<[^>]+>", "", main_text[ev_at:ev_at + 2000]).replace("&amp;", "&")
+    if final_docx.exists():
+        ftext2 = docx_text(final_docx)
+        fat = ftext2.find("导师综合评语")
+        f_ev = re.sub(r"<[^>]+>", "", ftext2[fat:fat + 2000]).replace("&amp;", "&") if fat >= 0 else ""
+        if ("对预测假阳性、机制关联证据强度有限等问题已有明确处理办法" in f_ev
+                and "部分样本缺少可用参考基因组" not in f_ev):
+            print("  OK   导师评语·最终版  已用指定文本")
+        else:
+            problems += 1
+            print("  FAIL 导师评语·最终版  评语不是用户指定文本")
     if ("对预测假阳性、机制关联证据强度有限等问题已有明确处理办法" in ev_text
             and "部分样本缺少可用参考基因组" not in ev_text):
         print("  OK   导师评语·送审版  已用指定文本（不再提“部分样本缺少可用参考基因组”）")

@@ -17,7 +17,9 @@ TCCELLS="$TCCELLS_EXTRA"; for r in 11 12 13 14 15 16; do
 done
 SDT="13:0:0 13:1:0 13:2:0 13:3:0 13:4:0 13:5:0 13:6:0"
 
-for f in "deliverable/中期.docx" "deliverable/中期新.docx" "中间版/中期.docx" "中间版2/中期.docx"; do
+# 最终版（精简 4 页、含已发表论文引用）与前面几份同格式检查
+DOCS="deliverable/中期.docx deliverable/中期新.docx deliverable/中期_最终版.docx 中间版/中期.docx 中间版2/中期.docx"
+for f in $DOCS; do
   echo "=== $f"
   python code/verify_docx.py --base sources/中期.docx --filled "$f" \
     --cells $CELLS --blank-cells $BLANK --insert-cells $INS \
@@ -26,7 +28,7 @@ for f in "deliverable/中期.docx" "deliverable/中期新.docx" "中间版/中�
 done
 
 echo "=== docx 排版（签字页单独成完整一页）"
-for f in "deliverable/中期.docx" "deliverable/中期新.docx" "中间版/中期.docx" "中间版2/中期.docx"; do
+for f in $DOCS; do
   printf "%-32s " "$f"; python code/check_docx_layout.py "$f" --quiet | tail -1 || rc=1
 done
 printf "%-32s " "deliverable/中期检查表_签字页.docx"
