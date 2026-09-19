@@ -27,6 +27,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
+from pptx import Presentation      # noqa: E402  （结构检查数页数）
+
 RULES = [
     ("论文题目", ["基于深度学习的阿尔茨海默症患者与健康人群肠道微生物组中抗菌肽的差异性研究"],
      ["基于深度学习的阿尔茨海默症患者与健康人群", "肠道微生物组中抗菌肽的差异性研究"]),
@@ -43,12 +45,24 @@ RULES = [
     ("关联分析口径", ["AD 特有肽与 AD 的关联", "AD 发病机制的关联分析"],
      ["AD 特有肽与 AD 的关联"]),
     # 检查小组成员（4 份表都填；签字页同源）
+    # 分箱：MetaBAT2 / MaxBin2 / CONCOCT 三个算法（PPT 流程页与数据资源页都要点名）
+    ("分箱工具", ["MetaBAT2", "MaxBin2", "CONCOCT"], ["MaxBin2", "CONCOCT"]),
     # 检查小组成员只填在 docx（用户 2026-09-19 指定），PPT 不要求
     ("检查小组成员（docx）", ["李向阳", "江婷婷", "孙杰", "高洪伟"], None),
     ("机制·AChE", ["AChE", "乙酰胆碱酯酶"], ["AChE", "乙酰胆碱酯酶"]),
     ("成果·投稿", ["SCI"], ["SCI"]),
     ("完成度口径", ["已完成"], ["已完成"]),
     ("后续环节", ["进行中", "正在"], ["正在推进", "进行中", "下一步"]),
+]
+
+# 各版页数与"已删除页面"清单
+DECK_STRUCTURE = [
+    ("deliverable/中期答辩_H_nature风.pptx", 24, ()),
+    ("deliverable/中期答辩_最终版.pptx", 24, ()),
+    ("中间版/中期答辩_H_nature风.pptx", 14, ()),
+    # 中间版 2 = 最终答辩 PPT：已删“与开题计划相比”“八个问题逐一作答”“文献支撑一览”
+    ("中间版2/中期答辩_H_nature风.pptx", 11,
+     ("与开题计划相比", "八个问题逐一作答", "文献支撑一览")),
 ]
 
 BANNED = ["极简", "最小工作量", "最小可行性", "最小化验证",
@@ -64,7 +78,6 @@ def docx_text(path: Path) -> str:
 
 
 def pptx_text(path: Path) -> str:
-    from pptx import Presentation
     prs = Presentation(str(path))
     chunks = []
     for slide in prs.slides:
@@ -128,6 +141,27 @@ def main(argv=None) -> int:
         if hits:
             problems += 1
         print(f"  {status} 禁用表述：{word:<8} {'-> ' + ', '.join(hits) if hits else ''}")
+
+    # 结构检查：各版页数固定；中间版 2 已按老师意见删掉三页
+    for rel, n_slides, forbidden in DECK_STRUCTURE:
+        path = ROOT / rel
+        if not path.exists():
+            problems += 1
+            print(f"  FAIL 结构·{path.name: <16} 文件不存在")
+            continue
+        text = pptx_text(path)
+        n = len(Presentation(str(path)).slides)
+        hits = [w for w in forbidden if w in text]
+        if n == n_slides and not hits:
+            print(f"  OK   结构·{path.parent.name}/{path.name:<22} {n} 页")
+            continue
+        problems += 1
+        detail = []
+        if n != n_slides:
+            detail.append(f"页数 {n} != {n_slides}")
+        if hits:
+            detail.append("仍有应删页面：" + "、".join(hits))
+        print(f"  FAIL 结构·{path.parent.name}/{path.name:<22} " + "；".join(detail))
 
     if problems == 0:
         print("\nRESULT: docx 与全部 PPT 口径一致")
