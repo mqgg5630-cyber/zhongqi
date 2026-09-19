@@ -165,15 +165,15 @@ def fig_mechanism():
     mf.box(ax, 0.31, 0.70, 0.38, 0.24,
            "分组特异的候选抗菌肽（健康特有 / 阶段特有）", fc=NEXT_F, ec=ORANGE, fs=16, bold=True)
     mf.box(ax, 0.02, 0.24, 0.30, 0.34,
-           "① 与 Aβ 相互作用\n影响聚集与纤维化", fc=LIGHT, ec=BLUE, fs=15.5)
+           "① 与 Aβ 相互作用\n促进成核与聚集", fc=LIGHT, ec=BLUE, fs=15.5)
     mf.box(ax, 0.35, 0.24, 0.30, 0.34,
-           "② 与 AChE（PAS）结合\n干扰 AChE–Aβ 成核", fc=LIGHT, ec=BLUE, fs=15.5)
+           "② 与 AChE（PAS）结合\n推动 AChE–Aβ 成核", fc=LIGHT, ec=BLUE, fs=15.5)
     mf.box(ax, 0.68, 0.24, 0.30, 0.34,
            "③ 免疫与炎症通路\n肠—脑轴 / 神经炎症", fc=LIGHT, ec=BLUE, fs=15.5)
     for x in (0.17, 0.50, 0.83):
         mf.arrow(ax, (0.50, 0.70), (x, 0.58), color=GREY, lw=1.5, rad=0.10)
     ax.text(0.5, 0.075,
-            "对接与分子动力学模拟验证结合稳定性（参照 AChE–Aβ 复合物模拟研究的思路）",
+            "对接与分子动力学模拟验证是否促进成核与聚集（参照 AChE–Aβ 复合物模拟研究的思路）",
             ha="center", fontsize=15.5, color=GREY)
     mf.save(fig, "figE_机制关联.png")
 
