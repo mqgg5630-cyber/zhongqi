@@ -10,8 +10,9 @@
   * 逐行填页：一行放不下就换到下一页（Word 对表格行的默认行为）
 
 检查项：
-  1) “2. 导师综合评语”那一行的段落带 <w:pageBreakBefore/> —— 签字页从新的一页开始
-     （--sign-page 模式：文件本身就是签字页，改为要求表格第一行就是 2. 导师综合评语）
+  1) 签字页第一行的段落带 <w:pageBreakBefore/> —— 签字页从新的一页开始
+     （起点按段前分页挂在哪一行判定：最终版是「Ⅱ.导师指导情况」，送审版与中间版是「2. 导师综合评语」；
+     --sign-page 模式：文件本身就是签字页，改为要求表格第一行就是起点那一行）
   2) 从该行到表格末尾所有行的高度之和 <= 一页可用高度 —— 签字页完整、不跨页
   3) 逐行模拟分页时，签字部分没有任何一行被拆到两页
   4) 报告估算总页数、签字页落在第几页、签字页还剩多少空间
@@ -38,7 +39,11 @@ try:
 except ImportError:                                  # pragma: no cover
     ImageFont = None
 
-SIGN_LABEL = "导师综合评语"     # 签字页从这一行开始（末尾即“导师签字： 2026年9月19日”）
+SIGN_LABELS = ("Ⅱ.导师指导情况", "导师综合评语")
+#   签字页从哪一行开始：段前分页挂在哪一行就是哪一行 ——
+#   * 最终版（导师要求）：Ⅱ.导师指导情况 起，Ⅱ / 导师签字 / Ⅲ.评议情况 / 签字盖章 全在一页；
+#   * 送审版与中间版：2. 导师综合评语 起。
+SIGN_LABEL = "导师综合评语"      # 兜底 / 报错信息里用的名字
 SIGN_TAIL = "Ⅲ.评议情况"        # 检查小组成员 / 检查意见 / 组长签字 / 单位盖章也要在同一页上
 TW = 20                       # 1 pt = 20 twips
 MIN_ROW = 24                  # 行高下限（空行 / 边框）
@@ -205,7 +210,7 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="估算 .docx 分页，检查签字页")
     ap.add_argument("docx")
     ap.add_argument("--sign-page", action="store_true",
-                    help="文件本身就是签字页：要求表格第一行是 2. 导师综合评语")
+                    help="文件本身就是签字页：要求表格第一行是 Ⅱ.导师指导情况 / 2. 导师综合评语")
     ap.add_argument("--quiet", action="store_true", help="只打印结论")
     args = ap.parse_args(argv)
 
@@ -225,9 +230,15 @@ def main(argv=None) -> int:
     cols, cellmar = table_metrics(tbl)
     trs = tbl.findall(qn("w:tr"))
 
-    sign_row = next((i for i, tr in enumerate(trs) if SIGN_LABEL in text_of(tr)), None)
+    # 段前分页挂在哪一行，签字页就从哪一行开始（候选：Ⅱ.导师指导情况 / 2. 导师综合评语）
+    cand = [i for i, tr in enumerate(trs)
+            if any(lab in text_of(tr) for lab in SIGN_LABELS)]
+    brk = [i for i in cand if has_page_break_before(trs[i])]
+    sign_row = brk[0] if brk else (cand[0] if cand else None)
+    sign_label_used = (SIGN_LABELS[0] if sign_row is not None
+                       and SIGN_LABELS[0] in text_of(trs[sign_row]) else SIGN_LABEL)
     if sign_row is None:
-        print(f"[ERROR] no row with {SIGN_LABEL!r}", file=sys.stderr)
+        print(f"[ERROR] no row with {SIGN_LABEL!r} / {SIGN_LABELS[0]!r}", file=sys.stderr)
         return 1
     tail_row = next((i for i, tr in enumerate(trs) if SIGN_TAIL in text_of(tr)), None)
     if tail_row is None or tail_row < sign_row:
@@ -242,7 +253,7 @@ def main(argv=None) -> int:
           f"-> 一页可用高度 {avail:.0f} twips = {avail / TW:.0f} pt")
     print(f"  table: {len(trs)} rows x {len(cols)} cols; 签字部分 = row "
           f"{sign_row}—{len(trs) - 1}"
-          f"（{SIGN_LABEL} → {len(trs) - 1 - sign_row + 1} 行，含 {SIGN_TAIL}）")
+          f"（{sign_label_used} → {len(trs) - 1 - sign_row + 1} 行，含 {SIGN_TAIL}）")
 
     heights = [row_height(tr, cols, cellmar) for tr in trs]
     breaks = [has_page_break_before(tr) for tr in trs]
@@ -279,17 +290,17 @@ def main(argv=None) -> int:
 
     # ---- 检查 1：签字页从新的一页开始
     if args.sign_page:
-        if trs and SIGN_LABEL in text_of(trs[0]):
-            print(f"  OK   表格第一行就是 {SIGN_LABEL}（这是单独一份签字页文件）")
+        if trs and any(lab in text_of(trs[0]) for lab in SIGN_LABELS):
+            print(f"  OK   表格第一行就是 {sign_label_used}（这是单独一份签字页文件）")
         else:
-            problems.append(f"签字页文件的第一行不是 {SIGN_LABEL}")
-            print(f"  FAIL 第一行是 {text_of(trs[0])[:16]!r}，不是 {SIGN_LABEL!r}")
+            problems.append(f"签字页文件的第一行不是 {SIGN_LABELS}")
+            print(f"  FAIL 第一行是 {text_of(trs[0])[:16]!r}，不是 {SIGN_LABELS}")
     elif breaks[sign_row]:
-        print(f"  OK   row {sign_row} [{SIGN_LABEL}] 带 <w:pageBreakBefore/>："
+        print(f"  OK   row {sign_row} [{sign_label_used}] 带 <w:pageBreakBefore/>："
               f"签字页从新的一页开始")
     else:
         problems.append(f"row {sign_row} [{SIGN_LABEL}] 没有段前分页")
-        print(f"  FAIL row {sign_row} [{SIGN_LABEL}] 没有段前分页，签字页不一定单独成页")
+        print(f"  FAIL row {sign_row} [{sign_label_used}] 没有段前分页，签字页不一定单独成页")
 
     # ---- 检查 2：签字部分装得进一页
     if sign_h <= avail:
@@ -310,12 +321,12 @@ def main(argv=None) -> int:
 
     # ---- 检查 4：导师签字与检查小组签字在同一页上
     if page_of[tail_row] == page_of[sign_row] and sign_row < tail_row:
-        print(f"  OK   {SIGN_LABEL}（导师签字）与 {SIGN_TAIL}（检查小组成员 / 检查意见 / "
+        print(f"  OK   {sign_label_used} 起（导师签字）与 {SIGN_TAIL}（检查小组成员 / 检查意见 / "
               f"组长签字 / 单位盖章）都在第 {page_of[sign_row]} 页")
     else:
-        problems.append(f"{SIGN_LABEL} 在第 {page_of[sign_row]} 页、"
+        problems.append(f"{sign_label_used} 在第 {page_of[sign_row]} 页、"
                         f"{SIGN_TAIL} 在第 {page_of[tail_row]} 页，不在同一页")
-        print(f"  FAIL {SIGN_LABEL} 在第 {page_of[sign_row]} 页、"
+        print(f"  FAIL {sign_label_used} 在第 {page_of[sign_row]} 页、"
               f"{SIGN_TAIL} 在第 {page_of[tail_row]} 页，不在同一页")
 
     # 签字页里的填空提示（签字行）要都在

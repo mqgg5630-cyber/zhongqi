@@ -15,7 +15,8 @@
 不做任何重排：直接打开 `deliverable/中期.docx`（填好的那一份，含检查小组成员与日期；
 若不存在则退回 `sources/中期.docx`），
   * 删掉封面页、填表说明页以及它们的分节符
-  * 正文表只保留 “2. 导师综合评语” 那一行到表格末尾（行元素原样搬过来，
+  * 正文表只保留签字页起点那一行（带段前分页的那一行：最终版 =「Ⅱ.导师指导情况」，
+    送审版 / 中间版 =「2. 导师综合评语」）到表格末尾（行元素原样搬过来，
     框线 / 列宽 / 行高 / 字体 / 单元格内容都不动）—— 导师签字在综合评语这一格，
     要和后面的检查小组签字（Ⅲ.评议情况、检查意见、是否同意参加预答辩、组长签字、单位盖章）
     装在**同一页**上（用户 2026-09-19 指定“组装在一起”）。
@@ -47,7 +48,11 @@ TEMPLATE = ROOT / "sources" / "中期.docx"
 FILLED = ROOT / "deliverable" / "中期.docx"      # 填好的那一份（默认从这里裁，带姓名与日期）
 OUT = ROOT / "deliverable" / "中期检查表_签字页.docx"
 
-SIGN_LABEL = "导师综合评语"     # 签字页第一行：2. 导师综合评语（末尾就是“导师签字： 2026年9月19日”）
+SIGN_LABELS = ("Ⅱ.导师指导情况", "导师综合评语")
+#   签字页第一行：段前分页挂在哪一行就是哪一行 ——
+#   * 最终版（导师要求）：Ⅱ.导师指导情况 起（Ⅱ / 导师签字 / Ⅲ.评议情况 / 盖章全在一页）；
+#   * 送审版与中间版：2. 导师综合评语 起。
+SIGN_LABEL = "导师综合评语"      # 兜底 / 报错信息里用的名字
 SIGN_TAIL = "Ⅲ.评议情况"        # 后面接着检查小组成员 / 检查意见 / 组长签字 / 单位盖章
 
 
@@ -76,15 +81,27 @@ def main(argv=None) -> int:
         return 1
     tbl = tables[-1]
     trs = tbl.findall(qn("w:tr"))
-    sign_row = next((i for i, tr in enumerate(trs)
-                     if SIGN_LABEL in "".join(t.text or "" for t in tr.iter(qn("w:t")))), None)
+    def _text(tr):
+        return "".join(t.text or "" for t in tr.iter(qn("w:t")))
+
+    def _has_pbb(tr):
+        return any(p.find(qn("w:pPr")) is not None
+                   and p.find(qn("w:pPr")).find(qn("w:pageBreakBefore")) is not None
+                   for p in tr.iter(qn("w:p")))
+
+    cand = [i for i, tr in enumerate(trs) if any(lab in _text(tr) for lab in SIGN_LABELS)]
+    brk = [i for i in cand if _has_pbb(trs[i])]
+    sign_row = brk[0] if brk else (cand[0] if cand else None)
     if sign_row is None:
-        print(f"[ERROR] no row with {SIGN_LABEL!r}", file=sys.stderr)
+        print(f"[ERROR] no row with {SIGN_LABELS}", file=sys.stderr)
         return 1
+    sign_label = SIGN_LABELS[0] if SIGN_LABELS[0] in _text(trs[sign_row]) else SIGN_LABEL
+    print(f"签字页起点 row {sign_row}：{sign_label}"
+          f"{'（带段前分页）' if sign_row in brk else '（没有段前分页）'}")
     tail_row = next((i for i, tr in enumerate(trs)
                      if SIGN_TAIL in "".join(t.text or "" for t in tr.iter(qn("w:t")))), None)
     if tail_row is None or tail_row < sign_row:
-        print(f"[ERROR] row with {SIGN_TAIL!r} not found after {SIGN_LABEL!r}", file=sys.stderr)
+        print(f"[ERROR] row with {SIGN_TAIL!r} not found after {sign_label!r}", file=sys.stderr)
         return 1
 
     tbl_idx = kids.index(tbl)
@@ -124,10 +141,10 @@ def main(argv=None) -> int:
         print(f"FAIL  结构：{len(tbls2)} 表 / {len(par2)} 段 / {len(sect2)} sectPr")
 
     first = "".join(t.text or "" for t in trs2[0].iter(qn("w:t"))) if trs2 else ""
-    if SIGN_LABEL in first:
-        print(f"OK    第一行 = {SIGN_LABEL}（签字页从这里开始）")
+    if sign_label in first:
+        print(f"OK    第一行 = {sign_label}（签字页从这里开始）")
     else:
-        problems.append(f"第一行不是 {SIGN_LABEL}")
+        problems.append(f"第一行不是 {sign_label}")
         print(f"FAIL  第一行 = {first[:20]!r}")
 
     all_text = " ".join("".join(t.text or "" for t in tr.iter(qn("w:t"))) for tr in trs2)
@@ -165,7 +182,7 @@ def main(argv=None) -> int:
     if problems:
         print(f"RESULT: {len(problems)} problem(s)")
         return 1
-    print("RESULT: OK - 签字页已单独成一份一页文件（导师综合评语 + 导师签字 + 检查小组签字 / 盖章）")
+    print(f"RESULT: OK - 签字页已单独成一份一页文件（{sign_label} 起：导师签字 + 检查小组签字 / 盖章）")
     print(f"接着跑：python code/check_docx_layout.py {out} --sign-page")
     return 0
 

@@ -32,6 +32,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 
+from docx.oxml.ns import qn     # noqa: E402
 from pptx import Presentation      # noqa: E402  （结构检查数页数）
 
 RULES = [
@@ -226,15 +227,26 @@ def main(argv=None) -> int:
     if ev_at >= 0:
         ev_text = re.sub(r"<[^>]+>", "", main_text[ev_at:ev_at + 2000]).replace("&amp;", "&")
     if final_docx.exists():
+        # 最终版的导师文字必须与导师交回来的 sources/中期_导师.docx 一字不差
+        # （中间只允许差一个段前分页标记 —— 这一条由 make_final_from_advisor.py --verify 兜底）
+        adv = ROOT / "sources" / "中期_导师.docx"
+        if adv.exists():
+            def cell_texts(path):
+                x = zipfile.ZipFile(path).read("word/document.xml").decode("utf-8", "ignore")
+                return re.findall(r"<w:t[^>]*>([^<]*)</w:t>", x)
+            if cell_texts(adv) == cell_texts(final_docx):
+                print("  OK   导师文字·最终版  与 sources/中期_导师.docx 一字不差")
+            else:
+                problems += 1
+                print("  FAIL 导师文字·最终版  与导师改好的版本不一致")
         ftext2 = docx_text(final_docx)
         fat = ftext2.find("导师综合评语")
         f_ev = re.sub(r"<[^>]+>", "", ftext2[fat:fat + 2000]).replace("&amp;", "&") if fat >= 0 else ""
-        if ("对预测假阳性、机制关联证据强度有限等问题已有明确处理办法" in f_ev
-                and "部分样本缺少可用参考基因组" not in f_ev):
-            print("  OK   导师评语·最终版  已用指定文本")
+        if "同意" in f_ev and "预答辩" in f_ev:
+            print("  OK   导师评语·最终版  有“是否同意参加预答辩”的明确意见")
         else:
-            problems += 1
-            print("  FAIL 导师评语·最终版  评语不是用户指定文本")
+            print("  WARN 导师评语·最终版  没有“同意该生参加学位论文预答辩”这句明确意见 —— "
+                  "表头要求写明确意见，请与导师确认是否补一句（本脚本按导师原文保留，未代改）")
     if ("对预测假阳性、机制关联证据强度有限等问题已有明确处理办法" in ev_text
             and "部分样本缺少可用参考基因组" not in ev_text):
         print("  OK   导师评语·送审版  已用指定文本（不再提“部分样本缺少可用参考基因组”）")

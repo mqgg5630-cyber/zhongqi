@@ -21,6 +21,15 @@ SDT="13:0:0 13:1:0 13:2:0 13:3:0 13:4:0 13:5:0 13:6:0"
 DOCS="deliverable/中期.docx deliverable/中期新.docx deliverable/中期_最终版.docx 中间版/中期.docx 中间版2/中期.docx"
 for f in $DOCS; do
   echo "=== $f"
+  # 段前分页挂在哪一行：最终版挂「Ⅱ.导师指导情况」(row 6)，其余几份挂「2. 导师综合评语」(row 8)
+  # 最终版是从导师用 Word 改过的 sources/中期_导师.docx 派生的（Word 会把表格宽度 4865->4864 之类
+  # 的属性和一些单元格 XML 重写一遍），所以不拿学校模板逐字节比，而是拿导师版比：
+  # 除了一处分页标记，其余逐字节一致。
+  case "$f" in
+    *中期_最终版.docx)
+      python code/make_final_from_advisor.py --verify | tail -1 || rc=1
+      continue ;;
+  esac
   python code/verify_docx.py --base sources/中期.docx --filled "$f" \
     --cells $CELLS --blank-cells $BLANK --insert-cells $INS \
     --tc-skip $TCSKIP --tc-cells $TCCELLS --sdt-cells $SDT \
