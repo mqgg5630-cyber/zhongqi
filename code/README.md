@@ -40,12 +40,13 @@ results/figures/*.png                        ← 由 make_figures2.py 生成（�
 python code/build_ops.py                 # 草稿 md -> ops json
 python code/fill_docx.py --ops build/ops_中期.json      # 填表
 python code/verify_docx.py --base sources/中期.docx --filled deliverable/中期.docx \
-       --cells 22:0:3 22:2:0 22:3:0 22:4:0 22:5:0 22:7:0 \
+       --cells 22:0:3 22:2:0 22:3:0 22:4:0 22:5:0 22:7:0 22:17:0 \
        --blank-cells 22:11:2 22:11:4 ... 22:16:6 \
        --insert-cells 22:8:0@22:7:0:1:0 \
        --tc-skip 22:0:1 22:2:0 22:3:0 22:4:0 22:5:0 22:7:0 22:8:0 22:11:2 ... \
-       --tc-cells 22:11:1 22:12:1 22:13:1 22:14:1 22:15:1 22:16:1 \
+       --tc-cells 22:17:0 22:11:1 22:12:1 22:13:1 22:14:1 22:15:1 22:16:1 \
        --sdt-cells 13:0:0 13:1:0 13:2:0 13:3:0 13:4:0 13:5:0 13:6:0 \
+       --pbb-rows 22:9 \
        --row-insert 22:15:1                                        # 格式校验（含封面 / Ⅱ / Ⅲ）
 python code/make_figures2.py             # 画图（含框内文字溢出检查 + 投影字号核算）
 python code/make_ppt.py                  # 出旧版（细节版）PPT（含字号/越界/图文重叠检查）
@@ -71,7 +72,7 @@ python code/make_mid2_content.py         # 中间版 2 docx 草稿（保留清�
 python code/make_mid2_figures.py         # 中间版 2 专用图：半程进度路线图
 python code/make_ppt_mid.py              # 中间版 1 PPT（14 页 = 主体 10 + 机制 4）-> 中间版/
 python code/make_ppt_mid.py --half       # 中间版 2 PPT（14 页，进度减半）-> 中间版2/
-bash code/check_all.sh                   # 四份 docx 格式 + 五份 docx 签字页分页 + 十一份 PPT 版式 + 四份版面体检 + 口径核对
+bash code/check_all.sh                   # 四份 docx 格式 + 五份 docx 签字页分页 + 十一份 PPT 版式 + 四份版面体检 + 口径核对（set -o pipefail：前置脚本一失败就 rc=1）
 python code/add_notes.py "deliverable/中期答辩_A_学术蓝.pptx"   # 给 A 版补演讲备注（大纲 -> 备注区）
 python code/check_ppt.py "deliverable/中期答辩_B_白底细线.pptx" # 独立版式检查
 python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/prevA
@@ -82,9 +83,9 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 | 脚本 | 作用 |
 |---|---|
 | `inspect_docx.py` | 解析 docx 结构：段落样式、字体（含东亚字体）、字号、缩进、表格逐格内容、Word 表单域，输出 txt + json |
-| `fill_docx.py` | 就地填 docx：`replace_text` / `set_cell` / `fill_cell` / `fill_tc`（按原始行/格定位）/ `fill_sdt`（Word 内容控件，封面用）/ `insert_in_cell` / `set_paragraph` / `insert_after` / `insert_after_text` / `delete_paragraph`，全部基于模板原有段落格式；另有 **`page_break_before_row`**（给表格某一行加段前分页，让签字页——「2. 导师综合评语」+「Ⅲ.评议情况」——单独成完整的一页；行内容/框线一字不动）、**`clone_row`**（表行不够时原样复制一行，行高/框线/列宽全继承）与 **`insert_cell_paras`**（在单元格中间插入正文段落，格式取自指定模板段落——用于"导师综合评语"这类要求"正文在标题之后、签字行之前"的格子）|
-| `verify_docx.py` | 校验成品是否保持模板格式（页面设置、页眉页脚、表格属性、非目标单元格逐字节一致、目标单元格段落/字体格式一致）；参数覆盖四种填法：`--sdt-cells`（封面内容控件）、`--tc-cells` / `--tc-skip`（"整格重建"的正文格）、`--blank-cells`（模板里本来是空格子，只允许加段落、段落格式必须与原空格子一致）、`--insert-cells`（单元格中间插段：原段落逐字节保留 + 插入段落格式等于指定模板段落）、`--row-insert`（声明插了哪几行，只校验该行的行高与 tcPr 与源行一致）；`--cells` 还支持 `表:行:列@模板表:模板行:模板列:模板段` 形式 |
-| `build_ops.py` | 把 `deliverable/中期检查表_填写内容.md` 编译成 `fill_docx.py` 的 ops；`# 封面信息` 段 → 封面表（body 序号 13）7 栏，`## n.` 段 → 正文单元格（1—4），`# 导师指导情况`（键值对）→ 表 22 第 7/8 行，`# 检查小组成员`（`｜` 分隔行）→ 表 22 第 11 行起，人数超过模板行数时自动插入 `clone_row`；末尾固定加一条 `page_break_before_row`（2. 导师综合评语 → 签字页单独成完整一页，导师签字与检查小组签字同页）|
+| `fill_docx.py` | 就地填 docx：`replace_text` / `set_cell` / `fill_cell` / `fill_tc`（按原始行/格定位）/ `fill_sdt`（Word 内容控件，封面用）/ `insert_in_cell` / `set_paragraph` / `insert_after` / `insert_after_text` / `delete_paragraph`，全部基于模板原有段落格式；另有 **`page_break_before_row`**（给表格某一行加段前分页，让签字页——「Ⅲ.评议情况」检查小组名单 / 检查意见 / 组长签字 / 单位盖章——单独成完整的一页；行内容/框线一字不动）、**`fill_date_blanks`**（把所有“年 月 日”空档一次填成同一个日期，如 2026年9月19日：模板里这几处在 `w:sdt` 内容控件内，python-docx 看不到，故按 run 文本替换、字体格式不动）、**`clone_row`**（表行不够时原样复制一行，行高/框线/列宽全继承）与 **`insert_cell_paras`**（在单元格中间插入正文段落，格式取自指定模板段落——用于"导师综合评语"这类要求"正文在标题之后、签字行之前"的格子）|
+| `verify_docx.py` | 校验成品是否保持模板格式（页面设置、页眉页脚、表格属性、非目标单元格逐字节一致、目标单元格段落/字体格式一致；`--pbb-rows` 声明哪几行加了段前分页——现在是 `22:9` 即「Ⅲ.评议情况」；「年 月 日 → 2026年9月19日」这类只填空的日期改动按“填空”处理，不判成格式漂移）；参数覆盖四种填法：`--sdt-cells`（封面内容控件）、`--tc-cells` / `--tc-skip`（"整格重建"的正文格）、`--blank-cells`（模板里本来是空格子，只允许加段落、段落格式必须与原空格子一致）、`--insert-cells`（单元格中间插段：原段落逐字节保留 + 插入段落格式等于指定模板段落）、`--row-insert`（声明插了哪几行，只校验该行的行高与 tcPr 与源行一致）；`--cells` 还支持 `表:行:列@模板表:模板行:模板列:模板段` 形式 |
+| `build_ops.py` | 把 `deliverable/中期检查表_填写内容.md` 编译成 `fill_docx.py` 的 ops；`# 封面信息` 段 → 封面表（body 序号 13）7 栏，`## n.` 段 → 正文单元格（1—4），`# 导师指导情况`（键值对）→ 表 22 第 7/8 行，`# 检查小组成员`（`｜` 分隔行）→ 表 22 第 11 行起，人数超过模板行数时自动插入 `clone_row`；末尾固定加一条 `page_break_before_row`（Ⅲ.评议情况 → 签字页单独成完整一页；2. 导师综合评语与导师签字留在上一页）和一条 `fill_date_blanks`（3 处日期空档统一填 `2026年9月19日`）|
 | `make_figures.py` | 生成 fig1—fig8（**细节版**，供学位论文用）；含折行与溢出测量工具函数；自检：文本是否超出方框、缩放到幻灯片后最小有效字号是否 ≥15 pt |
 | `make_figures2.py` | 生成 figA—figG（**思路版**，中期答辩用：研究思路、三模型预测、分阶段差异、宏蛋白组去重、机制关联、抑菌实验验证、进度） |
 | `make_ppt.py` | 生成第一版 16 页答辩 PPT（细节版）；自检：每个 run ≥15 pt、形状不越界、文字不压图 |
@@ -97,8 +98,8 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 | `check_consistency.py` | 以 docx 为准核对八版 PPT 的题目 / 封面 / 阶段划分 / 机制方向 / 成果形式 / 完成度口径 / 禁用词，输出 `RESULT: docx 与全部 PPT 口径一致` |
 | `fetch_ppt_master.py` | 按需下载 ppt-master（54k★，MIT）到 `build/ppt-master/` 供 `make_ppt_svg.py` 调用；不在仓库里存 125 MB 的第三方源码 |
 | `add_notes.py` | 把大纲里的演讲备注（口播稿）按页序写进任意 pptx（A 版补备注即用它），八版备注口径一致 |
-| `make_sign_page.py` | 从学校模板原样裁出签字页（「2. 导师综合评语」到表格末尾：导师签字 + Ⅲ.评议情况 + 检查意见 + 组长签字 + 单位盖章），存成 **A4 一页** 的 `deliverable/中期检查表_签字页.docx`（不做任何重排：行元素直接搬，纸张 / 页边距 / 页脚与整份表一致；自检逐行与模板比对） |
-| `check_docx_layout.py` | **docx 分页估算**（本机没有 Word）：按纸张 / 页边距 / 行高 / 字号换行逐行填页，检查「2. 导师综合评语」是否带段前分页、签字部分（含 Ⅲ.评议情况）是否装得进一页且不被拆开、两处签字是否同页；`--sign-page` 用于单独那份签字页 |
+| `make_sign_page.py` | 从填好的 `deliverable/中期.docx`（没有则退回学校模板）原样裁出签字页（「Ⅲ.评议情况」到表格末尾：检查小组成员 + 检查意见 + 组长签字 + 培养单位盖章 + 日期），存成 **A4 一页** 的 `deliverable/中期检查表_签字页.docx`（不做任何重排：行元素直接搬，纸张 / 页边距 / 页脚与整份表一致；自检逐行与源文件比对，并核对成员姓名与日期都在） |
+| `check_docx_layout.py` | **docx 分页估算**（本机没有 Word）：按纸张 / 页边距 / 行高 / 字号换行逐行填页，检查「Ⅲ.评议情况」是否带段前分页、签字部分是否装得进一页且不被拆开、组长签字与单位盖章是否同页；`--sign-page` 用于单独那份签字页 |
 | `preview_docx.py` | 把 docx 的分页画成图片（页 / 行框 / 文字按列宽换行，签字页橙色标出），无需装 Office 就能看排版；`--sheet` 再拼一张全部页的图 |
 | `check_ppt.py` | 独立的 PPT 版式检查（用真实 CJK 字体估算换行高度；每个 run ≥15 pt、形状不越界，并硬性禁止正文/备注里出现"图：本项目自制（results/figures/…）"一类来源小字） |
 | `preview_ppt.py` | 无 PowerPoint 环境下的逐页 PNG 预览（用于核版式）；支持读取 `p:bg` 幻灯片背景色，深色版式不会预览成白底 |

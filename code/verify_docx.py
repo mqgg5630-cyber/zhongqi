@@ -99,6 +99,21 @@ def mask_text(xml: str) -> str:
     return T_RE.sub(r"\1@\2", xml)
 
 
+DATE_RE = re.compile(r"(?:\d{4}\s*年\s*\d{1,2}\s*月\s*\d{1,2}\s*日"
+                      r"|年[\s\u3000]+月[\s\u3000]+日)")
+
+
+def same_xml_or_date(a: str, b: str) -> bool:
+    """两段 XML 逐字节相同；或者只差一处“年 月 日 -> 2026年9月19日”的日期填写。
+
+    日期属于“填空”，不能因为填空就判成改动格式：把两边的日期都归一成 〈日期〉 再比。
+    """
+    a2, b2 = strip_ns(a), strip_ns(b)
+    if a2 == b2:
+        return True
+    return DATE_RE.sub("〈日期〉", a2) == DATE_RE.sub("〈日期〉", b2)
+
+
 def get_cell(doc, t_idx: int, r: int, c: int):
     """Cell by body-element table index / merged-grid row, column."""
     els = body(doc)
@@ -349,9 +364,9 @@ def main(argv=None) -> int:
                     tcell = get_cell(b, tt, tr, tc)
                     tmpl_ref = tcell.paragraphs[tp]._p if tcell and len(tcell.paragraphs) > tp else None
                     n_tail = len(p1) - after - 1
-                    prefix_ok = all(strip_ns(p1[k]._p.xml) == strip_ns(p2[k]._p.xml)
+                    prefix_ok = all(same_xml_or_date(p1[k]._p.xml, p2[k]._p.xml)
                                     for k in range(after + 1))
-                    tail_ok = all(strip_ns(p1[-(k + 1)]._p.xml) == strip_ns(p2[-(k + 1)]._p.xml)
+                    tail_ok = all(same_xml_or_date(p1[-(k + 1)]._p.xml, p2[-(k + 1)]._p.xml)
                                   for k in range(n_tail))
                     inserted = p2[after + 1:len(p2) - n_tail] if n_tail else p2[after + 1:]
                     fmt_ok = bool(inserted) and tmpl_ref is not None and all(
@@ -370,6 +385,13 @@ def main(argv=None) -> int:
                     continue
 
                 if is_target:
+                    # 只往原占位符里填了字（例如 年 月 日 -> 2026年9月19日）：
+                    # 结构 / 段落 / run 属性逐字节相同，只有 w:t 里的文字变了
+                    if mask_text(strip_ns(cell1._tc.xml)) == mask_text(strip_ns(cell2._tc.xml)):
+                        checked += 1
+                        print(f"{OK} fill target tbl{i} r{r}c{c}: 只填文字，"
+                              f"结构 / 段落 / run 属性逐字节相同")
+                        continue
                     p1, p2 = cell1.paragraphs, cell2.paragraphs
                     same_prompt = True
                     for k in range(min(len(p1), len(p2))):

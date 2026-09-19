@@ -10,7 +10,9 @@
 4. 抑菌实验表述禁用词（极简 / 最小工作量 / 最小可行性）；
 5. 阶段划分一致（NC / SCS / SCD / MCI / AD）；
 6. 机制关联三方向一致（Aβ 聚集 / AChE 外周阴离子位点 / 免疫与炎症通路）；
-7. 结果形式一致（SCI 论文 1 篇 + 学位论文）。
+7. 结果形式一致（SCI 论文 1 篇 + 学位论文）；
+8. 日期一致：三份表里“封面填表日期 / 导师签字 / 检查组长签字 + 培养单位盖章”都填 2026年9月19日、
+   模板的“年 月 日”空档一个不剩（签字页单独文件里也要有日期）。
 
 用法
 ----
@@ -21,6 +23,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 import sys
 import zipfile
 from pathlib import Path
@@ -162,6 +165,28 @@ def main(argv=None) -> int:
         if hits:
             detail.append("仍有应删页面：" + "、".join(hits))
         print(f"  FAIL 结构·{path.parent.name}/{path.name:<22} " + "；".join(detail))
+
+    # 日期：封面填表日期 / 导师签字 / 组长签字 + 培养单位盖章，3 处空档都填好
+    DATE = "2026年9月19日"
+    BLANK_DATE = re.compile(r"年[\s\u3000]{2,}月[\s\u3000]*日")
+    date_hits = []
+    for d in docs:
+        n, blanks = dtexts[d].count(DATE), len(BLANK_DATE.findall(dtexts[d]))
+        if n == 3 and blanks == 0:
+            print(f"  OK   日期·{d.parent.name}/{d.name:<14} 3 处日期都填了 {DATE}")
+            continue
+        problems += 1
+        date_hits.append(f"{d.parent.name}/{d.name}（填了 {n} 处、还剩空档 {blanks} 处）")
+    if date_hits:
+        print(f"  FAIL 日期·三处日期应填 {DATE}：{'；'.join(date_hits)}")
+    sign_docx = ROOT / "deliverable" / "中期检查表_签字页.docx"
+    if sign_docx.exists():
+        n = docx_text(sign_docx).count(DATE)
+        if n:
+            print(f"  OK   日期·deliverable/{sign_docx.name:<18} 含 {DATE}")
+        else:
+            problems += 1
+            print(f"  FAIL 日期·deliverable/{sign_docx.name} 里没有 {DATE}")
 
     if problems == 0:
         print("\nRESULT: docx 与全部 PPT 口径一致")

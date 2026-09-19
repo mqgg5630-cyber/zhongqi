@@ -20,6 +20,7 @@ ops.json format
   "out":  "out/中期报告_已填.docx",      // optional if --out given
   "ops": [
     {"op": "replace_text", "find": "____", "replace": "内容", "nth": 0, "scope": "all"},
+    {"op": "fill_date_blanks", "text": "2026年9月19日"},   // 所有“年 月 日”空档
 
     {"op": "set_cell", "table": 0, "row": 2, "col": 1, "text": "内容"},
 
@@ -173,6 +174,27 @@ def op_replace_text(doc, op):
             print(f"OK    replace_text  {find!r} -> {repl[:24]!r}  (nth={nth})")
             return
     warn(f"replace_text: {find!r} (nth={nth}) not found")
+
+
+def op_fill_date_blanks(doc, op):
+    """把文档里所有“年　月　日”空档一次填成同一个日期。
+
+    模板里的日期空档（封面填表日期、导师签字、检查组长签字 / 培养单位盖章）都在
+    Word 内容控件（w:sdt）里，python-docx 看不到，所以这里直接在 XML 上按 run 文本替换：
+    只把“年 月 日”这几个字换成日期，run 的字体 / 字号 / 颜色等属性原样保留。
+    """
+    text = op["text"]
+    pat = re.compile(r"^\s*年\s+月\s+日\s*$")
+    hits = []
+    for t in doc.element.body.iter(qn("w:t")):
+        if t.text and pat.match(t.text):
+            t.text = text
+            hits.append(t)
+    if hits:
+        print(f"OK    fill_date_blanks  日期空档 {len(hits)} 处 -> {text}")
+    else:
+        warn(f"fill_date_blanks: 没有找到“年 月 日”空档 -> {text}")
+    return len(hits)
 
 
 def op_set_cell(doc, op):
@@ -588,6 +610,7 @@ HANDLERS = {
     "clone_row": op_clone_row,
     "insert_cell_paras": op_insert_cell_paras,
     "replace_text": op_replace_text,
+    "fill_date_blanks": op_fill_date_blanks,
     "set_cell": op_set_cell,
     "fill_cell": op_fill_cell,
     "fill_tc": op_fill_tc,

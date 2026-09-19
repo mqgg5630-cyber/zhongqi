@@ -38,8 +38,8 @@ try:
 except ImportError:                                  # pragma: no cover
     ImageFont = None
 
-SIGN_LABEL = "导师综合评语"     # 签字页从这一行开始（末尾即“导师签字： 年 月 日”）
-SIGN_TAIL = "Ⅲ.评议情况"        # 检查小组签字 / 检查意见 / 组长签字也要在同一页上
+SIGN_LABEL = "Ⅲ.评议情况"       # 签字页从这一行开始（检查小组成员 / 检查意见 / 组长签字 / 单位盖章）
+SIGN_TAIL = "检查组长"           # 末尾那一行（组长签字 + 培养单位盖章 + 日期）也必须在同一页
 TW = 20                       # 1 pt = 20 twips
 MIN_ROW = 24                  # 行高下限（空行 / 边框）
 DEFAULT_SIZE_PT = 12.0
@@ -307,10 +307,10 @@ def main(argv=None) -> int:
         problems.append(f"签字部分分布在估算的第 {sign_pages} 页")
         print(f"  FAIL 签字部分分布在估算的第 {sign_pages} 页")
 
-    # ---- 检查 4：导师签字与检查小组签字在同一页上
+    # ---- 检查 4：Ⅲ.评议情况（小组成员 / 检查意见）与末尾的组长签字、盖章在同一页
     if page_of[tail_row] == page_of[sign_row] and sign_row < tail_row:
-        print(f"  OK   {SIGN_LABEL}（导师签字）与 {SIGN_TAIL}（检查小组签字 / 检查意见 / "
-              f"组长签字 / 单位盖章）都在第 {page_of[sign_row]} 页")
+        print(f"  OK   {SIGN_LABEL}（检查小组成员 / 检查意见）与 {SIGN_TAIL}（签字 + 培养单位盖章）"
+              f"都在第 {page_of[sign_row]} 页")
     else:
         problems.append(f"{SIGN_LABEL} 在第 {page_of[sign_row]} 页、"
                         f"{SIGN_TAIL} 在第 {page_of[tail_row]} 页，不在同一页")
@@ -319,7 +319,7 @@ def main(argv=None) -> int:
 
     # 签字页里的填空提示（签字行）要都在
     sign_text = " ".join(text_of(trs[i]) for i in sign_rows)
-    for needle in ("导师签字", "组长（签字）", "培养单位盖章", "中期检查意见"):
+    for needle in ("组长（签字）", "培养单位盖章", "中期检查意见"):
         if needle in sign_text:
             print(f"  OK   签字页含 {needle}")
         else:
@@ -336,9 +336,9 @@ def main(argv=None) -> int:
         for p in problems:
             print(f"  - {p}")
         return 1
-    print("\nRESULT: OK - 一页装得下整份签字页（导师签字 + 检查小组签字都在这一页）"
+    print("\nRESULT: OK - 一页装得下整份签字页（检查小组签字 + 单位盖章都在这一页）"
           if args.sign_page else
-          "\nRESULT: OK - 签字页单独成完整一页（导师签字 + 检查小组签字同页）")
+          "\nRESULT: OK - 签字页单独成完整一页（Ⅲ.评议情况起，检查小组签字 + 单位盖章同页）")
     return 0
 
 
