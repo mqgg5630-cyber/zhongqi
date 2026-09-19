@@ -160,6 +160,10 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--src", default=str(SRC))
     ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--subtitle", default="中期检查补充材料 · 逐条回答老师提出的八个问题",
+                    help="标题下那行小字（总结版用）")
+    ap.add_argument("--refs", choices=("all", "cited"), default="all",
+                    help="参考文献：all=全部（默认），cited=只列正文里 [n] 引用到的")
     a = ap.parse_args(argv)
 
     lines = Path(a.src).read_text(encoding="utf-8").splitlines()
@@ -191,7 +195,7 @@ def main(argv=None) -> int:
             r = p.add_run(line[2:].strip())
             set_font(r, 22, bold=True, color=INK)
             p2 = para(doc, WD_ALIGN_PARAGRAPH.CENTER, after=2)
-            r = p2.add_run("中期检查补充材料 · 逐条回答老师提出的八个问题")
+            r = p2.add_run(a.subtitle)
             set_font(r, 12, color=TEAL)
             p3 = para(doc, WD_ALIGN_PARAGRAPH.CENTER, after=2)
             r = p3.add_run("文绍华　2024110316　｜　指导教师：申亮　｜　生命科学学院　｜　2026 年 9 月")
@@ -266,7 +270,12 @@ def main(argv=None) -> int:
     p = para(doc, before=16, after=6)
     r = p.add_run("参考文献")
     set_font(r, 14, bold=True, color=INK)
-    for n in sorted(R.REFS):
+    ref_nums = sorted(R.REFS)
+    if a.refs == "cited":
+        body = "\n".join(l for l in lines if not l.lstrip().startswith("<!--"))
+        cited = {int(x) for x in re.findall(r"\[(\d+)\]", body)}
+        ref_nums = [n for n in ref_nums if n in cited]
+    for n in ref_nums:
         p = para(doc, indent=0.30, hanging=0.30, after=2, spacing=1.18)
         r = p.add_run(f"[{n}] ")
         set_font(r, 9.5, bold=True, color=INK)
@@ -276,10 +285,15 @@ def main(argv=None) -> int:
     out = Path(a.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     doc.save(str(out))
-    print(f"wrote {out.relative_to(ROOT)}")
+    try:
+        shown = out.resolve().relative_to(ROOT)
+    except ValueError:
+        shown = out
+    print(f"wrote {shown}")
     print(f"  paragraphs: {len(doc.paragraphs)} | tables: {len(doc.tables)} | "
-          f"inline shapes: {len(doc.inline_shapes)} | 文献 {len(R.REFS)} 条")
-    print(f"  图 {n_fig} 张 / 表 {n_tab} 张 / 问题 {sum(1 for l in lines if l.startswith('### '))} 个")
+          f"inline shapes: {len(doc.inline_shapes)} | 参考文献 {len(ref_nums)} 条")
+    print(f"  图 {n_fig} 张 / 表 {n_tab} 张 / 问题 {sum(1 for l in lines if l.startswith('### '))} 个"
+          f" / 参考文献 {len(ref_nums)} 条（--refs {a.refs}）")
     return 0
 
 
