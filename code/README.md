@@ -67,6 +67,9 @@ python code/make_mech_figures.py         # 机制图 3 张：七环逻辑链 / A
 python code/make_mech_doc.py             # 机制说明 docx（正文取 docs/机制说明_正文.md，文献取 code/mech_refs.py）
 python code/make_ppt_nature.py --mechanism   # H 版（含流程页、分组页）+ 6 页机制页（共 24 页）
 python code/check_layout.py              # 版面体检：形状重叠 / 文字溢出 / 压页脚
+python code/make_noexp_content.py        # 送审版草稿（去掉抑菌实验）-> deliverable/中期检查表_填写内容_无抑菌实验.md
+                                         #   -> build_ops.py --in <这份 md> --out build/ops_中期_无抑菌实验.json
+                                         #   -> fill_docx.py --out deliverable/中期.docx
 python code/make_mid_content.py          # 中间版 1 docx 草稿（保留清单在脚本内）-> docs/中间版_填写内容.md
 python code/make_mid2_content.py         # 中间版 2 docx 草稿（保留清单 + 半程进度口径）-> docs/中间版2_填写内容.md
 python code/make_mid2_figures.py         # 中间版 2 专用图：半程进度路线图
@@ -98,6 +101,7 @@ python code/preview_ppt.py "deliverable/中期答辩_A_学术蓝.pptx" -o build/
 | `check_consistency.py` | 以 docx 为准核对八版 PPT 的题目 / 封面 / 阶段划分 / 机制方向 / 成果形式 / 完成度口径 / 禁用词，输出 `RESULT: docx 与全部 PPT 口径一致` |
 | `fetch_ppt_master.py` | 按需下载 ppt-master（54k★，MIT）到 `build/ppt-master/` 供 `make_ppt_svg.py` 调用；不在仓库里存 125 MB 的第三方源码 |
 | `add_notes.py` | 把大纲里的演讲备注（口播稿）按页序写进任意 pptx（A 版补备注即用它），八版备注口径一致 |
+| `make_noexp_content.py` | 从 `deliverable/中期检查表_填写内容.md` 派生**去掉抑菌实验的送审版**草稿（`deliverable/中期检查表_填写内容_无抑菌实验.md`）：DROP 8 行 + REPL 30 处（研究内容 / 技术路线 / 进度 / 阶段性成果 / 尚需完成的工作 / 问题与对策 / 后续工作安排 / 导师评语，并理顺小节编号），生成后复核 11 个实验关键词为 0 处；任一处对不上就整脚本中止、不写文件 |
 | `make_sign_page.py` | 从填好的 `deliverable/中期.docx`（没有则退回学校模板）原样裁出签字页（「Ⅲ.评议情况」到表格末尾：检查小组成员 + 检查意见 + 组长签字 + 培养单位盖章 + 日期），存成 **A4 一页** 的 `deliverable/中期检查表_签字页.docx`（不做任何重排：行元素直接搬，纸张 / 页边距 / 页脚与整份表一致；自检逐行与源文件比对，并核对成员姓名与日期都在） |
 | `check_docx_layout.py` | **docx 分页估算**（本机没有 Word）：按纸张 / 页边距 / 行高 / 字号换行逐行填页，检查「Ⅲ.评议情况」是否带段前分页、签字部分是否装得进一页且不被拆开、组长签字与单位盖章是否同页；`--sign-page` 用于单独那份签字页 |
 | `preview_docx.py` | 把 docx 的分页画成图片（页 / 行框 / 文字按列宽换行，签字页橙色标出），无需装 Office 就能看排版；`--sheet` 再拼一张全部页的图 |

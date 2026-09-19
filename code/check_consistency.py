@@ -11,7 +11,8 @@
 5. 阶段划分一致（NC / SCS / SCD / MCI / AD）；
 6. 机制关联三方向一致（Aβ 聚集 / AChE 外周阴离子位点 / 免疫与炎症通路）；
 7. 结果形式一致（SCI 论文 1 篇 + 学位论文）；
-8. 日期一致：三份表里“封面填表日期 / 导师签字 / 检查组长签字 + 培养单位盖章”都填 2026年9月19日、
+8. 送审版（deliverable/中期.docx）不含任何抑菌实验表述（其余两份表保留），导师评语为指定文本；
+9. 日期一致：三份表里“封面填表日期 / 导师签字 / 检查组长签字 + 培养单位盖章”都填 2026年9月19日、
    模板的“年 月 日”空档一个不剩（签字页单独文件里也要有日期）。
 
 用法
@@ -179,6 +180,39 @@ def main(argv=None) -> int:
         date_hits.append(f"{d.parent.name}/{d.name}（填了 {n} 处、还剩空档 {blanks} 处）")
     if date_hits:
         print(f"  FAIL 日期·三处日期应填 {DATE}：{'；'.join(date_hits)}")
+    # 送审版（deliverable/中期.docx）用户 2026-09-19 指定：完全去掉抑菌实验（其余版本保留）
+    NOEXP_WORDS = ["抑菌", "纸片扩散", "肉汤稀释", "指示菌", "最低抑菌浓度",
+                   "阳性对照", "阴性对照", "人工合成", "活性验证",
+                   "大肠杆菌", "金黄色葡萄球菌"]
+    main_docx = ROOT / "deliverable" / "中期.docx"
+    main_text = dtexts[main_docx] if main_docx in dtexts else docx_text(main_docx)
+    left = [w for w in NOEXP_WORDS if w in main_text]
+    if not left:
+        print("  OK   送审版·无抑菌实验    deliverable/中期.docx 里实验相关表述 0 处")
+    else:
+        problems += 1
+        print(f"  FAIL 送审版·无抑菌实验    deliverable/中期.docx 仍有：{'、'.join(left)}")
+    for d in docs:
+        if d == main_docx:
+            continue
+        if "抑菌" in dtexts[d]:
+            print(f"  OK   版本·{d.parent.name}/{d.name:<12} 仍保留抑菌实验内容")
+        else:
+            problems += 1
+            print(f"  FAIL 版本·{d.parent.name}/{d.name} 缺抑菌实验内容（这一版应当保留）")
+    # 导师综合评语已换成用户给的文本（不再提“部分样本缺少可用参考基因组”）
+    # 注意：只截取评语那一段来判，正文技术路线里本来就有“部分样本缺少可用参考基因组”一句
+    ev_text = ""
+    ev_at = main_text.find("导师综合评语")
+    if ev_at >= 0:
+        ev_text = re.sub(r"<[^>]+>", "", main_text[ev_at:ev_at + 2000]).replace("&amp;", "&")
+    if ("对预测假阳性、机制关联证据强度有限等问题已有明确处理办法" in ev_text
+            and "部分样本缺少可用参考基因组" not in ev_text):
+        print("  OK   导师评语·送审版  已用指定文本（不再提“部分样本缺少可用参考基因组”）")
+    else:
+        problems += 1
+        print("  FAIL 导师评语·送审版  评语不是用户指定文本（或仍提“部分样本缺少可用参考基因组”）")
+
     sign_docx = ROOT / "deliverable" / "中期检查表_签字页.docx"
     if sign_docx.exists():
         n = docx_text(sign_docx).count(DATE)

@@ -122,13 +122,17 @@ def render(path: Path, out_dir: Path, sheet: bool = False):
         if (brk and cur) or (cur and used + h > avail * 0.999):
             pages.append(cur)
             cur, used = [], 0.0
-        if h > avail:                                  # 比一页还高：画满一页，剩下的标出来
-            pages.append([(i, avail_px)])
-            pages.append([(i, hpx[i] - avail_px, True)])
-            cur, used = [], 0.0
-            continue
-        cur.append((i, hpx[i]))
-        used += h
+        rest, part = h, 0
+        while rest > avail * 0.999:        # 比一页还高：一页一页画满，剩下的标"续"
+            if cur:
+                pages.append(cur)
+                cur, used = [], 0.0
+            pages.append([(i, avail_px, part > 0)])
+            rest -= avail
+            part += 1
+        if rest > 0:
+            cur.append((i, px(rest), part > 0))
+            used += rest
     if cur:
         pages.append(cur)
 

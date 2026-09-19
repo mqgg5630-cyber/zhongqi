@@ -254,15 +254,16 @@ def main(argv=None) -> int:
         if breaks[i] and cur > 0:
             page += 1
             cur = 0.0
-        if h > avail:
+        rest = h
+        if cur and cur + rest > avail * 0.999:      # 当前页剩余空间装不下：从新的一页开始
+            page += 1
+            cur = 0.0
+        while rest > avail * 0.999:                 # 行本身就比一页高：占满若干整页
             split_rows.append(i)
+            rest -= avail
             page += 1
-            cur = h % avail
-        elif cur + h > avail * 0.999:
-            page += 1
-            cur = h
-        else:
-            cur += h
+            cur = 0.0
+        cur += rest
         page_of.append(page)
 
     if not args.quiet:
@@ -326,10 +327,11 @@ def main(argv=None) -> int:
             problems.append(f"签字页缺 {needle}")
             print(f"  FAIL 签字页缺 {needle}")
 
+    # 页码是逐行累加的，最后一行落在第几页就是正文表一共几页（一行可能跨好几页）
     if page_of[-1] == page_of[sign_row]:
-        print(f"  估算总页数 {len(set(page_of))}，签字页 = 第 {page_of[sign_row]} 页（最后一页）")
+        print(f"  估算正文表共 {page_of[-1]} 页，签字页 = 第 {page_of[sign_row]} 页（最后一页）")
     else:
-        print(f"  估算总页数 {len(set(page_of))}，签字页 = 第 {page_of[sign_row]} 页")
+        print(f"  估算正文表共 {page_of[-1]} 页，签字页 = 第 {page_of[sign_row]} 页")
 
     if problems:
         print(f"\nRESULT: {len(problems)} problem(s)")
