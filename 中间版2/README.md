@@ -7,8 +7,8 @@
 
 | 文件 | 页数 / 段落 | 与完整版的关系 |
 |---|---|---|
-| `中期.docx` | 正文 31 段 / 完整版 60 段（**52%**），字数 51% | 同一份学校模板、同样就地填写；含 Ⅱ.导师指导情况（按半程进度写的短版），检查小组成员格按模板留空；格式校验 `RESULT: template format fully preserved` |
-| `中期答辩_H_nature风.pptx` | **14 页** / 完整版 24 页 | 与 H 版同一套版式、配色、参考线、最小 15 pt，含 14 页演讲备注；**谢谢页在第 14 页（最后一页）** |
+| `中期.docx` | 正文 31 段 / 完整版 60 段（**52%**），字数 51% | 同一份学校模板、同样就地填写；含 Ⅱ.导师指导情况（按半程进度写的短版），检查小组成员按名单填好；格式校验 `RESULT: template format fully preserved` |
+| `中期答辩_H_nature风.pptx` | **11 页** / 完整版 24 页 | 与 H 版同一套版式、配色、参考线、最小 15 pt，含 11 页演讲备注；**谢谢页在第 11 页（最后一页）**；按老师意见删掉“与开题计划相比”页、“八个问题逐一作答”页与“文献支撑一览”页，机制页只留七环逻辑链与 AChE–Aβ 动力学两页 |
 
 ## 进度口径（与完整版、中间版 1 的区别）
 
@@ -36,7 +36,7 @@ python code/build_ops.py --in docs/中间版2_填写内容.md --out build/ops_�
 python code/fill_docx.py --ops build/ops_中期_中间版2.json --out 中间版2/中期.docx
 
 python code/make_mid2_figures.py      # 半程进度图 figA_研究思路总览_半程.png
-python code/make_ppt_mid.py --half    # 14 页 PPT（进度减半，谢谢页在最后）
+python code/make_ppt_mid.py --half    # 11 页 PPT（进度减半 + 三页删减，谢谢页在最后）
 
 bash code/check_all.sh                # 四份 docx 格式 + 十一份 PPT 版式 + 四份版面体检 + 口径核对
 ```
@@ -44,7 +44,7 @@ bash code/check_all.sh                # 四份 docx 格式 + 十一份 PPT 版�
 ## 自检结果
 
 - `code/verify_docx.py`：`RESULT: template format fully preserved`
-- `code/check_ppt.py`：`RESULT: OK (0 soft warning(s))`（14 页，最小字号 15 pt、无来源小字）
+- `code/check_ppt.py`：`RESULT: OK (0 soft warning(s))`（11 页，最小字号 15 pt、无来源小字）
 - nature-skills `audit_pptx_quality.py`：`high=0, medium=0, low=0`（`results/qa/中期版2_audit.{md,json}`）
 - `code/check_consistency.py`：三份 docx 与十份 PPT 口径一致
 - 预览图：`results/ppt_preview/中间版2_第1页起.png`、`中间版2_第5页起.png`、`中间版2_第9页起.png`

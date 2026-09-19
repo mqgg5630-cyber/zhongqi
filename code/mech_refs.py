@@ -209,6 +209,17 @@ REFS: dict[int, str] = {
         "biofilm-associated amyloids with potential for neurodegeneration. Nat Commun, 2024, "
         "15: 4150. doi:10.1038/s41467-024-48309-x（人粪便来源的生物膜相关淀粉样蛋白在 AD/PD "
         "患者中更丰富，可交叉成核 αSyn，并在体外参与 Aβ 的成核）",
+    59: "Zhao Z, Zhao F, Zhang M, et al. Multi-omics profiling reveals gut microbiome "
+        "signatures associated with cognitive decline in Alzheimer's disease. iScience, 2026, "
+        "29(8): 116622. doi:10.1016/j.isci.2026.116622（宏基因组 + 代谢组：AD 组富集 "
+        "Akkermansia massiliensis、Alistipes onderdonkii、Barnesiella intestinihominis 等菌种，"
+        "物种层面的特征可区分 AD 且与 MMSE 负相关——说明“AD 组特异”的微生物特征在物种层面"
+        "可以被识别）",
+    60: "Gut microbiota changes in patients with Alzheimer's disease spectrum based on 16S "
+        "rRNA sequencing: a systematic review and meta-analysis. Front Aging Neurosci, 2024, "
+        "16: 1422350. doi:10.3389/fnagi.2024.1422350（PMC11338931；AD 谱系中 12 个属显著改变："
+        "Ruminococcus、Faecalibacterium、Lachnospira 等下降，Phascolarctobacterium、Lactobacillus "
+        "与 Akkermansia muciniphila 富集；作者提出这些改变可作为 AD 相关的菌群特征）",
 }
 
 # ------------------------------------------------------------ 抗菌肽的方向
@@ -291,10 +302,11 @@ QUESTIONS: list[dict] = [
                  "抑菌实验逐层约束。",
     ),
     dict(
-        n=4, q="AD 组特有抗菌肽为什么能与 AD 关联",
-        a="因为肠道菌群本身随认知阶段呈梯度变化，同一队列内不同阶段的菌群组成不同，"
-          "由这些菌群编码的抗菌肽自然会出现阶段特异性的组成差异；这正是“阶段特有肽”的生物学基础。",
-        strength="中", refs=[17, 26, 27, 28, 29, 30],
+        n=4, q="AD 特异性特有抗菌肽为什么能与 AD 关联",
+        a="因为肠道菌群本身随认知阶段呈梯度变化：AD 组的菌群组成与参照组不同，且物种层面的特征"
+          "可以区分 AD；由这些菌群编码的抗菌肽因此会出现“只在 AD 组出现”的组成差异，"
+          "这正是 AD 特异性特有肽的生物学基础。",
+        strength="中", refs=[17, 26, 27, 28, 29, 30, 59, 60],
         evidence=[
             "按认知阶段分层的研究显示 Proteobacteria 在 MCI 阶段下降最明显，Firmicutes 在 AD 阶段"
             "下降更明显，Fusobacteria、Lactobacillus 呈阶段梯度 [28]。",
@@ -302,8 +314,13 @@ QUESTIONS: list[dict] = [
             "菌群失衡在前驱期即已开始 [30]。",
             "促炎菌富集与脑内淀粉样沉积、外周 IL-1β 等炎症指标相关 [26]；AD 组菌群变化幅度大于"
             "MCI 组 [27]。",
+            "多组学分析显示 AD 组富集 Akkermansia massiliensis、Alistipes onderdonkii 等菌种，"
+            "物种层面特征可区分 AD 并与 MMSE 负相关 [59]；16S 元分析显示 AD 谱系有 12 个属显著改变、"
+            "可作为 AD 相关菌群特征 [60]。",
         ],
-        boundary="“阶段特有肽”目前是计算层面的产物，其生物学功能需要表达证据与实验支持；"
+        boundary="两点限定：① 目前公开文献里没有“AD 组特有抗菌肽”的直接报道——菌群层面的 AD 组"
+                 "特异特征有据（[59][60]），肽层面的只有阶段差异与宿主抗菌肽升高；AD 特异性特有肽的"
+                 "判定是本课题的计算结果，必须由表达证据与实验支持；② 判定为计算层面产物，"
                  "本课题以宏蛋白组表达证据做二次去重来降低假阳性。",
     ),
     dict(
@@ -418,7 +435,8 @@ MD_TABLE: list[tuple[str, str, str]] = [
     ("本课题的动力学验证设计（致病方向）",
      "对接 + 动力学考察候选肽在 AChE–Aβ 界面（PAS 与 344—361 区段）与 Aβ 淀粉样生成区的结合模式、"
      "MM-PBSA 结合自由能、β-折叠含量、D23—K28 盐桥与氢键网络、纤维延伸面的结合方式；"
-     "输出“是否促进成核与聚集”的优先序，再对优先候选肽做 ThT 聚集动力学、电镜形态与"
+     "据此判断 AD 特异性特有肽与 AD 的关联方向（是否促进成核与聚集、是否把产物推向更毒的"
+     "寡聚体），再对结果指向同一方向的候选肽做 ThT 聚集动力学、电镜形态与"
      "细胞毒性/炎症因子验证", "本课题"),
 ]
 
@@ -427,7 +445,7 @@ SLIDE_SHORT = {
     1: "Aβ 本身即抗菌肽；LL-37、β-防御素-1、CAP37 等在 AD 中上调",
     2: "AD 脑细菌读段 5—10 倍、LPS 2—3 倍；衣原体 89% vs 5%；感染负担归因 13%—52%",
     3: "宏基因组 + 深度学习挖抗菌肽已有完整先例（含宏蛋白组互证 + 动力学 + 合成验证）",
-    4: "菌群随认知阶段梯度变化：Proteobacteria 先在 MCI 降，Firmicutes 在 AD 降",
+    4: "AD 组的菌种与功能特征可区分 AD；由这些菌群编码的肽在 AD 组更可能出现特有组成",
     5: "致病方向：FapC/CsgA 加速 Aβ 纤维化、LPS 促斑块与 p-tau、LL-37 经 CLIC1 致 AD 样病理",
     6: "抗菌活性是本职功能（5×FAD 小鼠抗感染更久、纤维网捕获病毒），不作为“抑制 AD”的结论",
     7: "LPS→TLR4/NF-κB→促炎因子→Aβ 与抗菌肽；TNF-α/Aβ 可诱导 CAP37 表达",

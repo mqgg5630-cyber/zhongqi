@@ -33,7 +33,7 @@ OPEN_F, OPEN_E = "#fdf2e3", ORANGE        # 本研究要回答
 
 
 def fig_chain():
-    """七环逻辑链：从 AD 与感染，到抗菌肽，到机制与双刃剑。"""
+    """七环逻辑链：从 AD 与感染，到抗菌肽，到机制与关联方向。"""
     fig, ax = mf.canvas(12.4, 5.2)
     rows = [
         (0.70, [
@@ -43,7 +43,7 @@ def fig_chain():
         ], DONE_F, DONE_E),
         (0.40, [
             "④ 抗菌活性可计算预测\n深度学习从宏基因组挖掘候选肽",
-            "⑤ AD 组特异抗菌肽\n随病程阶段变化",
+            "⑤ AD 特异性特有肽\n随病程阶段变化",
             "⑥ 致病方向：促进 Aβ\n成核聚集与神经炎症",
         ], PRED_F, PRED_E),
         (0.10, [
@@ -67,7 +67,7 @@ def fig_chain():
         Line2D([], [], marker="s", ls="", ms=13, mfc=DONE_F, mec=DONE_E,
                label="已有实验/临床证据支持"),
         Line2D([], [], marker="s", ls="", ms=13, mfc=PRED_F, mec=PRED_E,
-               label="计算方法可给出候选与优先序"),
+               label="计算与文献比对可给出关联线索"),
         Line2D([], [], marker="s", ls="", ms=13, mfc=OPEN_F, mec=OPEN_E,
                label="本研究拟回答 / 需要验证"),
     ]

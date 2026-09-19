@@ -6,7 +6,7 @@
 ----------------
 * 只讲"研究思路 + 工作完成到哪一步"，不展开技术细节（页面上不出现参数、版本、命令、指标数字）
 * 三模型（Attention / LSTM / BERT）共识预测按"已完成"呈现
-* 分析完抗菌肽差异后，用宏蛋白组做二次去重，筛选健康人与各阶段特有的抗菌肽
+* 分析完抗菌肽差异后，用宏蛋白组做二次去重，筛出 AD 组特有的（AD 特异性）抗菌肽
 * 最后与 AD 发病机制建立关联（Aβ 聚集 / AChE–PAS / 免疫与炎症），并补一个抑菌实验验证
 * 例外：工作进度一页保留百分比，用于说明"完成到哪一步"
 
@@ -104,7 +104,7 @@ def build() -> Presentation:
     s = prs.slides.add_slide(prs.slide_layouts[6])
     add_title(s, "研究思路：八步走的整体框架与完成进度", "研究思路")
     place_figure(s, "figA_研究思路总览.png", max_h=CONTENT_BOTTOM - CONTENT_TOP)
-    add_takeaway(s, "主线：数据资源 → 短肽库 → 三模型共识预测 → 分阶段差异 → 去重筛选特有肽 → 机制关联与验证")
+    add_takeaway(s, "主线：数据资源 → 短肽库 → 三模型共识预测 → 分阶段差异 → 去重筛选 AD 特有肽 → AD 特有肽与 AD 的关联分析")
     slides.append(s)
 
     # 4 ─ 科学问题 ---------------------------------------------------------
@@ -130,7 +130,7 @@ def build() -> Presentation:
     add_para(tf, "科学问题", size=17, bold=True, color=ORANGE, first=True,
              space_before=0, space_after=4)
     add_para(tf, "AD 患者与健康人群肠道微生物组所编码的抗菌肽是否存在差异？"
-                 "能否筛选出各阶段特有的抗菌肽，并与 AD 的发病机制建立联系？",
+                 "能否筛出 AD 组特有的抗菌肽，并与 AD 的发病机制建立联系？",
              size=18, bold=True, color=INK, space_before=0, space_after=0, line_spacing=1.15)
     slides.append(s)
 
@@ -176,32 +176,32 @@ def build() -> Presentation:
     add_para(tf, "按认知阶段对队列分组，比较各阶段与健康人群之间候选抗菌肽的丰度与组成差异，"
                  "筛选出随病程变化明显的候选抗菌肽。",
              size=16.5, color=INK, first=True, space_before=0, space_after=0, line_spacing=1.25)
-    add_takeaway(s, "先得到随病程变化的候选抗菌肽，再用表达证据过滤，为特有肽筛选做准备")
+    add_takeaway(s, "先得到随病程变化的候选抗菌肽，再用表达证据过滤，为 AD 特异性特有肽筛选做准备")
     slides.append(s)
 
     # 8 ─ 宏蛋白组去重 -----------------------------------------------------
     s = prs.slides.add_slide(prs.slide_layouts[6])
-    add_title(s, "已完成：宏蛋白组二次去重，筛选特有抗菌肽", "已完成工作 · 第五步")
+    add_title(s, "已完成：宏蛋白组二次去重，筛选 AD 特异性特有抗菌肽", "已完成工作 · 第五步")
     place_figure(s, "figD_宏蛋白组去重.png", top=CONTENT_TOP - Inches(0.05),
                  max_h=Inches(3.35))
     tb, tf = textbox(s, MARGIN, CONTENT_BOTTOM - Inches(1.05), CONTENT_W, Inches(1.0))
     add_para(tf, "在第一层序列去冗余之后，引入宏蛋白组表达证据进行二次去重，"
-                 "只保留真实存在且被检出的抗菌肽，并据此区分健康人群特有与各疾病阶段特有的抗菌肽。",
+                 "只保留真实存在且被检出的抗菌肽，并据此筛出 AD 组特有（AD 特异性）的抗菌肽。",
              size=16.5, color=INK, first=True, space_before=0, space_after=0, line_spacing=1.25)
     add_takeaway(s, "二次去重解决两类问题：序列冗余，以及“有预测、无表达”的假阳性")
     slides.append(s)
 
     # 9 ─ 机制关联 ---------------------------------------------------------
     s = prs.slides.add_slide(prs.slide_layouts[6])
-    add_title(s, "下一步：按致病方向分析候选肽与 AD 的关联", "下一步计划 · 第六步")
+    add_title(s, "下一步：AD 特有肽与 AD 的关联分析（致病方向）", "下一步计划 · 第六步")
     place_figure(s, "figE_机制关联.png", top=CONTENT_TOP - Inches(0.05),
                  max_h=Inches(3.4))
     tb, tf = textbox(s, MARGIN, CONTENT_BOTTOM - Inches(1.02), CONTENT_W, Inches(1.0))
-    add_para(tf, "参照乙酰胆碱酯酶—β-淀粉样肽复合物分子模拟研究的思路，按致病方向考察候选抗菌肽："
+    add_para(tf, "参照乙酰胆碱酯酶—β-淀粉样肽复合物分子模拟研究的思路，按致病方向考察 AD 特异性特有肽："
                  "与 Aβ 的相互作用是否促进成核与聚集，与 AChE 外周阴离子位点的结合是否推动成核环节，"
                  "以及在免疫与炎症通路上是否放大信号。",
              size=16.5, color=INK, first=True, space_before=0, space_after=0, line_spacing=1.25)
-    add_takeaway(s, "关联分析的落点：判断候选肽是否推动 Aβ 聚集与神经炎症，而不是去证明它抑制 AD")
+    add_takeaway(s, "关联分析的落点：判断 AD 特有肽是否推动 Aβ 聚集与神经炎症，而不是去证明它抑制 AD")
     slides.append(s)
 
     # 10 ─ 抑菌实验 --------------------------------------------------------
@@ -234,9 +234,9 @@ def build() -> Presentation:
     add_title(s, "后续安排：四项收尾工作", "下一步计划")
     tb, tf = textbox(s, MARGIN, CONTENT_TOP + Inches(0.1), CONTENT_W, Inches(4.2))
     rows = [
-        ("1. 机制关联分析", "完成特有抗菌肽与 Aβ 聚集、AChE 结合及炎症通路的关联分析，形成候选肽清单。"),
+        ("1. 机制关联分析", "完成 AD 特有肽与 Aβ 聚集、AChE 结合及炎症通路的关联分析。"),
         ("2. 抑菌实验验证", "完成候选抗菌肽的合成与抑菌实验，获得抑菌活性初筛结果。"),
-        ("3. 结果整理", "整理候选抗菌肽、特有肽与验证结果，形成完整的图表与结论。"),
+        ("3. 结果整理", "整理 AD 特有肽、关联分析与验证结果，形成完整的图表与结论。"),
         ("4. 论文撰写", "完成学位论文撰写与投稿论文准备，按计划申请预答辩。"),
     ]
     for k, (tag, text) in enumerate(rows):
@@ -255,7 +255,7 @@ def build() -> Presentation:
         ("候选肽挖掘", "开题计划提取 sORF 并预测抗菌肽 → 已完成短肽库构建与三模型共识预测"),
         ("差异分析", "开题计划按病程阶段比较 → 已完成分阶段差异分析，并新增宏蛋白组二次去重"),
         ("模型方案", "开题拟构建 DeepMetaAMP → 实际采用 Attention / LSTM / BERT 三个已发表模型协同预测"),
-        ("机制与验证", "开题拟做功能与可视化分析 → 下一步进行机制关联分析与抑菌实验验证"),
+        ("机制与验证", "开题拟做功能与可视化分析 → 下一步做 AD 特有肽与 AD 的关联分析与抑菌实验验证"),
     ]
     for k, (tag, text) in enumerate(rows):
         add_rich(tf, [(tag + "　", True, TEAL), (text, False, INK)], size=16.5,
@@ -294,8 +294,8 @@ def build() -> Presentation:
     add_title(s, "预期成果", "成果形式")
     bullets = [
         "一套完整的肠道微生物源抗菌肽挖掘分析流程，可复用于其他队列与疾病",
-        "健康人群与 AD 各阶段特有的候选抗菌肽清单，作为后续研究的线索集",
-        "候选抗菌肽与 AD 发病机制关联的分析结果（Aβ 聚集、AChE 结合、炎症通路）",
+        "AD 特异性特有的候选抗菌肽清单，作为后续研究的线索集",
+        "AD 特有肽与 AD 发病机制关联的分析结果（Aβ 聚集、AChE 结合、炎症通路）",
         "候选抗菌肽抑菌活性的初步实验证据",
         "以第一作者撰写并投稿 SCI 收录论文 1 篇，完成学位论文",
     ]

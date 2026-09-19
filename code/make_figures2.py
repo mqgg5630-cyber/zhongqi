@@ -145,7 +145,7 @@ def fig_metaproteome():
     boxes = [
         (0.02, "① 候选抗菌肽\n（宏基因组预测）", LIGHT, BLUE),
         (0.355, "② 宏蛋白组证据过滤\n只保留蛋白层面\n可检出的候选肽\n排除仅序列层面预测的假阳性", DATA_F, DATA_E),
-        (0.69, "③ 分组比较\n组内共有 / 组间特有\n得到健康特有\n与各阶段特有的抗菌肽", NEXT_F, NEXT_E),
+        (0.69, "③ 分组比较\n组内共有 / 组间特有\n筛出 AD 组特有\n（AD 特异性）的肽", NEXT_F, NEXT_E),
     ]
     w, h = 0.29, 0.62
     for x, t, fc, ec in boxes:

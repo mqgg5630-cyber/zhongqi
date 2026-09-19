@@ -37,6 +37,14 @@ RULES = [
     ("阶段划分", ["NC", "SCS", "SCD", "MCI"],
      ["MCI", "各疾病阶段", "分阶段"]),
     ("机制·Aβ", ["Aβ", "β-淀粉样肽"], ["Aβ", "淀粉样肽"]),
+    # 研究对象口径：筛的是 AD 组特有的肽，不是健康人群特有的肽（2026-09-19 起）
+    ("特有肽口径", ["AD 特异性特有", "AD 组特有"], ["AD 特异性特有", "AD 组特有"]),
+    # 关联分析落点：AD 特有肽与 AD 的关联（不再说“给出候选优先序”）
+    ("关联分析口径", ["AD 特有肽与 AD 的关联", "AD 发病机制的关联分析"],
+     ["AD 特有肽与 AD 的关联"]),
+    # 检查小组成员（4 份表都填；签字页同源）
+    # 检查小组成员只填在 docx（用户 2026-09-19 指定），PPT 不要求
+    ("检查小组成员（docx）", ["李向阳", "江婷婷", "孙杰", "高洪伟"], None),
     ("机制·AChE", ["AChE", "乙酰胆碱酯酶"], ["AChE", "乙酰胆碱酯酶"]),
     ("成果·投稿", ["SCI"], ["SCI"]),
     ("完成度口径", ["已完成"], ["已完成"]),
@@ -44,6 +52,8 @@ RULES = [
 ]
 
 BANNED = ["极简", "最小工作量", "最小可行性", "最小化验证",
+          # 2026-09-19 起：研究对象是 AD 特有肽、关联分析不说“优先序”
+          "优先序", "健康人群特有", "各阶段特有", "各疾病阶段特有",
           # 2026-09-14 起：汇报材料里不出现"按导师意见 / 导师意见"这类表述
           "导师意见", "按导师", "导师的指导"]
 
@@ -89,9 +99,10 @@ def main(argv=None) -> int:
           f"  |  对比 {len(decks)} 份 PPT\n")
     for label, dneedles, pneedles in RULES:
         d_ok = all(any(n in dtexts[d] for n in dneedles) for d in docs)
-        ppt_missing = [p.stem.replace("中期答辩_", "")
-                       for p in decks
-                       if not any(n in pptx_text(p) for n in pneedles)]
+        ppt_missing = [] if pneedles is None else \
+            [p.stem.replace("中期答辩_", "")
+             for p in decks
+             if not any(n in pptx_text(p) for n in pneedles)]
         if d_ok and not ppt_missing:
             print(f"  OK   {label:<12}")
             continue
