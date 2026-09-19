@@ -160,7 +160,7 @@ def render(path: Path, out_dir: Path, sheet: bool = False):
             y += h
         if any(item[0] >= sign_row for item in rows):
             draw.text((ml, mt + px(avail) + 6),
-                  "橙色底色 = 签字页（Ⅲ.评议情况：检查小组成员 / 检查意见 / 组长签字 / 单位盖章）",
+                  "橙色底色 = 签字页（导师综合评语 / 导师签字 + Ⅲ.评议情况 / 检查小组签字）",
                       font=hdr, fill=ACCENT)
         fp = out_dir / f"page-{pno:02d}.png"
         img.save(fp)

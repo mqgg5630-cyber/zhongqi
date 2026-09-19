@@ -22,7 +22,7 @@ for f in "deliverable/中期.docx" "deliverable/中期新.docx" "中间版/中�
   python code/verify_docx.py --base sources/中期.docx --filled "$f" \
     --cells $CELLS --blank-cells $BLANK --insert-cells $INS \
     --tc-skip $TCSKIP --tc-cells $TCCELLS --sdt-cells $SDT \
-    --pbb-rows 22:9 | tail -1 || rc=1
+    --pbb-rows 22:8 | tail -1 || rc=1
 done
 
 echo "=== docx 排版（签字页单独成完整一页）"

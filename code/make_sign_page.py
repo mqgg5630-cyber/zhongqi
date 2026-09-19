@@ -15,10 +15,10 @@
 不做任何重排：直接打开 `deliverable/中期.docx`（填好的那一份，含检查小组成员与日期；
 若不存在则退回 `sources/中期.docx`），
   * 删掉封面页、填表说明页以及它们的分节符
-  * 正文表只保留 “Ⅲ.评议情况” 那一行到表格末尾（行元素原样搬过来，
-    框线 / 列宽 / 行高 / 字体 / 单元格内容都不动）—— 这一页是检查小组签字页：
-    检查小组成员 / 检查意见 / 是否同意参加预答辩 / 检查组长签字 / 培养单位盖章（含日期）。
-    导师综合评语与导师签字留在上一页（用户 2026-09-19 指定“把这个移到上一页”）。
+  * 正文表只保留 “2. 导师综合评语” 那一行到表格末尾（行元素原样搬过来，
+    框线 / 列宽 / 行高 / 字体 / 单元格内容都不动）—— 导师签字在综合评语这一格，
+    要和后面的检查小组签字（Ⅲ.评议情况、检查意见、是否同意参加预答辩、组长签字、单位盖章）
+    装在**同一页**上（用户 2026-09-19 指定“组装在一起”）。
   * 保留表后的空段落与最后一节的 sectPr —— 纸张、页边距、页脚（日期 + 页码）
     与整份表里的那一页完全相同
 所以这份文件打印出来的样子，就是整份检查表最后一页的样子。
@@ -47,8 +47,8 @@ TEMPLATE = ROOT / "sources" / "中期.docx"
 FILLED = ROOT / "deliverable" / "中期.docx"      # 填好的那一份（默认从这里裁，带姓名与日期）
 OUT = ROOT / "deliverable" / "中期检查表_签字页.docx"
 
-SIGN_LABEL = "Ⅲ.评议情况"       # 签字页第一行（检查小组成员 / 检查意见 / 组长签字 / 单位盖章）
-SIGN_TAIL = "检查组长"           # 后面就是检查组长签字与培养单位盖章那一行
+SIGN_LABEL = "导师综合评语"     # 签字页第一行：2. 导师综合评语（末尾就是“导师签字： 2026年9月19日”）
+SIGN_TAIL = "Ⅲ.评议情况"        # 后面接着检查小组成员 / 检查意见 / 组长签字 / 单位盖章
 
 
 def strip_ns(xml: str) -> str:
@@ -131,7 +131,7 @@ def main(argv=None) -> int:
         print(f"FAIL  第一行 = {first[:20]!r}")
 
     all_text = " ".join("".join(t.text or "" for t in tr.iter(qn("w:t"))) for tr in trs2)
-    needles = ["李向阳", "江婷婷", "孙杰", "高洪伟", "2026年9月19日"]
+    needles = ["导师签字", "李向阳", "江婷婷", "孙杰", "高洪伟", "2026年9月19日"]
     for needle in (SIGN_TAIL, "组长（签字）", "培养单位盖章", "中期检查意见", *needles):
         if needle in all_text:
             print(f"OK    签字页含 {needle}")
@@ -165,7 +165,7 @@ def main(argv=None) -> int:
     if problems:
         print(f"RESULT: {len(problems)} problem(s)")
         return 1
-    print("RESULT: OK - 签字页已单独成一份一页文件（Ⅲ.评议情况起：成员 / 意见 / 组长签字 / 盖章）")
+    print("RESULT: OK - 签字页已单独成一份一页文件（导师综合评语 + 导师签字 + 检查小组签字 / 盖章）")
     print(f"接着跑：python code/check_docx_layout.py {out} --sign-page")
     return 0
 
