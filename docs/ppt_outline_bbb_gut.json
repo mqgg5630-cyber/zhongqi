@@ -1,0 +1,228 @@
+{
+  "meta": {
+    "title": "抗菌肽计算方法与AD结合机制新增问题解答",
+    "title_line2": "计算细节·AD结合·肠道调控·血脑屏障穿透·38篇文献",
+    "kind": "新增问题专项答辩·全面版",
+    "presenter": "文绍华　　学号：2024110316",
+    "advisor": "指导教师：申亮　　生命科学学院",
+    "major": "生物学（生物化学与分子生物学）",
+    "date": "2026年9月",
+    "ratio": "16:9",
+    "font_cn": "微软雅黑",
+    "font_en": "Arial",
+    "min_font_pt": 15,
+    "footer": "抗菌肽新增问题·计算方法+结合+肠道+BBB"
+  },
+  "slides": [
+    {
+      "n": 1,
+      "type": "title",
+      "title": "抗菌肽计算方法与AD结合机制",
+      "title2": "新增问题专项解答·计算细节+结合+肠道+血脑屏障",
+      "eyebrow": "老师新增提问专项·38篇文献",
+      "note": "本材料针对老师新增的4个问题：计算方法具体如何做、抗菌肽与AD如何结合、肠道菌群调控导致AD、血脑屏障穿透导致AD，补充具体文献与实现细节。"
+    },
+    {
+      "n": 2,
+      "type": "toc",
+      "title": "汇报提纲：4大新增问题",
+      "items": [
+        "计算方法总览：传统ML到深度学习演进",
+        "Ma 2022方法细节：数据+特征+模型+验证",
+        "Santos-Junior 2024 AMPSphere规模化",
+        "本课题三模型共识与文献对齐",
+        "抗菌肽与AD如何结合：Aβ本身抗菌",
+        "结合机制：LL-37纳摩尔亲和力+交叉播种",
+        "肠道菌群调控上游：失调+促炎菌↑",
+        "肠道调控介质：LPS+细菌淀粉样+SCFA",
+        "血脑屏障结构与转运通路",
+        "抗菌肽穿透BBB：阳离子AMT+LRP1/RAGE",
+        "穿透后致病：LL-37-CLIC1神经炎症",
+        "肠-血-脑轴整合模型",
+        "证据分级与验证路径"
+      ],
+      "takeaway": "每问配具体文献与实现细节，避免空泛",
+      "note": "13项提纲，覆盖4大新增问题。"
+    },
+    {
+      "n": 3,
+      "type": "figure",
+      "title": "计算方法总览：从数据库到生成模型",
+      "subtitle": "方法演进",
+      "figure": "figB_三模型预测.png",
+      "body": "Wan 2024综述六类：数据库挖掘、特征工程ML、CNN/RNN判别、注意力/Transformer、蛋白语言模型pLM、生成模型GAN/VAE/LLM；Ma 2022三模型LSTM+Attention+BERT属3-5类组合，Santos-Junior 2024 CNN+BiLSTM规模化，AMPSphere 86万肽，阳性率>75%",
+      "takeaway": "本课题属判别式挖掘+表达去重，符合主流",
+      "note": "计算方法总览，说明领域演进。"
+    },
+    {
+      "n": 4,
+      "type": "bullets",
+      "title": "Ma 2022方法细节：人肠道宏基因组挖掘",
+      "subtitle": "具体实现",
+      "bullets": [
+        "数据源　人肠道宏基因组组装MAGs，sORF<100aa，数百万候选，与本课题同源",
+        "样本　正1085条APD/DRAMP抗菌肽，负58776条UniProt非抗菌肽，CD-HIT 90%去冗余，Focal Loss解决不平衡",
+        "特征　one-hot+34维理化（电荷/疏水/等电点）+PC6向量+ProtBert嵌入三并行",
+        "模型　LSTM双向+Attention关键残基+BERT上下文，每模型后接MLP，AdamW优化，5折交叉，独立集>92%",
+        "挖掘　三模型交集阈值0.9得2349条→按电荷>2等筛选216条合成→181条活性83.8%，11条对耐药革兰阴性MIC≤8，低同源<40%",
+        "体内　小鼠肺感染K. pneumoniae模型，菌量降10倍，溶血<10%"
+      ],
+      "takeaway": "阳性率83%+低同源新肽是亮点",
+      "note": "Ma 2022细节，说明计算可行性。"
+    },
+    {
+      "n": 5,
+      "type": "figure",
+      "title": "Santos-Junior 2024 AMPSphere：全球规模化",
+      "subtitle": "规模化验证",
+      "figure": "fig2_产出规模.png",
+      "body": "63,410宏基因组+87,920原核基因组→CNN+BiLSTM分类器→863,498非冗余抗菌肽，80%低同源<40%→随机100条合成79条活性63条靶向病原，SYTOX Green验证膜破坏机制，证明深度学习可系统发现新抗菌肽",
+      "takeaway": "规模化证明预测阳性率>75%",
+      "note": "AMPSphere规模化，说明方法普适。"
+    },
+    {
+      "n": 6,
+      "type": "bullets",
+      "title": "本课题三模型共识与文献对齐",
+      "subtitle": "本课题实现",
+      "bullets": [
+        "数据　476例粪便宏基因组→2.19亿原始sORF→9139万非冗余→757高质量MAGs→1971种水平代表→sORF，与Ma 2022同源",
+        "样本　同Ma 2022：1085正/58776负，CD-HIT去冗余，Focal Loss，5折交叉AUROC>0.92",
+        "共识　Attention/LSTM/BERT三模型独立预测，交集>0.9才纳入，降低单一偏倚，特色为宏蛋白组表达二次去重解决有预测无表达假阳性",
+        "验证　纸片扩散初筛→微量肉汤稀释测MIC，阳性对照LL-37，阴性溶剂，重复3次，定位为候选肽直接验证",
+        "生成式补充　HydrAMP cVAE条件生成+AM Predictor GCN回归MIC RMSE0.535，本课题暂不涉及生成但流程一致"
+      ],
+      "takeaway": "三模型共识+表达去重是特色",
+      "note": "本课题与文献对齐，说明实现细节。"
+    },
+    {
+      "n": 7,
+      "type": "figure",
+      "title": "抗菌肽与AD如何结合：Aβ本身就是抗菌肽",
+      "subtitle": "最直接结合",
+      "figure": "figM1_关联逻辑链.png",
+      "body": "Soscia 2010 PLoS ONE：Aβ42对8种临床菌活性≥LL-37，反向/打乱无活性，AD脑匀浆活性高24%可被抗Aβ抗体清除[6]；Kumar 2016 Sci Transl Med：转基因小鼠/线虫Aβ表达提高抗感染存活，寡聚化必需更耐蛋白酶[7]；Moir 2018抗菌保护假说：Aβ聚集从生理抗菌到病理沉积失调[8]",
+      "takeaway": "Aβ抗菌是核心环，解释为何AD更多",
+      "note": "Aβ本身抗菌，最直接结合。"
+    },
+    {
+      "n": 8,
+      "type": "figure",
+      "title": "结合机制：LL-37纳摩尔亲和力+交叉播种",
+      "subtitle": "物理结合",
+      "figure": "figM2_AChE_Aβ_机制.png",
+      "body": "LL-37与Aβ纳摩尔亲和力结合：De Lorenzi 2017 SPR+CD证明Kd≈nM，抑制长纤维但稳定更毒寡聚体/异源寡聚体[15]；Barron 2024 Chem Soc Rev综述序列互补性交叉播种[16]；α-防御素β-丰富结构与Aβ交叉互作阻止斑块[综述]；AChE-PAS成核中心Inestrosa 1996 propidium抑制75%[24]，De Ferrari 2001 Site I 35肽Kd184μM[25]，Atanasova 2020 344-361第二界面[26]",
+      "takeaway": "结合改变聚集路径，增强毒性",
+      "note": "LL-37与Aβ结合机制，纳摩尔亲和力。"
+    },
+    {
+      "n": 9,
+      "type": "cards",
+      "title": "肠道菌群调控上游：失调是驱动",
+      "subtitle": "菌群失调",
+      "bullets": [
+        "AD患者菌群特征是促炎菌↑抗炎菌↓，为抗菌肽↑提供上游合理性",
+        "本课题预期微生物源抗菌肽随NC→MCI→AD升高，与促炎菌正相关"
+      ],
+      "cards": [
+        ["Vogt 2017", "Firmicutes/Bifidobacterium↓ Bacteroidetes↑[18]", "A"],
+        ["Cattaneo 2017", "Escherichia/Shigella↑ E. rectale↓ 与IL-1β/NLRP3正相关[19]", "A"],
+        ["Liu 2020综述", "肠道失调与AD关联，LPS入血[20]", "A"],
+        ["本课题", "五阶段比较，预期AD↑", "B"]
+      ],
+      "takeaway": "菌群失调为抗菌肽↑提供驱动",
+      "note": "肠道菌群失调上游驱动。"
+    },
+    {
+      "n": 10,
+      "type": "figure",
+      "title": "肠道调控介质：LPS+细菌淀粉样+SCFA",
+      "subtitle": "介质与机制",
+      "figure": "figE_机制关联.png",
+      "body": "LPS与斑块共定位Zhan 2018[21]，血浆LPS 3倍Zhao 2017[22]，P. gingivalis在AD脑Dominy 2019[23]；LPS与Aβ均为TLR4/CD14激动剂经MyD88→NF-κB释放IL-1β/TNF-α/IL-6上调APP/Aβ/抗菌肽形成正反馈；细菌淀粉样CsgA与Aβ交叉播种分子模拟；SCFA丁酸盐抗炎，AD中产丁酸菌降低；TMAO激活NLRP3；GV-971重塑菌群降苯丙氨酸异亮氨酸",
+      "takeaway": "LPS-TLR4是核心，SCFA是调节",
+      "note": "肠道调控介质，LPS关键。"
+    },
+    {
+      "n": 11,
+      "type": "figure",
+      "title": "血脑屏障结构与转运通路",
+      "subtitle": "BBB基础",
+      "figure": "figM2_AChE_Aβ_机制.png",
+      "body": "BBB由脑微血管内皮紧密连接、基底膜、星形胶质足突构成；转运分5类：细胞旁路极受限、跨细胞亲脂扩散小分子、载体介导、受体介导RMT（TfR、LRP1、胰岛素受体）、吸附介导AMT（阳离子与阴离子糖萼静电吸附）；Banks 2023 Viktor Mutt讲座综述肽穿透机制：亲脂性、饱和转运、吸附转胞吞[27]",
+      "takeaway": "RMT与AMT是抗菌肽入脑主要途径",
+      "note": "BBB结构与转运，5类通路。"
+    },
+    {
+      "n": 12,
+      "type": "bullets",
+      "title": "抗菌肽穿透BBB：阳离子AMT+LRP1/RAGE",
+      "subtitle": "穿透机制",
+      "bullets": [
+        "阳离子AMT　抗菌肽+2~+9电荷与内皮阴离子硫酸乙酰肝素/唾液酸静电吸附触发吸附介导内吞，精氨酸越多穿透越强，LL-37 37aa +6电荷符合[27,29]；Banks综述电荷是AMT关键预测因子",
+        "RMT途径　Aβ经LRP1脑→血外排和RAGE血→脑内流，LRP1↓或RAGE↑致脑内蓄积[28]；抗菌肽可利用LRP1类似配体Angiopep-2或乳铁蛋白经LRP1转运，乳铁蛋白在AD神经元胶质上调",
+        "分子量亲脂　小肽<5kDa更易，两亲螺旋插入脂膜形成孔道，类似抗菌机制用于穿膜",
+        "病理通透↑　AD中BBB破坏claudin-5/occludin↓，LPS/炎症因子进一步↑通透，外周肽更易入脑；Braniste 2014无菌小鼠BBB通透↑，SCFA可恢复"
+      ],
+      "takeaway": "阳离子AMT是主要，RMT是特异性补充",
+      "note": "抗菌肽穿透BBB机制，阳离子关键。"
+    },
+    {
+      "n": 13,
+      "type": "figure",
+      "title": "穿透后致病：LL-37-CLIC1神经炎症",
+      "subtitle": "进入后作用",
+      "figure": "figF_抑菌实验方案.png",
+      "body": "Lee 2015 Biochem Pharmacol：LL-37在人小胶质/星形胶质诱导TNF-α/IL-6释放，NF-κB核转位[13]；Chen 2022 Mol Psychiatry：LL-37促进CLIC1膜转位整合形成氯离子通道致小胶质过度活化ROS神经毒性，小鼠猴模型致Aβ↑NFT↑脑萎缩侧脑室扩大突触认知受损，Clic1敲除阻断[14]；LL-37结合Aβ抑制长纤维但稳定寡聚体/异源寡聚体更毒，且本身可形成淀粉样样纤维酸性磷脂下破坏膜[16]",
+      "takeaway": "LL-37是穿透后致病典型实例",
+      "note": "LL-37穿透后致病，CLIC1关键。"
+    },
+    {
+      "n": 14,
+      "type": "figure",
+      "title": "肠-血-脑轴整合模型",
+      "subtitle": "综合模型",
+      "figure": "figM1_关联逻辑链.png",
+      "body": "肠道菌群失调→肠屏障↑→LPS/细菌淀粉样/微生物源抗菌肽入血→BBB通透性↑（炎症因子/LPS）→抗菌肽与Aβ经RAGE/AMT入脑→小胶质活化TLR4/NLRP3/CLIC1→释放更多Aβ/抗菌肽炎症介质→AChE-PAS促纤维化→正反馈环→AD病理；Erny 2015菌群持续控制小胶质成熟功能，Braniste 2014 SCFA调控BBB",
+      "takeaway": "四问题串成一条轴，解释新增提问",
+      "note": "肠-血-脑轴整合，串联4问题。"
+    },
+    {
+      "n": 15,
+      "type": "bullets",
+      "title": "证据强度分级与验证路径",
+      "subtitle": "分级与口径",
+      "bullets": [
+        "强：Aβ抗菌活性AD脑>对照可被抗体清除[6]；三模型预测83%阳性率[1,2]；Aβ经LRP1/RAGE转运失衡致蓄积[28]；AChE经PAS促聚集propidium阻断[24,25]",
+        "中-强：AD肠道菌群失衡促炎↑产丁酸↓[18,19]；LPS与斑块共定位血浆3倍[21,22]；P. gingivalis在AD脑[23]；LL-37经CLIC1致AD样病理[13,14]",
+        "中：抗菌肽经AMT穿透BBB阳离子关键[27,29]；肠道菌群调控BBB通透性SCFA[31,32]；LL-37与Aβ纳摩尔结合[15,16]",
+        "待验证：微生物源抗菌肽随AD阶段变化（本课题五阶段比较）；候选肽经BBB入脑致病H1-H3（本课题对接+MD+细胞炎症检测）",
+        "口径：计算方法强调三模型共识是主流阳性率>80%已被验证；结合机制先讲Aβ本身抗菌生理再讲宿主AMP参照最后落到微生物源新层面；肠道调控用LPS-TLR4正反馈环避免直接因果；BBB穿透用AMT+RMT解释可行性LL-37-CLIC1作实例"
+      ],
+      "takeaway": "待验证两项即本课题要回答",
+      "note": "证据分级，避免夸大因果。"
+    },
+    {
+      "n": 16,
+      "type": "steps",
+      "title": "总结：4问串联与后续",
+      "subtitle": "总结",
+      "steps": [
+        ["计算方法", "Ma 2022 1085正/58776负LSTM+Attention+BERT 2349→216→181 83%+体内；Santos 2024 86万肽100→79活性；本课题三模型共识+宏蛋白组去重+抑菌实验验证"],
+        ["AD结合", "Aβ本身抗菌AD脑>对照抗体清除[6]；LL-37纳摩尔结合Aβ抑制纤维但稳定寡聚体[15,16]；AChE-PAS成核中心propidium 75%[24] Site I Kd184μM[25] 344-361第二界面[26]"],
+        ["肠道调控", "菌群失调促炎↑产丁酸↓[18,19]→LPS 3倍与斑块共定位[21,22]→TLR4/MyD88/NF-κB→Aβ/抗菌肽↑→细菌淀粉样交叉播种→SCFA/TMAO调节→正反馈环"],
+        ["BBB穿透", "BBB 5类转运RMT/AMT[27-30]；抗菌肽阳离子+2~+9利于AMT精氨酸越多越强[27]；LRP1外排RAGE内流失衡致蓄积[28]；LL-37经CLIC1致小胶质活化Aβ↑NFT↑脑萎缩[13,14]；病理BBB通透↑外周更易入脑"],
+        ["整合", "肠-血-脑轴：肠失调→LPS/抗菌肽入血→BBB↑→入脑→小胶质活化→Aβ/抗菌肽↑→AChE-PAS纤维化→循环；本课题五阶段比较+对接MD+炎症检测验证待验证两项"]
+      ],
+      "takeaway": "定位线索发现与假设提出，用H1-H3加验证路径说明下一步",
+      "note": "总结4问串联。"
+    },
+    {
+      "n": 17,
+      "type": "end",
+      "title": "恳请各位老师批评指正",
+      "title2": "谢谢！",
+      "note": "新增问题汇报结束。"
+    }
+  ]
+}
