@@ -1,0 +1,257 @@
+{
+  "meta": {
+    "title": "抗菌肽与AD结合机制_分子动力学与量子化学_深度版",
+    "title_line2": "MD+QM/MM+增强采样+自由能·肠道-BBB-结合三轴",
+    "kind": "深度机制版·老师追问专项",
+    "presenter": "文绍华　学号：2024110316",
+    "advisor": "指导教师：申亮　生命科学学院",
+    "major": "生物学（生物化学与分子生物学）",
+    "date": "2026年9月",
+    "ratio": "16:9",
+    "font_cn": "微软雅黑",
+    "font_en": "Arial",
+    "min_font_pt": 15,
+    "footer": "深度机制版·MD+QM+肠道+BBB"
+  },
+  "slides": [
+    {
+      "n": 1,
+      "type": "title",
+      "title": "抗菌肽与AD结合机制深度版",
+      "title2": "分子动力学+量子化学+肠道菌群+BBB穿透",
+      "eyebrow": "Light-skills检索·计算方法拆解",
+      "note": "深度版，聚焦三大机制的MD与QM方法。"
+    },
+    {
+      "n": 2,
+      "type": "toc",
+      "title": "提纲：三轴+计算分工",
+      "items": [
+        "计算方法总览：量化 vs 动力学 vs QM",
+        "全原子MD：GROMACS CHARMM36m TIP3P 20ns-1μs",
+        "增强采样：REMD 32副本6.4μs·伞形采样23窗WHAM",
+        "自由能：MM-PBSA与Woo&Roux绝对自由能",
+        "量子化学：QM/MM DFT FMO QPE",
+        "结合：Aβ抗菌+LL-37纳摩尔+HNP-1双位点",
+        "结合：AChE-PAS 344-361 1μs MD",
+        "肠道：LPS-TLR4/MD-2 Papiliocin R13/R16",
+        "肠道：网络药理与细菌淀粉样交叉播种",
+        "BBB：AMT/RMT·R9/MPG真实膜MD自由能垒",
+        "BBB：ApoE Angiopep-2 O-BBB EC50 0.41-0.83",
+        "整合：肠-血-脑轴正反馈与证据分级"
+      ],
+      "takeaway": "结合用MD+自由能+QM，肠道用对接+网络药理+MD，BBB用真实膜MD+增强采样",
+      "note": "15项提纲。"
+    },
+    {
+      "n": 3,
+      "type": "bullets",
+      "title": "计算方法总览：三类分工",
+      "subtitle": "量化 vs 动力学 vs 量子化学",
+      "bullets": [
+        "量化计算　34维理化+PC6+PsePSSM-DCT静态毫秒级，CB-Dock2盲对接-6.8~-8.1，Vina盒子20Å exhaustiveness20 9pose -7~-10 kcal/mol，HDOCK蛋白-蛋白，非动力学",
+        "动力学模拟　GROMACS/AMBER/LAMMPS CHARMM36m/ff14SB TIP3P 12Å 150mM NVT100ps NPT100ps生产20ns-1μs 2fs LINCS PME1.2nm 310K，REMD 32副本300-500K 200ns/副本6.4μs，伞形采样23窗0.05nm 145ns/窗WHAM，Metadynamics RMSD CV高斯沉积，REUS",
+        "自由能量化　MM-PBSA ΔG=ΔEvdw+ΔEelec+ΔGPB+ΔGSA-TΔS g_mmpbsa最后25%200帧 -50.6 kcal/mol -76.28 kJ/mol -8.7±0.7，Woo&Roux绝对结合自由能校正无序熵，FEP 2.3μs偏差大",
+        "量子化学　QM/MM DFT B3LYP/GFN2-xTB QM区金属+配位残基，FMO碎片能量组合，QPE双因子化qubitization，键长偏差0.01-0.05Å氢键0.1Å，探索Glu/Asp/主链O多种配位"
+      ],
+      "takeaway": "挖掘非动力学，结合与BBB是动力学+量化+QM",
+      "note": "总览分类。"
+    },
+    {
+      "n": 4,
+      "type": "bullets",
+      "title": "全原子MD：GROMACS CHARMM36m 20ns-1μs",
+      "subtitle": "经典MD参数",
+      "bullets": [
+        "软件力场　GROMACS 2022.5/5.1.4 AMBER 20 LAMMPS CHARMM36m ff14SB GROMOS96 OPLS-AA TIP3P/SPC，5-10万原子，真实脑内皮膜模型PC/PE/PS/胆固醇/多不饱和脂肪酸PLUMED 2.2.0",
+        "平衡生产　最陡下降5000步阈值1000 kJ/mol/nm，NVT100ps 310K V-rescale+NPT100ps 1bar Parrinello-Rahman，2fs LINCS PME1.2nm NPT 310K 20ns-1μs：Atanasova 2020 AChE-Aβ 1μs RMSD<3Å 344-361；ADNP7-Aβ42 20ns RMSD2-3Å Rg稳定；R9/MPG BBB 2026显著自由能垒",
+        "分析　RMSD/RMSF/Rg/SASA/氢键/DSSP二级结构/GROMOS聚类0.2nm/PCA/接触图，氢键数>5稳定，46个氢键Tachystatin -780k kcal/mol更稳定"
+      ],
+      "takeaway": "经典MD验证对接稳定性，参数具体",
+      "note": "MD细节。"
+    },
+    {
+      "n": 5,
+      "type": "bullets",
+      "title": "增强采样：REMD·伞形采样·Metadynamics",
+      "subtitle": "克服能垒",
+      "bullets": [
+        "REMD　32副本300-500K每2ps交换200ns/副本共6.4μs Amentoflavone抑制Aβ，克服能垒得构象簇，AChE-Aβ第二界面验证",
+        "伞形采样　CV质心距离0.20-1.30nm 23窗0.05nm每窗145ns+5ns平衡谐振偏置WHAM构建PMF，用于ΔG_Dimerization=ΔG_Release+ΔG_Dissociation，Aβ9-40原纤维延伸，标准结合自由能不加约束偏差大，加Woo&Roux约束后-7.87实验吻合，总2.2μs可缩1.0μs",
+        "Metadynamics　CV RMSD/配位数沉积高斯偏置探索自由能面，QM中Al(III)与Aβ N端GFN2-xTB k_i/N=0.025 E_h，20-50ps肽灵活后配位键断裂探索Glu/Asp/主链O多种模式，证明高度易变",
+        "REUS　副本交换伞形采样从不同初始条件增强膜蛋白二聚化收敛，解决粗粒化力场近天然占优但Kd合理问题"
+      ],
+      "takeaway": "增强采样解决无序肽构象空间大",
+      "note": "增强采样。"
+    },
+    {
+      "n": 6,
+      "type": "bullets",
+      "title": "自由能：MM-PBSA与绝对结合自由能",
+      "subtitle": "量化计算",
+      "bullets": [
+        "公式　ΔG_bind=G_complex-(G_rec+G_lig)=ΔE_MM+ΔG_solv-TΔS ΔE_MM=ΔE_vdw+ΔE_elec ΔG_solv=ΔG_PB/GB+ΔG_SA极性+非极性，-TΔS常省略",
+        "实例　BiLSTM+MD ADNP7-Aβ42 -50.6 kcal/mol疏水芳香PHE12 TRP50；RR-AFC -76.28 kJ/mol静电范德华非极性；Amentoflavone 16KLVFFAEDV24非极性>71%；Mint2-APP 400ns 5重复氢键>20%筛选突变体低6.93 kcal/mol疏水主导；Ala2 Phe4 Tyr10 -43.1 kcal/mol",
+        "绝对结合　Woo&Roux约束法：引入构象/取向约束校正PMF ΔG°=-ΔG_Ω(x_B)+ΔU_Ω(x_B)+ΔG_V，解决无序熵惩罚，实验Kd -7.87 vs 计算-8.7±0.7吻合，FEP 2.3μs得0.55±30.25偏差大",
+        "分解　MmPbSaDecomp.py每残基贡献找热点"
+      ],
+      "takeaway": "MM-PBSA比对接打分更准，绝对自由能解决无序问题",
+      "note": "自由能。"
+    },
+    {
+      "n": 7,
+      "type": "bullets",
+      "title": "量子化学：QM/MM DFT FMO QPE",
+      "subtitle": "金属结合",
+      "bullets": [
+        "背景　Aβ与Al/Cu/Zn结合影响聚集，经典力场无法描述电荷转移配位断裂，需QM",
+        "QM/MM　QM区金属+配位残基Glu3 Asp7 Glu11+水DFT B3LYP/6-31G*或GFN2-xTB半经验，MM区CHARMM36，每步自洽响应环境",
+        "GFN2-xTB验证　Al-A单齿Asp键长比DFT短0.01-0.03Å水配位<0.05Å氢键0.1Å可接受，ns级可达，用于Al(H2O)6与EAAAD从氢键接触到配位无偏发现",
+        "FMO+QPE　碎片分子轨道分碎片QM后组合，工作流PDB→经典粗优化多个极小→QM/MM精优化→FMO能量比较+色散溶剂化校正→亲和力，QPE双因子化qubitization T门复杂度评估未来量子加速",
+        "发现　Al(III) N端酸性残基高度易变内层4外层2-3单齿Glu3 Asp7双齿Glu11主链O也参与，破坏盐桥Asp23-Lys28重要纤维，高螺旋锚定Asp7-Glu11 RMSF<3.6Å CHC Leu17-Ala21 C端高易变Gly33氢键低RMSF"
+      ],
+      "takeaway": "QM揭示配位易变性与盐桥破坏",
+      "note": "QM细节。"
+    },
+    {
+      "n": 8,
+      "type": "figure",
+      "title": "AMP-AD结合1：Aβ抗菌+LL-37纳摩尔+HNP-1",
+      "subtitle": "结合机制",
+      "figure": "figM2_AChE_Aβ_机制.png",
+      "body": "Soscia 2010 Aβ42 8菌≥LL-37 AD脑匀浆高24%抗体清除；Kumar 2016转基因小鼠线虫提高存活寡聚化必需；LL-37与Aβ纳摩尔亲和De Lorenzi 2017 SPR+CD Kd≈nM抑制纤维稳定寡聚体；Barron 2024 Chem Soc Rev序列互补交叉播种α-防御素序列非依赖β结构接合构象选择结合，HNP-1二聚体对接+MD结合Aβ/hIAPP五聚体β-sheet和U-turn区双模式干扰侧向缔合延伸；Tyrocidine二聚体多态性类似淀粉样",
+      "takeaway": "结合改变聚集路径增强毒性，β结构是模板",
+      "note": "结合机制1。"
+    },
+    {
+      "n": 9,
+      "type": "figure",
+      "title": "AMP-AD结合2：AChE-PAS 344-361 1μs MD",
+      "subtitle": "AChE-Aβ机制",
+      "figure": "figE_机制关联.png",
+      "body": "Inestrosa1996 AChE-PAS成核propidium75%阻断；De Ferrari 2001对接4位点Site I疏水Kd184μM ΔG≈-5；Inestrosa2008第二界面；Atanasova 2020 1μs MD RMSD<3Å Aβ停留344-361第二界面，REMD验证，自由能-8.7吻合实验；候选肽两亲阳离子匹配344-361可竞争PAS H1或结合Aβ H2，设计：对接Vina20Å 9pose→GROMACS 20ns-1μs CHARMM36 TIP3P→g_mmpbsa最后25%200帧ΔG排序→细胞TNF-α/IL-6/CLIC1检测",
+      "takeaway": "AChE经PAS促聚集，344-361是热点",
+      "note": "结合机制2。"
+    },
+    {
+      "n": 10,
+      "type": "bullets",
+      "title": "肠道调控1：LPS-TLR4/MD-2 Papiliocin对接",
+      "subtitle": "肠道-炎症轴",
+      "bullets": [
+        "通路　Vogt 2017 Firmicutes/Bifidobacterium↓ Bacteroidetes↑；Cattaneo 2017 Escherichia/Shigella↑ E.rectale↓与IL-1β/NLRP3正相关；LPS与斑块共定位Zhan 2018血浆3倍Zhao 2017 P.gingivalis Dominy 2019；LPS经LBP→CD14→TLR4/MD-2二聚→MyD88→NF-κB→IL-1β/TNF-α/IL-6→APP/Aβ/抗菌肽↑正反馈；TREM2结合LPS促M1极化",
+        "Papiliocin　PNAS 2022昆虫抗菌肽双机制：直接结合LPS中和+竞争结合TLR4/MD-2抑制LPS，STD NMR+对接+流式，TLR4/MD-2/LPS晶体对接N端螺旋界面C端疏水口袋氢键K7-S118 Q31-K122静电R1-D294模拟LPS内核，亲和微摩尔LPS结合TLR4 1.41e-5 M MD-2 0.87e-5 M，关键R13/R16突变R13E/R16E↓ K3/K6+铰链G23/P24对LPS关键",
+        "AMP-TLR4　PMC 2025 Tachystatin Pleurocidin Subtilisin A与ACE2/CRP/MMP9/NLRP3/TLR4 HADDOCK，TLR4结合能与范德华r=0.61，Tachystatin氢键46势能-780k更稳定"
+      ],
+      "takeaway": "LPS-TLR4是核心，R13/R16是关键",
+      "note": "肠道1。"
+    },
+    {
+      "n": 11,
+      "type": "bullets",
+      "title": "肠道调控2：网络药理+细菌淀粉样",
+      "subtitle": "代谢物与交叉播种",
+      "bullets": [
+        "网络药理　260代谢物→196靶点→14核心IL6/NFKB1/IL1B/PTGS2/TLR4/PPARG KEGG NOD/TNF/NF-κB，CB-Dock2盲对接IL6 1ALU Enterodiol -7.2 NFKB1 1SVC Coumarin -6.8 3,9-dihydroxy -8.1表面口袋非验证活性位点需MD验证",
+        "细菌淀粉样　CsgA等分子模拟与Aβ共聚集，粗粒化MD自由能面接触图氢键网络，分子模拟交叉播种促进Aβ错误折叠微胶质priming",
+        "代谢物　SCFA丁酸抑制Tau磷酸化氧化应激促炎调节小胶质稳态AD中↓ TMAO激活NLRP3 胆汁酸调节Tau/Aβ线粒体 GABA/5-HT/乙酰胆碱/多巴胺/NE由Lactobacillus/Bacteroides产生影响突触可塑性BDNF淀粉样清除",
+        "本课题　476例粪便宏基因组2.19亿sORF→9139万非冗余→757 MAGs→1971种代表→sORF挖掘差异健康vs AD特有抗菌肽电荷>+2疏水30-70%筛选对接TLR4/MD-2 Vina20Å→MD 20ns-1μs CHARMM36 TIP3P→MM-PBSA→细胞TNF-α/IL-6检测"
+      ],
+      "takeaway": "肠道代谢物-免疫-淀粉样网络",
+      "note": "肠道2。"
+    },
+    {
+      "n": 12,
+      "type": "bullets",
+      "title": "BBB穿透1：5类转运·AMT与RMT",
+      "subtitle": "转运分类",
+      "bullets": [
+        "BBB结构　内皮紧密连接claudin-5/occludin基底膜星形胶质足突，5类转运旁路极受限亲脂扩散小分子载体介导RMT TfR LRP1胰岛素RMT AMT阳离子与阴离子糖萼静电吸附",
+        "AMT　抗菌肽+2~+9阳离子与硫酸乙酰肝素唾液酸静电吸附触发吸附介导内吞精氨酸胍基双齿氢键PO4更稳定平面疏水可溶入膜，B2088分支AMP高浓度细菌膜快速积累氢键稳定浓度依赖水跨膜↑电荷是AMT关键预测因子LL-37 37aa +6符合",
+        "RMT　Aβ经LRP1脑→血外排RAGE血→脑内流失衡蓄积Zlokovic 2009；抗菌肽利用LRP1类似Angiopep-2 TFFYGGSRGKRNNFKTEEY净电荷+2乳铁蛋白经LRP1 AD上调对接Angiopep-2与LRP1盒子20Å Vina -7~-9",
+        "病理↑　AD中BBB破坏claudin-5/occludin↓ LPS/炎症↑通透外周肽更易入脑Braniste 2014无菌小鼠BBB↑ SCFA恢复LPS 3倍P.gingivalis在AD脑"
+      ],
+      "takeaway": "AMT主要RMT补充，病理BBB更易穿透",
+      "note": "BBB1。"
+    },
+    {
+      "n": 13,
+      "type": "bullets",
+      "title": "BBB穿透2：R9/MPG真实膜MD自由能垒",
+      "subtitle": "2026最新MD",
+      "bullets": [
+        "文献　Mechanisms of BBB penetration MD study R9 and MPG translocation 2026，真实人脑微血管内皮细胞膜模型PC/PE/PS/胆固醇/多不饱和脂肪酸，MD+增强采样伞形采样/偏置交换CV膜弯曲肽部分去折叠COM距离",
+        "结果　R9诱导更大膜扰动vs MPG但均面临显著自由能垒，首次相互作用N端发起精氨酸突出即使MPG也以精氨酸起始，可塑性关键BBB弯曲+CPP部分去折叠长链多不饱和酰基脂质重要，为合理设计提供指导",
+        "对比　R9 Arg9全精氨酸强AMT，MPG两亲含疏水段+核定位自由能垒略低仍高，力峰对应肽进入膜656次steered MD拉取7种淀粉样抗菌肽+多肽Poly Ala/Leu 10聚体研究最小阻力",
+        "参数　CHARMM36m TIP3P 150mM 310K 2fs PME1.2nm伞形采样23窗0.05nm WHAM自由能面收敛需REUS不同初始条件"
+      ],
+      "takeaway": "真实膜MD揭示精氨酸与膜可塑性关键",
+      "note": "BBB2。"
+    },
+    {
+      "n": 14,
+      "type": "bullets",
+      "title": "BBB穿透3：ApoE Angiopep-2 O-BBB",
+      "subtitle": "穿透肽表征",
+      "bullets": [
+        "9种肽MD表征　Int J Nanomedicine 2019 ApoE Angiopep-2 RVG29 TGN CooP tLyp1 RiGD等ApoE 600ns后β-hairpin CHARMM36m和OPLS-AA均如此水中构象RMSD 500ns平台CLT-1 300ns后多构象tLyp1 300ns后80簇PCA大集体运动驱动靶标",
+        "Fc-PepH3　ACS Med Chem Lett 2021 PepH3可逆跨内皮AMT静电快速vs FC5 RMT需受体动力学不同DPepH3对映体验证受体非依赖巨胞饮血清t1/2↑",
+        "O-BBB融合AMP　Sci Rep 2025 Borrelia OspA内皮结合域N端β-sheet10-11 O-BBB净电荷-3.4减少非特异静电融合Cx7C环肽Bor-11/16/18/26 EC50 0.41-0.83μM对螺旋体/囊性1h膜去极化BBB模型1h显著高于angiopep-2 P=0.0175 2h匹配3h更高机制OspA-CD40模拟RME",
+        "CPP体内　PLoS One 2015 Tat47-57 4.73 SynB3 5.63 pVEC 6.02 μl/g/min高流入TP10 0.05接近零非饱和机制pVEC Vi 24→1饱和结合位点二级结构膜界面pVEC β-sheet TP10 α-helix SynB3/Tat无规卷曲脑内流不能与细胞穿透正相关"
+      ],
+      "takeaway": "O-BBB优于angiopep-2，穿透不能等同细胞穿透",
+      "note": "BBB3。"
+    },
+    {
+      "n": 15,
+      "type": "figure",
+      "title": "整合：肠-血-脑轴正反馈与证据分级",
+      "subtitle": "肠-血-脑轴",
+      "figure": "figM1_关联逻辑链.png",
+      "body": "肠失调→肠屏障↑→LPS/抗菌肽入血→BBB↑→RAGE/AMT入脑→小胶质TLR4/NLRP3/CLIC1→Aβ/抗菌肽↑→AChE-PAS纤维化→正反馈；Lee 2015 LL-37诱导TNF-α/IL-6 NF-κB；Chen 2022 LL-37促CLIC1膜转位氯通道小胶质活化ROS Aβ↑NFT↑脑萎缩Clic1 KO阻断；Erny 2015菌群控制小胶质成熟Braniste 2014 SCFA调控BBB；强证据Aβ抗菌AD脑>对照抗体清除三模型83%阳性率Aβ经LRP1/RAGE转运AChE经PAS促聚集MM-PBSA实例；中-强肠道失衡LPS共定位P.gingivalis LL-37经CLIC1 REMD 6.4μs；中AMT穿透LL-37纳摩尔结合SCFA调控BBB；待验证五阶段比较候选肽BBB入脑对接Vina20Å→GROMACS 20ns-1μs CHARMM36 TIP3P NPT310K→g_mmpbsa最后25%200帧ΔG排序→细胞检测",
+      "takeaway": "四问题串成一条轴，证据分级明确",
+      "note": "整合。"
+    },
+    {
+      "n": 16,
+      "type": "steps",
+      "title": "总结：计算方法回答老师追问",
+      "subtitle": "总结",
+      "steps": [
+        [
+          "量化计算",
+          "34维理化+PC6+PsePSSM-DCT静态毫秒级，CB-Dock2盲对接-6.8~-8.1，Vina盒子20Å exhaustiveness20 9pose -7~-10 kcal/mol，非动力学"
+        ],
+        [
+          "动力学模拟",
+          "GROMACS CHARMM36m TIP3P 12Å 150mM NVT/NPT100ps生产20ns-1μs 2fs LINCS PME1.2nm 310K REMD 32副本300-500K 200ns/副本6.4μs伞形采样23窗0.05nm 145ns/窗WHAM Metadynamics RMSD CV"
+        ],
+        [
+          "自由能",
+          "MM-PBSA ΔG=G_complex-(G_rec+G_lig)=ΔE_vdw+ΔE_elec+ΔG_PB/GB+ΔG_SA-TΔS g_mmpbsa最后25%200帧-50.6 kcal/mol -76.28 kJ/mol -8.7±0.7残基分解Woo&Roux绝对自由能校正无序熵"
+        ],
+        [
+          "量子化学",
+          "QM/MM DFT B3LYP/GFN2-xTB FMO碎片组合QPE量子相位估计，键长偏差0.01-0.05Å氢键0.1Å，探索Glu/Asp/主链O多种配位，破坏盐桥Asp23-Lys28诱导螺旋"
+        ],
+        [
+          "结合",
+          "Aβ抗菌+LL-37纳摩尔Kd+HNP-1双位点β-sheet/U-turn，AChE-PAS 344-361 1μs MD RMSD<3Å，β结构模板构象选择结合"
+        ],
+        [
+          "肠道-BBB",
+          "LPS-TLR4/MD-2 Papiliocin R13/R16关键微摩尔，网络药理260→14核心对接-7.2~-8.1，R9/MPG真实膜MD自由能垒N端精氨酸多不饱和脂可塑性，O-BBB EC50 0.41-0.83优于angiopep-2，AMT主要RMT补充病理BBB更易穿透，肠-血-脑轴正反馈"
+        ]
+      ],
+      "takeaway": "三类计算分工明确，MD+QM+自由能是结合与BBB核心",
+      "note": "总结。"
+    },
+    {
+      "n": 17,
+      "type": "end",
+      "title": "恳请各位老师批评指正",
+      "title2": "谢谢！常驻窗口版已就绪",
+      "note": "结束。"
+    }
+  ]
+}
