@@ -135,7 +135,7 @@ while ($true) {
         }
     } catch {}
 
-    # 2. auto pull
+    # 2. auto pull with schannel auto-fix (2026-09-21 hands-free)
     if ($AutoPull) {
         Write-Host "[$now] -> pulling $Remote/$Branch ..." -ForegroundColor Green
         $syncScript = Join-Path $repo 'sync.ps1'
@@ -143,19 +143,31 @@ while ($true) {
             try {
                 $out = & $syncScript 2>&1 | Out-String
                 if ($out) {
-                    $lines = $out -split "`r?`n" | Where-Object { $_ -match '\S' } | Select-Object -Last 20
+                    $lines = $out -split "`r?`n" | Where-Object { $_ -match '\S' } | Select-Object -Last 30
+                    $hasError = $false
                     foreach ($l in $lines) {
-                        if ($l -match 'ERROR|FAIL|conflict|diverg') {
+                        if ($l -match 'ERROR|FAIL|conflict|diverg|schannel|server closed abruptly|unable to access') {
                             Write-Host "  $l" -ForegroundColor Red
-                        } elseif ($l -match 'Already up|up to date|ok|pulled|fetch') {
+                            $hasError = $true
+                        } elseif ($l -match 'Already up|up to date|ok|pulled|fetch|Fast-forward|Updating') {
                             Write-Host "  $l" -ForegroundColor Green
                         } else {
                             Write-Host "  $l" -ForegroundColor Gray
                         }
                     }
+                    if ($hasError -and ($out -match 'schannel|server closed abruptly|SSL|TLS')) {
+                        Write-Host "  [AUTO-FIX] schannel failure detected, switching to openssl + HTTP/1.1 (hands-free)" -ForegroundColor Yellow
+                        try { git config --global http.sslBackend openssl 2>$null; Write-Host "    -> set global http.sslBackend openssl" -ForegroundColor DarkGray } catch {}
+                        try { git config --global http.version HTTP/1.1 2>$null; Write-Host "    -> set global http.version HTTP/1.1" -ForegroundColor DarkGray } catch {}
+                        try { git config --global http.postBuffer 524288000 2>$null } catch {}
+                        try { git config http.sslBackend openssl 2>$null } catch {}
+                        try { git config http.version HTTP/1.1 2>$null } catch {}
+                        Write-Host "  [AUTO-FIX] will retry next round ($Interval min), no manual action needed" -ForegroundColor Green
+                    }
                 }
             } catch {
                 Write-Host "  pull error: $($_.Exception.Message)" -ForegroundColor Red
+                Write-Host "  [AUTO-FIX] will retry next round, hands-free" -ForegroundColor Yellow
             }
         } else {
             Write-Host "  sync.ps1 not found, try git pull" -ForegroundColor Yellow

@@ -152,10 +152,42 @@ if ($dirty.Count -gt 0) {
     }
 }
 
-$fetch = Git @('fetch', $Remote)
+# ---- fetch with retry and schannel fix (field fix 2026-09-21) ----
+function Try-Fetch {
+    param([int]$Attempt)
+    $fetch = Git @('fetch', $Remote)
+    if ($fetch.code -eq 0) { return $fetch }
+    Write-Host "[WARN] fetch attempt $Attempt failed: $($fetch.text)" -ForegroundColor Yellow
+    # schannel known issues: server closed abruptly, failed to receive handshake
+    if ($fetch.text -match 'schannel|server closed abruptly|SSL|TLS|unable to access') {
+        Write-Host "  -> applying schannel fix: http.sslBackend openssl, http.version HTTP/1.1, postBuffer" -ForegroundColor Yellow
+        try { git config --global http.sslBackend openssl 2>$null } catch {}
+        try { git config --global http.version HTTP/1.1 2>$null } catch {}
+        try { git config --global http.postBuffer 524288000 2>$null } catch {}
+        try { git config http.sslBackend openssl 2>$null } catch {}
+        try { git config http.version HTTP/1.1 2>$null } catch {}
+    }
+    return $fetch
+}
+
+$fetch = $null
+for ($i=1; $i -le 4; $i++) {
+    $fetch = Try-Fetch -Attempt $i
+    if ($fetch.code -eq 0) { break }
+    if ($i -lt 4) {
+        $delay = $i * 5
+        Write-Host "  retry in ${delay}s ..." -ForegroundColor DarkGray
+        Start-Sleep -Seconds $delay
+    }
+}
 if ($fetch.code -ne 0) {
-    Write-Host "[ERROR] git fetch failed (network / proxy?)." -ForegroundColor Red
+    Write-Host "[ERROR] git fetch failed after 4 attempts (network / proxy?)." -ForegroundColor Red
     if ($fetch.text) { Write-Host $fetch.text -ForegroundColor DarkGray }
+    Write-Host "  hints:" -ForegroundColor Yellow
+    Write-Host "    git config --global http.sslBackend openssl" -ForegroundColor Yellow
+    Write-Host "    git config --global http.version HTTP/1.1" -ForegroundColor Yellow
+    Write-Host "    check proxy: git config --global --get http.proxy / https.proxy" -ForegroundColor Yellow
+    Write-Host "    if behind proxy, set: git config --global http.proxy http://127.0.0.1:1080" -ForegroundColor Yellow
     exit 1
 }
 
