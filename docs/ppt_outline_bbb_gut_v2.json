@@ -1,0 +1,243 @@
+{
+  "meta": {
+    "title": "抗菌肽计算方法与AD结合机制_详细版",
+    "title_line2": "动力学模拟 vs 量化计算 vs 深度学习·每篇文献参数拆解",
+    "kind": "新增问题详细版·老师追问专项",
+    "presenter": "文绍华　学号：2024110316",
+    "advisor": "指导教师：申亮　生命科学学院",
+    "major": "生物学（生物化学与分子生物学）",
+    "date": "2026年9月",
+    "ratio": "16:9",
+    "font_cn": "微软雅黑",
+    "font_en": "Arial",
+    "min_font_pt": 15,
+    "footer": "计算方法详细版·动力学+量化+深度学习"
+  },
+  "slides": [
+    {
+      "n": 1,
+      "type": "title",
+      "title": "抗菌肽计算方法与AD结合机制",
+      "title2": "详细版：动力学模拟 vs 量化计算 vs 深度学习",
+      "eyebrow": "老师追问：具体用的什么计算方法",
+      "note": "详细拆解每篇文献的计算方法类型、工具、参数、时长、公式，回答老师追问：是动力学模拟还是量化计算。"
+    },
+    {
+      "n": 2,
+      "type": "toc",
+      "title": "提纲：计算方法分类是关键",
+      "items": [
+        "计算方法总分类：三类分工不同",
+        "量化计算：34维理化描述符+PC6",
+        "深度学习判别：LSTM+Attention+BERT细节",
+        "生成式：GAN+cVAE+GCN回归MIC",
+        "结构预测：AlphaFold2",
+        "Ma 2022：1085正/58776负三模型实现",
+        "Santos-Junior 2024：86万肽规模化",
+        "分子对接：AutoDock Vina静态量化",
+        "分子动力学：GROMACS 20ns-1μs动力学",
+        "自由能计算：MM-PBSA量化公式与实例",
+        "AMP-AD结合：Aβ本身抗菌+LL-37纳摩尔结合",
+        "肠道调控：LPS-TLR4+细菌淀粉样交叉播种",
+        "BBB穿透：阳离子AMT+LRP1/RAGE RMT",
+        "肠-血-脑轴整合与证据分级"
+      ],
+      "takeaway": "挖掘用深度学习，结合机制用对接+MD+自由能",
+      "note": "14项，突出计算分类。"
+    },
+    {
+      "n": 3,
+      "type": "figure",
+      "title": "计算方法总分类：不是只有动力学",
+      "subtitle": "三类分工",
+      "figure": "figB_三模型预测.png",
+      "body": "量化计算：理化描述符34维静态计算；机器学习SVM/RF；深度学习判别LSTM/CNN/Attention/BERT/ESM-2/ GCN；生成式GAN/cVAE/GPT；结构预测AlphaFold；对接AutoDock Vina静态量化；动力学MD GROMACS/AMBER 20ns-1μs；自由能MM-PBSA基于MD的量化；挖掘用深度学习非动力学，结合机制用对接+MD是动力学+量化",
+      "takeaway": "挖掘非动力学，结合是动力学+量化",
+      "note": "总分类表，回答老师问题。"
+    },
+    {
+      "n": 4,
+      "type": "bullets",
+      "title": "量化计算：34维理化描述符",
+      "subtitle": "静态量化",
+      "bullets": [
+        "输入　氨基酸序列→modlAMP库计算34维：电荷、电荷密度、疏水性、疏水矩、等电点、分子量、芳香性、极性、不稳定指数、脂肪族指数等",
+        "PC6　6种理化性质主成分：疏水、体积、电荷、极性、二级结构倾向、溶剂可及性，降维后6维向量",
+        "PsePSSM-DCT　进化特征：PSI-BLAST生成PSSM 20维，伪成分+离散余弦变换DCT去噪，捕捉局部进化信息",
+        "特点　静态计算，无时间演化，毫秒级完成，用于传统ML和深度学习的输入特征"
+      ],
+      "takeaway": "量化计算是特征工程基础",
+      "note": "量化计算细节。"
+    },
+    {
+      "n": 5,
+      "type": "bullets",
+      "title": "深度学习判别：LSTM+Attention+BERT细节",
+      "subtitle": "非动力学，神经网络推理",
+      "bullets": [
+        "LSTM　Embedding 21→128 → BiLSTM双层128→256捕捉长程依赖 → Attention加权关键残基 → MLP 256→128→1 Dropout0.3 sigmoid输出抗菌概率",
+        "Attention　Transformer Encoder 2层4头隐藏256前馈512位置编码平均池化→MLP，突出残基重要性",
+        "BERT　ProtBert-BFD 30亿蛋白预训练，冻结前10层微调后2层，取CLS 1024维→MLP 1024→512→1，捕捉上下文",
+        "训练　AdamW lr1e-4/2e-5 batch64 epoch50早停10 5折交叉，Focal Loss γ=2解决1:10不平衡，AUROC0.95-0.97准确率>92%",
+        "本课题　三模型独立预测交集>0.9才纳入，特色宏蛋白组表达二次去重解决有预测无表达假阳性"
+      ],
+      "takeaway": "三模型共识+表达去重是特色",
+      "note": "深度学习细节，参数具体。"
+    },
+    {
+      "n": 6,
+      "type": "bullets",
+      "title": "生成式与图网络：GAN+cVAE+GCN回归",
+      "subtitle": "生成+回归量化",
+      "bullets": [
+        "HydrAMP cVAE　编码器序列→潜空间z 128维，解码器以活性条件c MIC<10生成新序列，损失=重构+KL+分类器损失+潜空间匹配，creativity参数控制相似度定向改造",
+        "AM Predictor GCN　图构建残基为节点接触图<8Å为边，节点特征ESM-2嵌入1280维+理化，图卷积3层→池化→MLP回归MIC RMSE0.535 PCC0.71 SHAP解释关键残基，打分函数用于GAN",
+        "PeptideBERT/ESM-1b　ProtTrans/ESM预训练嵌入后接MLP准确率91-96%无需手工特征捕捉进化保守性",
+        "GAC-BiTCNN-AMP 2026　GAN增强+胶囊网络层次依赖+BiTCNN上下文+PsePSSM-DCT+XGB选择+SHAP可解释准确率97.42% MCC0.923"
+      ],
+      "takeaway": "生成式属量化+深度学习，非动力学",
+      "note": "生成式方法细节。"
+    },
+    {
+      "n": 7,
+      "type": "bullets",
+      "title": "Ma 2022与Santos-Junior 2024实现参数",
+      "subtitle": "文献对齐",
+      "bullets": [
+        "Ma 2022　数据源人肠道MAGs sORF<100aa数百万；正1085 APD/DRAMP负58776 UniProt CD-HIT90% Focal Loss；特征one-hot+34维+PC6+ProtBert三并行；挖掘三模型交集0.9得2349→电荷>+2等筛选216合成→181活性83.8% 11条对耐药革兰阴性MIC≤8低同源<40%；体内小鼠肺感染K. pneumoniae菌量降10倍溶血<10%",
+        "Santos-Junior 2024　63,410宏基因组+87,920原核基因组Prodigal预测ORF 10-100aa数十亿；CNN 3层核3/5/7通道64/128/256+BiLSTM128+Attention；阈值0.8得863,498非冗余AMP 80%低同源AMPSphere数据库；随机100条合成79活性63靶向病原SYTOX Green膜破坏；GPU集群数天MMseqs2加速",
+        "本课题　476例粪便宏基因组2.19亿原始sORF→9139万非冗余→757高质量MAGs→1971种代表→sORF，同Ma 2022流程，CD-HIT90%+宏蛋白组去重特色，纸片扩散初筛→微量肉汤MIC验证"
+      ],
+      "takeaway": "规模化证明阳性率>75%，低同源新肽是亮点",
+      "note": "两篇关键文献参数对齐。"
+    },
+    {
+      "n": 8,
+      "type": "bullets",
+      "title": "分子对接：静态量化计算",
+      "subtitle": "Docking非动力学",
+      "bullets": [
+        "定义　构象搜索+打分函数量化计算，预测结合位点和亲和力，静态无时间演化",
+        "工具　AutoDock Vina高通量虚拟筛选速度快、AutoDock 4 Lamarckian遗传算法+经验自由能、HDOCK蛋白-蛋白对接LL-37-Aβ",
+        "步骤　受体准备Aβ42 PDB 1IYT/AlphaFold加氢加电荷最小化，AChE PDB 1ACJ去水定义PAS口袋Trp279 Tyr70 Tyr121；配体抗菌肽PEP-FOLD/AlphaFold建模；口袋盒子20Å中心PAS；Vina exhaustiveness20产生9pose按kcal/mol排序取最低；评分-7至-10强结合，De Ferrari Site I 35肽Kd184μM对应ΔG≈-5",
+        "实例　De Ferrari 2001对接发现AChE 4位点Site I疏水；2025 BiLSTM生成肽+对接筛选Aβ结合Top10进MD"
+      ],
+      "takeaway": "对接是静态量化，用于初筛",
+      "note": "对接细节，静态量化。"
+    },
+    {
+      "n": 9,
+      "type": "bullets",
+      "title": "分子动力学模拟：动力学模拟",
+      "subtitle": "MD是动力学",
+      "bullets": [
+        "软件　GROMACS 2022.5/AMBER 20，力场CHARMM36m/ff14SB，适用于蛋白肽",
+        "体系　对接复合物放立方水盒子TIP3P边界12Å加NaCl 150mM中和5-10万原子",
+        "最小化　最陡下降5000步阈值1000 kJ/mol/nm",
+        "平衡　NVT 100ps 310K V-rescale控温+NPT 100ps 1bar Parrinello-Rahman控压约束重原子",
+        "生产　全原子MD步长2fs LINCS约束氢键PME静电截断1.2nm NPT 310K 20ns-1μs：Atanasova 2020 AChE-Aβ 1μs RMSD<3Å停留344-361；ADNP7-Aβ42 20ns RMSD2-3Å Rg稳定；REMD 32副本300-500K每2ps交换200ns/副本共6.4μs克服能垒",
+        "分析　RMSD稳定性RMSF柔性Rg紧密度SASA氢键DSSP二级结构GROMOS聚类cutoff0.2nm"
+      ],
+      "takeaway": "MD是动力学，验证对接稳定性",
+      "note": "MD细节，动力学模拟。"
+    },
+    {
+      "n": 10,
+      "type": "bullets",
+      "title": "结合自由能计算：MM-PBSA量化",
+      "subtitle": "基于MD的量化",
+      "bullets": [
+        "公式　ΔG_bind = G_complex - (G_rec+G_lig) = ΔE_MM + ΔG_solv - TΔS；ΔE_MM=ΔE_vdw+ΔE_elec；ΔG_solv=ΔG_PB/GB+ΔG_SA极性PB/GB+非极性表面积；-TΔS常省略",
+        "工具　g_mmpbsa或gmx_MMPBSA 1.6.3，取MD最后25%每100ps一帧200帧",
+        "实例1　BiLSTM+MD 2025 ADNP7-Aβ42 MM/PBSA -50.6 kcal/mol疏水芳香主导PHE12 TRP50贡献大",
+        "实例2　RR-AFC破坏Aβ原纤维盲对接-76.28 kJ/mol静电范德华非极性主导",
+        "实例3　Amentoflavone抑制Aβ 200ns MD后MM/PBSA 16KLVFFAEDV24热点非极性>71%",
+        "残基分解　MmPbSaDecomp.py每残基贡献找热点Ala2 Phe4 Tyr10等-43.1 kcal/mol"
+      ],
+      "takeaway": "MM-PBSA是量化，比对接打分更准",
+      "note": "自由能计算细节，量化。"
+    },
+    {
+      "n": 11,
+      "type": "figure",
+      "title": "AMP-AD结合：Aβ本身抗菌+LL-37纳摩尔结合",
+      "subtitle": "结合机制",
+      "figure": "figM2_AChE_Aβ_机制.png",
+      "body": "Soscia 2010 Aβ42 8菌≥LL-37 AD脑匀浆高24%抗体清除[6]；Kumar 2016转基因小鼠线虫提高存活寡聚化必需[7]；LL-37与Aβ纳摩尔亲和力De Lorenzi 2017 SPR+CD Kd≈nM抑制纤维稳定寡聚体[15]；Barron 2024 Chem Soc Rev序列互补交叉播种[16]；AChE-PAS成核Inestrosa1996 propidium75%[24] Site I Kd184μM[25] Atanasova 2020 344-361第二界面1μs MD[26]；候选肽两亲阳离子匹配344-361可竞争PAS H1或结合Aβ H2",
+      "takeaway": "结合改变聚集路径增强毒性",
+      "note": "结合机制，含对接MD参数。"
+    },
+    {
+      "n": 12,
+      "type": "figure",
+      "title": "肠道菌群调控导致AD：LPS-TLR4正反馈",
+      "subtitle": "肠道-炎症",
+      "figure": "figE_机制关联.png",
+      "body": "Vogt 2017 Firmicutes/Bifidobacterium↓ Bacteroidetes↑[18]；Cattaneo 2017 Escherichia/Shigella↑ E. rectale↓与IL-1β/NLRP3正相关[19]；LPS与斑块共定位Zhan 2018[21]血浆3倍Zhao 2017[22] P. gingivalis Dominy 2019[23]；LPS与Aβ均为TLR4/CD14激动剂MyD88→NF-κB释放IL-1β/TNF-α/IL-6上调APP/Aβ/抗菌肽正反馈；细菌淀粉样CsgA与Aβ交叉播种；SCFA丁酸盐抗炎AD中降低TMAO激活NLRP3；GV-971重塑菌群降苯丙氨酸异亮氨酸",
+      "takeaway": "LPS-TLR4是核心，SCFA调节",
+      "note": "肠道调控，含LPS数据。"
+    },
+    {
+      "n": 13,
+      "type": "bullets",
+      "title": "BBB穿透：阳离子AMT+LRP1/RAGE RMT",
+      "subtitle": "穿透机制",
+      "bullets": [
+        "BBB结构　内皮紧密连接基底膜星形胶质足突；5类转运旁路极受限亲脂扩散小分子载体介导RMT TfR LRP1胰岛素受体AMT阳离子与阴离子糖萼静电吸附Banks 2023综述[27]",
+        "阳离子AMT　抗菌肽+2~+9电荷与硫酸乙酰肝素唾液酸静电吸附触发吸附介导内吞精氨酸越多越强LL-37 37aa +6符合[27,29]电荷是AMT关键预测因子",
+        "RMT　Aβ经LRP1脑→血外排RAGE血→脑内流失衡蓄积Zlokovic 2009[28]；抗菌肽利用LRP1类似Angiopep-2或乳铁蛋白经LRP1转运AD中上调",
+        "病理↑　AD中BBB破坏claudin-5/occludin↓ LPS/炎症↑通透外周肽更易入脑Braniste 2014无菌小鼠BBB↑ SCFA恢复[31,32]"
+      ],
+      "takeaway": "AMT主要RMT补充，病理BBB更易穿透",
+      "note": "BBB穿透机制。"
+    },
+    {
+      "n": 14,
+      "type": "figure",
+      "title": "穿透后致病：LL-37-CLIC1与肠-血-脑轴整合",
+      "subtitle": "整合模型",
+      "figure": "figM1_关联逻辑链.png",
+      "body": "Lee 2015 LL-37诱导TNF-α/IL-6 NF-κB核转位[13]；Chen 2022 LL-37促CLIC1膜转位形成氯通道致小胶质活化ROS Aβ↑NFT↑脑萎缩侧脑室扩大Clic1 KO阻断[14]；肠失调→肠屏障↑→LPS/抗菌肽入血→BBB↑→RAGE/AMT入脑→小胶质TLR4/NLRP3/CLIC1→Aβ/抗菌肽↑→AChE-PAS纤维化→正反馈；Erny 2015菌群控制小胶质成熟Braniste 2014 SCFA调控BBB",
+      "takeaway": "LL-37是典型实例，四问题串成一条轴",
+      "note": "整合模型。"
+    },
+    {
+      "n": 15,
+      "type": "bullets",
+      "title": "证据分级与本课题计算分工",
+      "subtitle": "分级与验证",
+      "bullets": [
+        "强：Aβ抗菌AD脑>对照抗体清除[6]；三模型预测83%阳性率[1,2]；Aβ经LRP1/RAGE转运失衡[28]；AChE经PAS促聚集propidium阻断[24,25]；MM-PBSA -50.6 -76kJ/mol实例[14,15]",
+        "中-强：肠道菌群失衡促炎↑产丁酸↓[18,19]；LPS与斑块共定位3倍[21,22]；P. gingivalis在AD脑[23]；LL-37经CLIC1致AD样病理[13,14]；REMD 32副本6.4μs克服能垒[13]",
+        "中：抗菌肽经AMT穿透BBB阳离子关键[27,29]；LL-37与Aβ纳摩尔结合[15,16]；肠道调控BBB SCFA[31,32]",
+        "待验证：微生物源抗菌肽随阶段变化五阶段比较；候选肽经BBB入脑致病对接Vina20Å 9pose→GROMACS 20ns-1μs CHARMM36 TIP3P NPT310K→g_mmpbsa最后25%200帧ΔG排序→细胞TNF-α/IL-6/CLIC1检测",
+        "口径：挖掘用深度学习非动力学，结合用对接静态量化+MD动力学+MM-PBSA量化，分工明确，定位线索发现假设提出"
+      ],
+      "takeaway": "计算分工明确，待验证两项即本课题",
+      "note": "证据分级与计算分工。"
+    },
+    {
+      "n": 16,
+      "type": "steps",
+      "title": "总结：计算方法回答老师追问",
+      "subtitle": "总结",
+      "steps": [
+        ["量化计算", "34维理化+PC6+PsePSSM-DCT静态计算毫秒级，用于特征工程，非动力学"],
+        ["深度学习", "LSTM双向128→256 Attention加权 BERT ProtBert 30亿预训练冻结10层微调2层 AdamW Focal Loss 5折AUROC0.95-0.97非动力学神经网络推理"],
+        ["对接", "AutoDock Vina盒子20Å exhaustiveness20 9pose评分-7至-10 kcal/mol静态量化初筛"],
+        ["动力学模拟", "GROMACS CHARMM36 TIP3P水盒子12Å 150mM NVT100ps NPT100ps生产20ns-1μs 2fs步长PME 1.2nm 310K，REMD 32副本300-500K 200ns/副本共6.4μs，RMSD/Rg/氢键/DSSP聚类"],
+        ["自由能", "MM-PBSA ΔG=G_complex-(G_rec+G_lig)=ΔE_vdw+ΔE_elec+ΔG_PB/GB+ΔG_SA-TΔS g_mmpbsa最后25%200帧-50.6 kcal/mol -76.28 kJ/mol残基分解找热点"],
+        ["整合", "挖掘用深度学习，结合用对接+MD+自由能，BBB穿透用AMT/RMT量化规则，肠道调控用LPS-TLR4正反馈，肠-血-脑轴串联四问"]
+      ],
+      "takeaway": "三类计算分工：挖掘非动力学，结合是动力学+量化",
+      "note": "总结计算方法分类。"
+    },
+    {
+      "n": 17,
+      "type": "end",
+      "title": "恳请各位老师批评指正",
+      "title2": "谢谢！",
+      "note": "详细版汇报结束。"
+    }
+  ]
+}
