@@ -1,0 +1,20 @@
+北京时间验证
+时间：2026-09-21 15:03:00 CST
+分支：arena/01a0a949-zhongqi
+提交：efb7582 -> 零基础详解版 42页深蓝金机制
+状态：旧版已全删，仅剩此文件夹，符合"一个只保留一版"
+本地应看到：
+- deliverable/终极版_20260921_1501_文献全集_零基础详解/ 存在
+- archive/ final/ 终极版_20260921_文献全集/ 已消失
+- 中期.docx PPT版本选择.md README.md 已消失
+
+若仍看到旧文件，请在 E:\0zhongqi\zhongqi 执行：
+git status
+git log --oneline -3
+dir deliverable
+
+watch-visible.ps1 常驻窗口应显示：
+Fast-forward 0beebeb..efb7582
+或 Already up to date 且本地 clean
+
+本次round16 local clean -> pulling 是正常开始，等待下一行 Fast-forward 即成功。
