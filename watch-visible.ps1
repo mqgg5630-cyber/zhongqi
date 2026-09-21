@@ -1,14 +1,17 @@
-# watch-visible.ps1 - 常驻可见窗口版值守，解决“闪窗”问题，满足“一直一个窗口常驻，上面有拉取信息”
-# 用法：
-#   .\watch-visible.ps1                 # 前台常驻，每2分钟自动拉取，窗口一直显示拉取信息
-#   .\watch-visible.ps1 -Interval 2     # 自定义间隔分钟
-#   .\watch-visible.ps1 -RegisterVisible # 注册为开机自启动的可见任务（会在登录后打开一个常驻窗口）
+# watch-visible.ps1 - resident visible window watcher (ASCII-only, PS5.1 safe)
+# Fixes flash issue: keeps ONE window resident showing pull info
+# Usage:
+#   .\watch-visible.ps1                 # foreground resident, every 2 min auto pull
+#   .\watch-visible.ps1 -Interval 2     # custom interval minutes
+#   .\watch-visible.ps1 -RegisterVisible # register auto-start visible task at logon
+#   .\watch-visible.ps1 -Status
+#   .\watch-visible.ps1 -UnregisterVisible
 #
-# 特点：
-# - 不使用隐藏launcher，窗口一直可见
-# - 实时显示 sync.ps1 拉取信息、时间戳、分支、heartbeat
-# - 支持 hands-free 自动推送本地修改
-# - 可与原有 watch.ps1 共存，原有零窗口任务可保留或暂停
+# Features:
+# - No hidden launcher, window stays visible
+# - Real-time sync.ps1 pull info, timestamp, branch, heartbeat
+# - Supports hands-free auto push
+# - Can coexist with original watch.ps1 zero-window version
 
 param(
     [int]$Interval = 2,
@@ -80,7 +83,6 @@ if ($UnregisterVisible) {
 }
 
 if ($RegisterVisible) {
-    # 注册一个可见窗口的任务，登录后启动 powershell -NoExit 保持窗口
     $psExe = (Get-Command powershell -ErrorAction SilentlyContinue).Source
     if (-not $psExe) { $psExe = "$env:WINDIR\System32\WindowsPowerShell\v1.0\powershell.exe" }
     $scriptPath = Join-Path $repo 'watch-visible.ps1'
@@ -105,13 +107,13 @@ if ($RegisterVisible) {
 $Host.UI.RawUI.WindowTitle = "git-sync visible watcher - $repoName [$Branch] - resident"
 Write-Host ""
 Write-Host "======================================================================" -ForegroundColor Cyan
-Write-Host "  git-sync 常驻可见窗口版值守" -ForegroundColor Cyan
-Write-Host "  仓库: $repo" -ForegroundColor Gray
-Write-Host "  分支: $Remote/$Branch" -ForegroundColor Gray
-Write-Host "  间隔: 每 $Interval 分钟自动拉取" -ForegroundColor Gray
-Write-Host "  模式: 常驻窗口，实时显示拉取信息" -ForegroundColor Gray
-Write-Host "  关闭此窗口 = 暂停值守 (10分钟后keeper会重启，或手动再运行)" -ForegroundColor Yellow
-Write-Host "  另开窗口执行命令，不在此窗口输入" -ForegroundColor DarkGray
+Write-Host "  git-sync resident visible watcher" -ForegroundColor Cyan
+Write-Host "  repo: $repo" -ForegroundColor Gray
+Write-Host "  branch: $Remote/$Branch" -ForegroundColor Gray
+Write-Host "  interval: every $Interval minutes auto pull" -ForegroundColor Gray
+Write-Host "  mode: resident window, real-time pull info" -ForegroundColor Gray
+Write-Host "  closing this window = pause watcher (keeper restarts in 10 min)" -ForegroundColor Yellow
+Write-Host "  open NEW window for your commands, not here" -ForegroundColor DarkGray
 Write-Host "======================================================================" -ForegroundColor Cyan
 Write-Host ""
 
@@ -119,22 +121,23 @@ $loopCount = 0
 while ($true) {
     $loopCount++
     $now = Get-Date -Format "yyyy-MM-dd HH:mm:ss"
-    Write-Host "[$now] ===== 第 $loopCount 轮轮询 =====" -ForegroundColor Cyan
+    Write-Host "[$now] ===== round $loopCount =====" -ForegroundColor Cyan
     
-    # 1. 显示当前状态
+    # 1. dirty status
     try {
         $status = git status --porcelain -uall 2>$null
         if ($status) {
-            Write-Host "[$now] 本地有未提交修改 ($($status.Count) 文件):" -ForegroundColor Yellow
+            $cnt = @($status).Count
+            Write-Host "[$now] local dirty ($cnt files):" -ForegroundColor Yellow
             $status | Select-Object -First 10 | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkYellow }
         } else {
-            Write-Host "[$now] 本地干净" -ForegroundColor DarkGray
+            Write-Host "[$now] local clean" -ForegroundColor DarkGray
         }
     } catch {}
 
-    # 2. 自动拉取
+    # 2. auto pull
     if ($AutoPull) {
-        Write-Host "[$now] -> 正在拉取 $Remote/$Branch ..." -ForegroundColor Green
+        Write-Host "[$now] -> pulling $Remote/$Branch ..." -ForegroundColor Green
         $syncScript = Join-Path $repo 'sync.ps1'
         if (Test-Path $syncScript) {
             try {
@@ -152,47 +155,47 @@ while ($true) {
                     }
                 }
             } catch {
-                Write-Host "  拉取异常: $($_.Exception.Message)" -ForegroundColor Red
+                Write-Host "  pull error: $($_.Exception.Message)" -ForegroundColor Red
             }
         } else {
-            Write-Host "  sync.ps1 未找到，尝试 git pull" -ForegroundColor Yellow
+            Write-Host "  sync.ps1 not found, try git pull" -ForegroundColor Yellow
             try { git fetch $Remote --quiet; git pull --ff-only $Remote $Branch 2>&1 | ForEach-Object { Write-Host "  $_" } } catch {}
         }
     }
 
-    # 3. 显示最新提交
+    # 3. last commits
     try {
         $last = git log --oneline -5 2>$null
         if ($last) {
-            Write-Host "[$now] 最新5条提交:" -ForegroundColor DarkCyan
+            Write-Host "[$now] last 5 commits:" -ForegroundColor DarkCyan
             $last | ForEach-Object { Write-Host "  $_" -ForegroundColor DarkGray }
         }
     } catch {}
 
-    # 4. 自动推送
+    # 4. auto push
     if ($AutoPush) {
         $dirty = git status --porcelain -uall 2>$null
         if ($dirty) {
-            Write-Host "[$now] -> 本地有修改，尝试自动推送..." -ForegroundColor Yellow
+            Write-Host "[$now] -> local changes, trying auto push..." -ForegroundColor Yellow
             $pushScript = Join-Path $repo 'push.ps1'
             if (Test-Path $pushScript) {
                 $stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
                 try {
                     $out = & $pushScript -NoPrompt "local: auto $stamp" 2>&1 | Out-String
                     if ($out) { $out -split "`r?`n" | Select-Object -Last 10 | ForEach-Object { Write-Host "  $_" -ForegroundColor Gray } }
-                } catch { Write-Host "  推送异常: $($_.Exception.Message)" -ForegroundColor Red }
+                } catch { Write-Host "  push error: $($_.Exception.Message)" -ForegroundColor Red }
             }
         }
     }
 
-    # 5. 检查 handshake 是否需要本地验证
+    # 5. handshake check
     try {
         $hsPath = Join-Path $repo 'results/status/handshake.json'
         if (Test-Path $hsPath) {
             $hs = Get-Content $hsPath -Raw -Encoding UTF8 | ConvertFrom-Json -ErrorAction SilentlyContinue
             if ($hs -and $hs.arena_state -eq 'awaiting_check' -and $hs.local_state -eq 'pending') {
-                Write-Host "[$now] !!! Agent请求本地检查 round $($hs.round) !!!" -ForegroundColor Red -BackgroundColor Yellow
-                Write-Host "  正在执行本地检查..." -ForegroundColor Yellow
+                Write-Host "[$now] !!! Agent requests local check round $($hs.round) !!!" -ForegroundColor Red -BackgroundColor Yellow
+                Write-Host "  running local check..." -ForegroundColor Yellow
                 $checkScript = Join-Path $repo 'code/local_check.ps1'
                 if (Test-Path $checkScript) {
                     try { & $checkScript 2>&1 | ForEach-Object { Write-Host "  $_" } } catch {}
@@ -201,11 +204,10 @@ while ($true) {
         }
     } catch {}
 
-    # 6. 显示心跳和下次时间
+    # 6. heartbeat
     $next = (Get-Date).AddMinutes($Interval).ToString('HH:mm:ss')
-    Write-Host "[$now] 本轮完成，下次拉取: $next (Ctrl+C 停止)" -ForegroundColor DarkGray
+    Write-Host "[$now] round done, next pull at $next (Ctrl+C to stop)" -ForegroundColor DarkGray
     Write-Host ""
 
-    # 7. 等待
     Start-Sleep -Seconds ($Interval * 60)
 }
