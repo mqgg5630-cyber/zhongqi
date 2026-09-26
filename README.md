@@ -1,5 +1,28 @@
 # zhongqi —— 中期报告与答辩 PPT
 
+## ⚡ 重启电脑后：一键恢复本地值守（新增）
+
+```powershell
+cd <本仓库目录>
+powershell -ExecutionPolicy Bypass -File .\code\resume_watch.ps1 -Register
+```
+
+- `-Register`：注册「登录后自动启动」的计划任务并立刻开始运行（推荐，重启后自动恢复）。
+- 不加 `-Register`：只在前台运行一个可见窗口值守（Ctrl+C 停止）。
+- `-Status`：只看值守状态；`-Unregister`：取消自动启动；`-Interval 1`：把拉取间隔改成 1 分钟。
+- 该脚本会先检查工作区是否干净：干净才做 fast-forward 拉取，有本地修改就跳过拉取、保留你的工作。
+- 同理的服务端（沙箱）值守：`code/watch_sandbox.sh`，日志写在 `results/sync/sandbox_watch.log`，每轮记录时间戳（北京时间）、HEAD 与拉取/推送结果。
+
+## 🧪 新增交付物：三问·计算版（MD + 量化计算）单独版
+
+只回答三个问题、只写计算方法（分子动力学为主 + 量化计算），实验只作标尺：
+
+| 文件 | 说明 |
+|---|---|
+| `deliverable/三问计算版_20260926_0940_MD与量化计算_LightSkills23/抗菌肽与AD三大问题_计算机制详解_20260926_0940_MD与QM.docx` | **主文档**（36 张参数/判据表、153 条文献）：① 抗菌肽与 Aβ 如何结合 ② 抗菌肽与肠道菌群调控如何导致 AD ③ 抗菌肽穿过血脑屏障如何导致 AD；含 MD 全流程参数、MM-PBSA/伞形采样/元动力学/FEP 参数、DFT/QM-MM/FMO 方案、宏基因组 AMP 挖掘与生态建模、BBB 膜 PMF 与 ISD 渗透系数、机器学习建模要点 |
+| `deliverable/三问计算版_20260926_0940_MD与量化计算_LightSkills23/抗菌肽与AD三大问题_计算机制详解_20260926_0940_MD与QM.pptx` | **71 页汇报版**：原生可编辑形状 + 原生表格（超长表格自动分页），每页带演讲备注 |
+| 生成脚本 | `python3 code/make_triq_computational.py`（模块见 `code/triq_*.py`） |
+
 > **本版内容口径**：不展开技术细节，只讲**研究思路**与**工作完成到哪一步**；
 > 三模型（Attention / LSTM / BERT）共识预测按"已完成"呈现；分析完抗菌肽差异后用**宏蛋白组二次去重**，
 > 筛选**健康人与各阶段特有的抗菌肽**，再与 **AD 发病机制**（Aβ 聚集 / AChE-PAS / 免疫炎症）建立关联，

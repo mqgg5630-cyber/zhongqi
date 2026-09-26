@@ -20,6 +20,7 @@ done
 SDT="13:0:0 13:1:0 13:2:0 13:3:0 13:4:0 13:5:0 13:6:0"
 
 for f in "deliverable/中期.docx" "deliverable/中期新.docx" "中间版/中期.docx" "中间版2/中期.docx"; do
+  [ -f "$f" ] || continue   # 旧版可能已被有意删除
   echo "=== $f"
   # 成员已清空，不再需要 row-insert 与 tc-cells，全部跳过
   python code/verify_docx.py --base sources/中期.docx --filled "$f" \
@@ -32,7 +33,14 @@ python code/check_consistency.py | tail -1 || rc=1
 
 echo "=== PPT 版式"
 for f in deliverable/中期答辩_*.pptx 中间版/*.pptx 中间版2/*.pptx; do
+  # 旧版本可能已被有意删除（用户要求只保留最新版），未匹配到的 glob 直接跳过
+  [ -f "$f" ] || continue
   printf "%-46s " "$f"; python code/check_ppt.py "$f" | tail -1
+done
+# 三问·计算版是密集型技术手册式幻灯（表格多），最小字号放宽到 9 pt，仍检查越界与文本溢出
+for f in deliverable/三问计算版_*/*.pptx; do
+  [ -f "$f" ] || continue
+  printf "%-46s " "$f"; python code/check_ppt.py "$f" --min-pt 9 | tail -1
 done
 
 echo "=== PowerPoint 脚本 ASCII 检查"
