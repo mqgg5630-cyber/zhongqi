@@ -13,18 +13,24 @@ powershell -ExecutionPolicy Bypass -File .\code\resume_watch.ps1 -Register
 - 该脚本会先检查工作区是否干净：干净才做 fast-forward 拉取，有本地修改就跳过拉取、保留你的工作。
 - 同理的服务端（沙箱）值守：`code/watch_sandbox.sh`，日志写在 `results/sync/sandbox_watch.log`，每轮记录时间戳（北京时间）、HEAD 与拉取/推送结果。
 
-## 🧭 最新交付物：抗菌肽与 AD 关联机制八问整合版
+## 🧭 最新交付物：三问机制整合版（PPT 最小 16 pt）
 
-这版把你提供的“八个问题”补充材料，与深度学习筛选的肠道差异抗菌肽主线、AChE-Aβ 分子动力学、感染/肠道菌群证据和前版概念纠偏整合在一起。
+本版只回答导师的新三问，并把 AChE-Aβ 分子动力学与抗菌肽-Aβ 交叉成核整合进去：
+
+1. 抗菌肽与 AD 如何结合；
+2. 抗菌肽如何通过肠道菌群调控与 AD 关联；
+3. 抗菌肽在什么条件下可能进入血脑屏障并参与 AD。
 
 | 文件 | 说明 |
 |---|---|
-| `deliverable/抗菌肽_AD关联机制整合版_20260926_1034_八问与深度学习衔接/抗菌肽与AD关联机制说明_八问整合版_20260926_1034.docx` | 逐条回答八个问题；整合七环逻辑链、宿主 AMP/Aβ 背景、微生物源 AMP 差异、五阶段设计、AChE-PAS、交叉成核、MD/QM 优先级、候选肽分类和答辩话术 |
-| `deliverable/抗菌肽_AD关联机制整合版_20260926_1034_八问与深度学习衔接/抗菌肽与AD关联机制说明_八问整合版_20260926_1034.pptx` | 36 页零基础汇报版，每页带演讲备注，直接回答“找病理相关肽还是抑制剂相关肽” |
-| 生成脚本 | `python3 code/make_amp_ad_integrated.py`；内容模块：`code/amp_ad_integrated_content.py` |
+| `deliverable/三问机制整合版_20260926_1059_16pt_AChE交叉成核/抗菌肽与AD三问机制整合说明_20260926_1059.docx` | 详细三问机制说明；含 AChE-PAS/344-361、AMP-Aβ 交叉成核、肠道菌群/LPS/SCFA/屏障、BBB PMF/转运体和深度学习候选衔接 |
+| `deliverable/三问机制整合版_20260926_1059_16pt_AChE交叉成核/抗菌肽与AD三问机制整合汇报_20260926_1059_最小16pt.pptx` | 46 页三问版 PPT；所有可见字体最小 16 pt；表格自动分段；每页带演讲备注；已检查无版式警告 |
+| 生成脚本 | `python3 code/make_threeq_mechanism_integrated_16.py` |
+| 内容模块 | `code/threeq_mechanism_integrated_content.py` |
+| 16 pt 渲染器 | `code/threeq_render_pptx16.py` |
 
-> 核心口径：主对象是 **AD 相关差异微生物源 AMP**；Aβ/AChE/BBB 是高优先级候选的条件性机制验证。Aβ 结合只说明可能存在分子相互作用，不能单独说明导致 AD。
-> 当前仓库没有实际候选 FASTA、丰度矩阵或 FDR 表，因此没有编造 AMP-C01 的序列和结果；拿到真实结果后按候选机制卡片逐条填充。
+> 核心口径：主对象是 AD/健康人群肠道宏基因组中筛出的差异微生物源 AMP；AChE/Aβ/BBB 是高优先级候选的条件性机制验证。Aβ 结合不能单独说明导致 AD。
+> 当前仓库没有实际候选 FASTA、丰度矩阵或 FDR 表，因此没有编造具体候选肽结果。
 
 **已交付**（可直接下载使用）：
 
