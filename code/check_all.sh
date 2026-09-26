@@ -38,7 +38,7 @@ for f in deliverable/中期答辩_*.pptx 中间版/*.pptx 中间版2/*.pptx; do
   printf "%-46s " "$f"; python code/check_ppt.py "$f" | tail -1
 done
 # 三问·计算版是密集型技术手册式幻灯（表格多），最小字号放宽到 9 pt，仍检查越界与文本溢出
-for f in deliverable/三问计算版_*/*.pptx; do
+for f in deliverable/三问计算版_*/*.pptx deliverable/候选抗菌肽_AD病理关联解释版_*/*.pptx; do
   [ -f "$f" ] || continue
   printf "%-46s " "$f"; python code/check_ppt.py "$f" --min-pt 9 | tail -1
 done
